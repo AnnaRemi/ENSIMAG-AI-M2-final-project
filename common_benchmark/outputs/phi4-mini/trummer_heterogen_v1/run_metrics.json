@@ -1,0 +1,17 @@
+{
+  "implementation": "trummer_heterogen_v1",
+  "mode": "llm",
+  "model": "ollama/phi4-mini",
+  "api_base": "http://127.0.0.1:11434",
+  "cpu_seconds": 0.30619599999999997,
+  "engine_seconds": 11.674053750000894,
+  "wall_seconds": 11.674053750000894,
+  "llm_calls": 1,
+  "final_answer_rows": 0,
+  "found_movie_ids": [],
+  "structured_candidates": 12,
+  "semantic_review_candidates": 12,
+  "join_prompt_count": 1,
+  "prompt_tokens": 2913,
+  "completion_tokens": 1
+}

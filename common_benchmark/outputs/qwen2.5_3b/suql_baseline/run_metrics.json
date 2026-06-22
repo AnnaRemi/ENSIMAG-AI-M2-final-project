@@ -1,0 +1,20 @@
+{
+  "implementation": "suql_baseline",
+  "mode": "llm",
+  "model": "ollama/qwen2.5:3b",
+  "api_base": "http://127.0.0.1:12280",
+  "cpu_seconds": 0.12090900000000016,
+  "engine_seconds": 605.8178182081319,
+  "wall_seconds": 605.8916481290944,
+  "llm_calls": 12,
+  "final_answer_rows": 6,
+  "found_movie_ids": [
+    "tt0120247",
+    "tt0134912",
+    "tt0139465",
+    "tt0145679",
+    "tt0156789",
+    "tt0212829"
+  ],
+  "structured_candidates": 12
+}

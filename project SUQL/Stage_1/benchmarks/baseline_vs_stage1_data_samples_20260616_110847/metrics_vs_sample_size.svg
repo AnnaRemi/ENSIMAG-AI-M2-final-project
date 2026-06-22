@@ -1,0 +1,435 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1370" height="1391" viewBox="0 0 1370 1391">
+<rect width="100%" height="100%" fill="white"/>
+<text x="685.0" y="32.0" font-size="20" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Baseline vs Stage 1 Scaling</text>
+<text x="685.0" y="54.0" font-size="12" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">Mean metric value over benchmark queries</text>
+<rect x="60" y="75" width="390" height="270" fill="#ffffff"/>
+<text x="255.0" y="93.0" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Mean Wall Time</text>
+<text x="64.0" y="210.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">seconds</text>
+<line x1="118" y1="291.0" x2="432" y2="291.0" stroke="#e5e7eb"/>
+<text x="110.0" y="295.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">0</text>
+<line x1="118" y1="246.0" x2="432" y2="246.0" stroke="#e5e7eb"/>
+<text x="110.0" y="250.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">134</text>
+<line x1="118" y1="201.0" x2="432" y2="201.0" stroke="#e5e7eb"/>
+<text x="110.0" y="205.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">268</text>
+<line x1="118" y1="156.0" x2="432" y2="156.0" stroke="#e5e7eb"/>
+<text x="110.0" y="160.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">403</text>
+<line x1="118" y1="111.0" x2="432" y2="111.0" stroke="#e5e7eb"/>
+<text x="110.0" y="115.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">537</text>
+<line x1="118" y1="111" x2="118" y2="291" stroke="#374151"/>
+<line x1="118" y1="291" x2="432" y2="291" stroke="#374151"/>
+<line x1="118.0" y1="291" x2="118.0" y2="296" stroke="#374151"/>
+<text x="118.0" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">100</text>
+<line x1="198.4" y1="291" x2="198.4" y2="296" stroke="#374151"/>
+<text x="198.4" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">200</text>
+<line x1="304.6" y1="291" x2="304.6" y2="296" stroke="#374151"/>
+<text x="304.6" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">500</text>
+<line x1="385.0" y1="291" x2="385.0" y2="296" stroke="#374151"/>
+<text x="385.0" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1000</text>
+<line x1="432.0" y1="291" x2="432.0" y2="296" stroke="#374151"/>
+<text x="432.0" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1500</text>
+<path d="M118.0,280.4 L198.4,272.8 L304.6,230.5 L385.0,177.4 L432.0,125.5" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="118.0" cy="280.4" r="4" fill="#2563eb"/>
+<circle cx="198.4" cy="272.8" r="4" fill="#2563eb"/>
+<circle cx="304.6" cy="230.5" r="4" fill="#2563eb"/>
+<circle cx="385.0" cy="177.4" r="4" fill="#2563eb"/>
+<circle cx="432.0" cy="125.5" r="4" fill="#2563eb"/>
+<path d="M118.0,279.9 L198.4,268.2 L304.6,229.7 L385.0,174.8 L432.0,124.3" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="118.0" cy="279.9" r="4" fill="#dc2626"/>
+<circle cx="198.4" cy="268.2" r="4" fill="#dc2626"/>
+<circle cx="304.6" cy="229.7" r="4" fill="#dc2626"/>
+<circle cx="385.0" cy="174.8" r="4" fill="#dc2626"/>
+<circle cx="432.0" cy="124.3" r="4" fill="#dc2626"/>
+<line x1="325" y1="115" x2="347" y2="115" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="336" cy="115" r="3.5" fill="#2563eb"/>
+<text x="355.0" y="119.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">baseline</text>
+<line x1="325" y1="133" x2="347" y2="133" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="336" cy="133" r="3.5" fill="#dc2626"/>
+<text x="355.0" y="137.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">stage1</text>
+<rect x="490" y="75" width="390" height="270" fill="#ffffff"/>
+<text x="685.0" y="93.0" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Mean Engine Time</text>
+<text x="494.0" y="210.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">seconds</text>
+<line x1="548" y1="291.0" x2="862" y2="291.0" stroke="#e5e7eb"/>
+<text x="540.0" y="295.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">0</text>
+<line x1="548" y1="246.0" x2="862" y2="246.0" stroke="#e5e7eb"/>
+<text x="540.0" y="250.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">131</text>
+<line x1="548" y1="201.0" x2="862" y2="201.0" stroke="#e5e7eb"/>
+<text x="540.0" y="205.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">262</text>
+<line x1="548" y1="156.0" x2="862" y2="156.0" stroke="#e5e7eb"/>
+<text x="540.0" y="160.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">394</text>
+<line x1="548" y1="111.0" x2="862" y2="111.0" stroke="#e5e7eb"/>
+<text x="540.0" y="115.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">525</text>
+<line x1="548" y1="111" x2="548" y2="291" stroke="#374151"/>
+<line x1="548" y1="291" x2="862" y2="291" stroke="#374151"/>
+<line x1="548.0" y1="291" x2="548.0" y2="296" stroke="#374151"/>
+<text x="548.0" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">100</text>
+<line x1="628.4" y1="291" x2="628.4" y2="296" stroke="#374151"/>
+<text x="628.4" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">200</text>
+<line x1="734.6" y1="291" x2="734.6" y2="296" stroke="#374151"/>
+<text x="734.6" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">500</text>
+<line x1="815.0" y1="291" x2="815.0" y2="296" stroke="#374151"/>
+<text x="815.0" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1000</text>
+<line x1="862.0" y1="291" x2="862.0" y2="296" stroke="#374151"/>
+<text x="862.0" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1500</text>
+<path d="M548.0,283.5 L628.4,275.1 L734.6,231.9 L815.0,177.6 L862.0,124.6" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="548.0" cy="283.5" r="4" fill="#2563eb"/>
+<circle cx="628.4" cy="275.1" r="4" fill="#2563eb"/>
+<circle cx="734.6" cy="231.9" r="4" fill="#2563eb"/>
+<circle cx="815.0" cy="177.6" r="4" fill="#2563eb"/>
+<circle cx="862.0" cy="124.6" r="4" fill="#2563eb"/>
+<path d="M548.0,282.9 L628.4,270.9 L734.6,231.8 L815.0,175.7 L862.0,124.3" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="548.0" cy="282.9" r="4" fill="#dc2626"/>
+<circle cx="628.4" cy="270.9" r="4" fill="#dc2626"/>
+<circle cx="734.6" cy="231.8" r="4" fill="#dc2626"/>
+<circle cx="815.0" cy="175.7" r="4" fill="#dc2626"/>
+<circle cx="862.0" cy="124.3" r="4" fill="#dc2626"/>
+<line x1="755" y1="115" x2="777" y2="115" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="766" cy="115" r="3.5" fill="#2563eb"/>
+<text x="785.0" y="119.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">baseline</text>
+<line x1="755" y1="133" x2="777" y2="133" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="766" cy="133" r="3.5" fill="#dc2626"/>
+<text x="785.0" y="137.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">stage1</text>
+<rect x="920" y="75" width="390" height="270" fill="#ffffff"/>
+<text x="1115.0" y="93.0" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Mean Full LLM Calls</text>
+<text x="924.0" y="210.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">count</text>
+<line x1="978" y1="291.0" x2="1292" y2="291.0" stroke="#e5e7eb"/>
+<text x="970.0" y="295.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">0</text>
+<line x1="978" y1="246.0" x2="1292" y2="246.0" stroke="#e5e7eb"/>
+<text x="970.0" y="250.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">52</text>
+<line x1="978" y1="201.0" x2="1292" y2="201.0" stroke="#e5e7eb"/>
+<text x="970.0" y="205.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">103</text>
+<line x1="978" y1="156.0" x2="1292" y2="156.0" stroke="#e5e7eb"/>
+<text x="970.0" y="160.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">155</text>
+<line x1="978" y1="111.0" x2="1292" y2="111.0" stroke="#e5e7eb"/>
+<text x="970.0" y="115.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">206</text>
+<line x1="978" y1="111" x2="978" y2="291" stroke="#374151"/>
+<line x1="978" y1="291" x2="1292" y2="291" stroke="#374151"/>
+<line x1="978.0" y1="291" x2="978.0" y2="296" stroke="#374151"/>
+<text x="978.0" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">100</text>
+<line x1="1058.4" y1="291" x2="1058.4" y2="296" stroke="#374151"/>
+<text x="1058.4" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">200</text>
+<line x1="1164.6" y1="291" x2="1164.6" y2="296" stroke="#374151"/>
+<text x="1164.6" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">500</text>
+<line x1="1245.0" y1="291" x2="1245.0" y2="296" stroke="#374151"/>
+<text x="1245.0" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1000</text>
+<line x1="1292.0" y1="291" x2="1292.0" y2="296" stroke="#374151"/>
+<text x="1292.0" y="313.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1500</text>
+<path d="M978.0,280.3 L1058.4,269.0 L1164.6,232.8 L1245.0,178.4 L1292.0,124.3" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="978.0" cy="280.3" r="4" fill="#2563eb"/>
+<circle cx="1058.4" cy="269.0" r="4" fill="#2563eb"/>
+<circle cx="1164.6" cy="232.8" r="4" fill="#2563eb"/>
+<circle cx="1245.0" cy="178.4" r="4" fill="#2563eb"/>
+<circle cx="1292.0" cy="124.3" r="4" fill="#2563eb"/>
+<path d="M978.0,288.0 L1058.4,286.0 L1164.6,284.8 L1245.0,282.7 L1292.0,282.5" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="978.0" cy="288.0" r="4" fill="#dc2626"/>
+<circle cx="1058.4" cy="286.0" r="4" fill="#dc2626"/>
+<circle cx="1164.6" cy="284.8" r="4" fill="#dc2626"/>
+<circle cx="1245.0" cy="282.7" r="4" fill="#dc2626"/>
+<circle cx="1292.0" cy="282.5" r="4" fill="#dc2626"/>
+<line x1="1185" y1="115" x2="1207" y2="115" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="1196" cy="115" r="3.5" fill="#2563eb"/>
+<text x="1215.0" y="119.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">baseline</text>
+<line x1="1185" y1="133" x2="1207" y2="133" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="1196" cy="133" r="3.5" fill="#dc2626"/>
+<text x="1215.0" y="137.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">stage1</text>
+<rect x="60" y="407" width="390" height="270" fill="#ffffff"/>
+<text x="255.0" y="425.0" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Mean LLM Prompts Issued</text>
+<text x="64.0" y="542.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">count</text>
+<line x1="118" y1="623.0" x2="432" y2="623.0" stroke="#e5e7eb"/>
+<text x="110.0" y="627.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">0</text>
+<line x1="118" y1="578.0" x2="432" y2="578.0" stroke="#e5e7eb"/>
+<text x="110.0" y="582.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">52</text>
+<line x1="118" y1="533.0" x2="432" y2="533.0" stroke="#e5e7eb"/>
+<text x="110.0" y="537.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">104</text>
+<line x1="118" y1="488.0" x2="432" y2="488.0" stroke="#e5e7eb"/>
+<text x="110.0" y="492.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">156</text>
+<line x1="118" y1="443.0" x2="432" y2="443.0" stroke="#e5e7eb"/>
+<text x="110.0" y="447.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">207</text>
+<line x1="118" y1="443" x2="118" y2="623" stroke="#374151"/>
+<line x1="118" y1="623" x2="432" y2="623" stroke="#374151"/>
+<line x1="118.0" y1="623" x2="118.0" y2="628" stroke="#374151"/>
+<text x="118.0" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">100</text>
+<line x1="198.4" y1="623" x2="198.4" y2="628" stroke="#374151"/>
+<text x="198.4" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">200</text>
+<line x1="304.6" y1="623" x2="304.6" y2="628" stroke="#374151"/>
+<text x="304.6" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">500</text>
+<line x1="385.0" y1="623" x2="385.0" y2="628" stroke="#374151"/>
+<text x="385.0" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1000</text>
+<line x1="432.0" y1="623" x2="432.0" y2="628" stroke="#374151"/>
+<text x="432.0" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1500</text>
+<path d="M118.0,612.4 L198.4,601.1 L304.6,565.2 L385.0,511.2 L432.0,457.5" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="118.0" cy="612.4" r="4" fill="#2563eb"/>
+<circle cx="198.4" cy="601.1" r="4" fill="#2563eb"/>
+<circle cx="304.6" cy="565.2" r="4" fill="#2563eb"/>
+<circle cx="385.0" cy="511.2" r="4" fill="#2563eb"/>
+<circle cx="432.0" cy="457.5" r="4" fill="#2563eb"/>
+<path d="M118.0,609.9 L198.4,598.0 L304.6,564.7 L385.0,509.0 L432.0,456.3" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="118.0" cy="609.9" r="4" fill="#dc2626"/>
+<circle cx="198.4" cy="598.0" r="4" fill="#dc2626"/>
+<circle cx="304.6" cy="564.7" r="4" fill="#dc2626"/>
+<circle cx="385.0" cy="509.0" r="4" fill="#dc2626"/>
+<circle cx="432.0" cy="456.3" r="4" fill="#dc2626"/>
+<line x1="325" y1="447" x2="347" y2="447" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="336" cy="447" r="3.5" fill="#2563eb"/>
+<text x="355.0" y="451.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">baseline</text>
+<line x1="325" y1="465" x2="347" y2="465" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="336" cy="465" r="3.5" fill="#dc2626"/>
+<text x="355.0" y="469.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">stage1</text>
+<rect x="490" y="407" width="390" height="270" fill="#ffffff"/>
+<text x="685.0" y="425.0" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Mean Early Accepts</text>
+<text x="494.0" y="542.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">count</text>
+<line x1="548" y1="623.0" x2="862" y2="623.0" stroke="#e5e7eb"/>
+<text x="540.0" y="627.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">0</text>
+<line x1="548" y1="578.0" x2="862" y2="578.0" stroke="#e5e7eb"/>
+<text x="540.0" y="582.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">16</text>
+<line x1="548" y1="533.0" x2="862" y2="533.0" stroke="#e5e7eb"/>
+<text x="540.0" y="537.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">32</text>
+<line x1="548" y1="488.0" x2="862" y2="488.0" stroke="#e5e7eb"/>
+<text x="540.0" y="492.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">48</text>
+<line x1="548" y1="443.0" x2="862" y2="443.0" stroke="#e5e7eb"/>
+<text x="540.0" y="447.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">64</text>
+<line x1="548" y1="443" x2="548" y2="623" stroke="#374151"/>
+<line x1="548" y1="623" x2="862" y2="623" stroke="#374151"/>
+<line x1="548.0" y1="623" x2="548.0" y2="628" stroke="#374151"/>
+<text x="548.0" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">100</text>
+<line x1="628.4" y1="623" x2="628.4" y2="628" stroke="#374151"/>
+<text x="628.4" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">200</text>
+<line x1="734.6" y1="623" x2="734.6" y2="628" stroke="#374151"/>
+<text x="734.6" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">500</text>
+<line x1="815.0" y1="623" x2="815.0" y2="628" stroke="#374151"/>
+<text x="815.0" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1000</text>
+<line x1="862.0" y1="623" x2="862.0" y2="628" stroke="#374151"/>
+<text x="862.0" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1500</text>
+<path d="M548.0,623.0 L628.4,623.0 L734.6,623.0 L815.0,623.0 L862.0,623.0" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="548.0" cy="623.0" r="4" fill="#2563eb"/>
+<circle cx="628.4" cy="623.0" r="4" fill="#2563eb"/>
+<circle cx="734.6" cy="623.0" r="4" fill="#2563eb"/>
+<circle cx="815.0" cy="623.0" r="4" fill="#2563eb"/>
+<circle cx="862.0" cy="623.0" r="4" fill="#2563eb"/>
+<path d="M548.0,611.5 L628.4,600.2 L734.6,566.2 L815.0,508.8 L862.0,456.3" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="548.0" cy="611.5" r="4" fill="#dc2626"/>
+<circle cx="628.4" cy="600.2" r="4" fill="#dc2626"/>
+<circle cx="734.6" cy="566.2" r="4" fill="#dc2626"/>
+<circle cx="815.0" cy="508.8" r="4" fill="#dc2626"/>
+<circle cx="862.0" cy="456.3" r="4" fill="#dc2626"/>
+<line x1="755" y1="447" x2="777" y2="447" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="766" cy="447" r="3.5" fill="#2563eb"/>
+<text x="785.0" y="451.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">baseline</text>
+<line x1="755" y1="465" x2="777" y2="465" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="766" cy="465" r="3.5" fill="#dc2626"/>
+<text x="785.0" y="469.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">stage1</text>
+<rect x="920" y="407" width="390" height="270" fill="#ffffff"/>
+<text x="1115.0" y="425.0" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Mean Early Rejects</text>
+<text x="924.0" y="542.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">count</text>
+<line x1="978" y1="623.0" x2="1292" y2="623.0" stroke="#e5e7eb"/>
+<text x="970.0" y="627.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">0</text>
+<line x1="978" y1="578.0" x2="1292" y2="578.0" stroke="#e5e7eb"/>
+<text x="970.0" y="582.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">33</text>
+<line x1="978" y1="533.0" x2="1292" y2="533.0" stroke="#e5e7eb"/>
+<text x="970.0" y="537.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">66</text>
+<line x1="978" y1="488.0" x2="1292" y2="488.0" stroke="#e5e7eb"/>
+<text x="970.0" y="492.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">100</text>
+<line x1="978" y1="443.0" x2="1292" y2="443.0" stroke="#e5e7eb"/>
+<text x="970.0" y="447.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">133</text>
+<line x1="978" y1="443" x2="978" y2="623" stroke="#374151"/>
+<line x1="978" y1="623" x2="1292" y2="623" stroke="#374151"/>
+<line x1="978.0" y1="623" x2="978.0" y2="628" stroke="#374151"/>
+<text x="978.0" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">100</text>
+<line x1="1058.4" y1="623" x2="1058.4" y2="628" stroke="#374151"/>
+<text x="1058.4" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">200</text>
+<line x1="1164.6" y1="623" x2="1164.6" y2="628" stroke="#374151"/>
+<text x="1164.6" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">500</text>
+<line x1="1245.0" y1="623" x2="1245.0" y2="628" stroke="#374151"/>
+<text x="1245.0" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1000</text>
+<line x1="1292.0" y1="623" x2="1292.0" y2="628" stroke="#374151"/>
+<text x="1292.0" y="645.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1500</text>
+<path d="M978.0,623.0 L1058.4,623.0 L1164.6,623.0 L1245.0,623.0 L1292.0,623.0" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="978.0" cy="623.0" r="4" fill="#2563eb"/>
+<circle cx="1058.4" cy="623.0" r="4" fill="#2563eb"/>
+<circle cx="1164.6" cy="623.0" r="4" fill="#2563eb"/>
+<circle cx="1245.0" cy="623.0" r="4" fill="#2563eb"/>
+<circle cx="1292.0" cy="623.0" r="4" fill="#2563eb"/>
+<path d="M978.0,612.8 L1058.4,602.7 L1164.6,569.0 L1245.0,512.9 L1292.0,456.3" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="978.0" cy="612.8" r="4" fill="#dc2626"/>
+<circle cx="1058.4" cy="602.7" r="4" fill="#dc2626"/>
+<circle cx="1164.6" cy="569.0" r="4" fill="#dc2626"/>
+<circle cx="1245.0" cy="512.9" r="4" fill="#dc2626"/>
+<circle cx="1292.0" cy="456.3" r="4" fill="#dc2626"/>
+<line x1="1185" y1="447" x2="1207" y2="447" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="1196" cy="447" r="3.5" fill="#2563eb"/>
+<text x="1215.0" y="451.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">baseline</text>
+<line x1="1185" y1="465" x2="1207" y2="465" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="1196" cy="465" r="3.5" fill="#dc2626"/>
+<text x="1215.0" y="469.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">stage1</text>
+<rect x="60" y="739" width="390" height="270" fill="#ffffff"/>
+<text x="255.0" y="757.0" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Mean Structured Candidates</text>
+<text x="64.0" y="874.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">count</text>
+<line x1="118" y1="955.0" x2="432" y2="955.0" stroke="#e5e7eb"/>
+<text x="110.0" y="959.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">0</text>
+<line x1="118" y1="910.0" x2="432" y2="910.0" stroke="#e5e7eb"/>
+<text x="110.0" y="914.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">49</text>
+<line x1="118" y1="865.0" x2="432" y2="865.0" stroke="#e5e7eb"/>
+<text x="110.0" y="869.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">99</text>
+<line x1="118" y1="820.0" x2="432" y2="820.0" stroke="#e5e7eb"/>
+<text x="110.0" y="824.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">148</text>
+<line x1="118" y1="775.0" x2="432" y2="775.0" stroke="#e5e7eb"/>
+<text x="110.0" y="779.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">197</text>
+<line x1="118" y1="775" x2="118" y2="955" stroke="#374151"/>
+<line x1="118" y1="955" x2="432" y2="955" stroke="#374151"/>
+<line x1="118.0" y1="955" x2="118.0" y2="960" stroke="#374151"/>
+<text x="118.0" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">100</text>
+<line x1="198.4" y1="955" x2="198.4" y2="960" stroke="#374151"/>
+<text x="198.4" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">200</text>
+<line x1="304.6" y1="955" x2="304.6" y2="960" stroke="#374151"/>
+<text x="304.6" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">500</text>
+<line x1="385.0" y1="955" x2="385.0" y2="960" stroke="#374151"/>
+<text x="385.0" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1000</text>
+<line x1="432.0" y1="955" x2="432.0" y2="960" stroke="#374151"/>
+<text x="432.0" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1500</text>
+<path d="M118.0,944.3 L198.4,933.9 L304.6,900.1 L385.0,843.7 L432.0,788.3" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="118.0" cy="944.3" r="4" fill="#2563eb"/>
+<circle cx="198.4" cy="933.9" r="4" fill="#2563eb"/>
+<circle cx="304.6" cy="900.1" r="4" fill="#2563eb"/>
+<circle cx="385.0" cy="843.7" r="4" fill="#2563eb"/>
+<circle cx="432.0" cy="788.3" r="4" fill="#2563eb"/>
+<path d="M118.0,944.3 L198.4,933.9 L304.6,900.1 L385.0,843.7 L432.0,788.3" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="118.0" cy="944.3" r="4" fill="#dc2626"/>
+<circle cx="198.4" cy="933.9" r="4" fill="#dc2626"/>
+<circle cx="304.6" cy="900.1" r="4" fill="#dc2626"/>
+<circle cx="385.0" cy="843.7" r="4" fill="#dc2626"/>
+<circle cx="432.0" cy="788.3" r="4" fill="#dc2626"/>
+<line x1="325" y1="779" x2="347" y2="779" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="336" cy="779" r="3.5" fill="#2563eb"/>
+<text x="355.0" y="783.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">baseline</text>
+<line x1="325" y1="797" x2="347" y2="797" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="336" cy="797" r="3.5" fill="#dc2626"/>
+<text x="355.0" y="801.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">stage1</text>
+<rect x="490" y="739" width="390" height="270" fill="#ffffff"/>
+<text x="685.0" y="757.0" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Mean Semantic Rows</text>
+<text x="494.0" y="874.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">count</text>
+<line x1="548" y1="955.0" x2="862" y2="955.0" stroke="#e5e7eb"/>
+<text x="540.0" y="959.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">0</text>
+<line x1="548" y1="910.0" x2="862" y2="910.0" stroke="#e5e7eb"/>
+<text x="540.0" y="914.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">16</text>
+<line x1="548" y1="865.0" x2="862" y2="865.0" stroke="#e5e7eb"/>
+<text x="540.0" y="869.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">32</text>
+<line x1="548" y1="820.0" x2="862" y2="820.0" stroke="#e5e7eb"/>
+<text x="540.0" y="824.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">48</text>
+<line x1="548" y1="775.0" x2="862" y2="775.0" stroke="#e5e7eb"/>
+<text x="540.0" y="779.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">64</text>
+<line x1="548" y1="775" x2="548" y2="955" stroke="#374151"/>
+<line x1="548" y1="955" x2="862" y2="955" stroke="#374151"/>
+<line x1="548.0" y1="955" x2="548.0" y2="960" stroke="#374151"/>
+<text x="548.0" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">100</text>
+<line x1="628.4" y1="955" x2="628.4" y2="960" stroke="#374151"/>
+<text x="628.4" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">200</text>
+<line x1="734.6" y1="955" x2="734.6" y2="960" stroke="#374151"/>
+<text x="734.6" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">500</text>
+<line x1="815.0" y1="955" x2="815.0" y2="960" stroke="#374151"/>
+<text x="815.0" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1000</text>
+<line x1="862.0" y1="955" x2="862.0" y2="960" stroke="#374151"/>
+<text x="862.0" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1500</text>
+<path d="M548.0,953.4 L628.4,949.1 L734.6,929.5 L815.0,918.3 L862.0,897.8" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="548.0" cy="953.4" r="4" fill="#2563eb"/>
+<circle cx="628.4" cy="949.1" r="4" fill="#2563eb"/>
+<circle cx="734.6" cy="929.5" r="4" fill="#2563eb"/>
+<circle cx="815.0" cy="918.3" r="4" fill="#2563eb"/>
+<circle cx="862.0" cy="897.8" r="4" fill="#2563eb"/>
+<path d="M548.0,943.5 L628.4,932.3 L734.6,898.4 L815.0,841.2 L862.0,788.3" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="548.0" cy="943.5" r="4" fill="#dc2626"/>
+<circle cx="628.4" cy="932.3" r="4" fill="#dc2626"/>
+<circle cx="734.6" cy="898.4" r="4" fill="#dc2626"/>
+<circle cx="815.0" cy="841.2" r="4" fill="#dc2626"/>
+<circle cx="862.0" cy="788.3" r="4" fill="#dc2626"/>
+<line x1="755" y1="779" x2="777" y2="779" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="766" cy="779" r="3.5" fill="#2563eb"/>
+<text x="785.0" y="783.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">baseline</text>
+<line x1="755" y1="797" x2="777" y2="797" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="766" cy="797" r="3.5" fill="#dc2626"/>
+<text x="785.0" y="801.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">stage1</text>
+<rect x="920" y="739" width="390" height="270" fill="#ffffff"/>
+<text x="1115.0" y="757.0" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Mean Join Rows</text>
+<text x="924.0" y="874.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">count</text>
+<line x1="978" y1="955.0" x2="1292" y2="955.0" stroke="#e5e7eb"/>
+<text x="970.0" y="959.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">0</text>
+<line x1="978" y1="910.0" x2="1292" y2="910.0" stroke="#e5e7eb"/>
+<text x="970.0" y="914.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">16</text>
+<line x1="978" y1="865.0" x2="1292" y2="865.0" stroke="#e5e7eb"/>
+<text x="970.0" y="869.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">32</text>
+<line x1="978" y1="820.0" x2="1292" y2="820.0" stroke="#e5e7eb"/>
+<text x="970.0" y="824.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">48</text>
+<line x1="978" y1="775.0" x2="1292" y2="775.0" stroke="#e5e7eb"/>
+<text x="970.0" y="779.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">64</text>
+<line x1="978" y1="775" x2="978" y2="955" stroke="#374151"/>
+<line x1="978" y1="955" x2="1292" y2="955" stroke="#374151"/>
+<line x1="978.0" y1="955" x2="978.0" y2="960" stroke="#374151"/>
+<text x="978.0" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">100</text>
+<line x1="1058.4" y1="955" x2="1058.4" y2="960" stroke="#374151"/>
+<text x="1058.4" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">200</text>
+<line x1="1164.6" y1="955" x2="1164.6" y2="960" stroke="#374151"/>
+<text x="1164.6" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">500</text>
+<line x1="1245.0" y1="955" x2="1245.0" y2="960" stroke="#374151"/>
+<text x="1245.0" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1000</text>
+<line x1="1292.0" y1="955" x2="1292.0" y2="960" stroke="#374151"/>
+<text x="1292.0" y="977.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1500</text>
+<path d="M978.0,953.4 L1058.4,949.1 L1164.6,929.5 L1245.0,918.3 L1292.0,897.8" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="978.0" cy="953.4" r="4" fill="#2563eb"/>
+<circle cx="1058.4" cy="949.1" r="4" fill="#2563eb"/>
+<circle cx="1164.6" cy="929.5" r="4" fill="#2563eb"/>
+<circle cx="1245.0" cy="918.3" r="4" fill="#2563eb"/>
+<circle cx="1292.0" cy="897.8" r="4" fill="#2563eb"/>
+<path d="M978.0,943.5 L1058.4,932.3 L1164.6,898.4 L1245.0,841.2 L1292.0,788.3" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="978.0" cy="943.5" r="4" fill="#dc2626"/>
+<circle cx="1058.4" cy="932.3" r="4" fill="#dc2626"/>
+<circle cx="1164.6" cy="898.4" r="4" fill="#dc2626"/>
+<circle cx="1245.0" cy="841.2" r="4" fill="#dc2626"/>
+<circle cx="1292.0" cy="788.3" r="4" fill="#dc2626"/>
+<line x1="1185" y1="779" x2="1207" y2="779" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="1196" cy="779" r="3.5" fill="#2563eb"/>
+<text x="1215.0" y="783.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">baseline</text>
+<line x1="1185" y1="797" x2="1207" y2="797" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="1196" cy="797" r="3.5" fill="#dc2626"/>
+<text x="1215.0" y="801.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">stage1</text>
+<rect x="60" y="1071" width="390" height="270" fill="#ffffff"/>
+<text x="255.0" y="1089.0" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" font-weight="700" fill="#111827">Mean Result Rows</text>
+<text x="64.0" y="1206.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">count</text>
+<line x1="118" y1="1287.0" x2="432" y2="1287.0" stroke="#e5e7eb"/>
+<text x="110.0" y="1291.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">0</text>
+<line x1="118" y1="1242.0" x2="432" y2="1242.0" stroke="#e5e7eb"/>
+<text x="110.0" y="1246.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">3</text>
+<line x1="118" y1="1197.0" x2="432" y2="1197.0" stroke="#e5e7eb"/>
+<text x="110.0" y="1201.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">5</text>
+<line x1="118" y1="1152.0" x2="432" y2="1152.0" stroke="#e5e7eb"/>
+<text x="110.0" y="1156.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">8</text>
+<line x1="118" y1="1107.0" x2="432" y2="1107.0" stroke="#e5e7eb"/>
+<text x="110.0" y="1111.0" font-size="10" font-family="Arial, sans-serif" text-anchor="end" font-weight="400" fill="#111827">11</text>
+<line x1="118" y1="1107" x2="118" y2="1287" stroke="#374151"/>
+<line x1="118" y1="1287" x2="432" y2="1287" stroke="#374151"/>
+<line x1="118.0" y1="1287" x2="118.0" y2="1292" stroke="#374151"/>
+<text x="118.0" y="1309.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">100</text>
+<line x1="198.4" y1="1287" x2="198.4" y2="1292" stroke="#374151"/>
+<text x="198.4" y="1309.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">200</text>
+<line x1="304.6" y1="1287" x2="304.6" y2="1292" stroke="#374151"/>
+<text x="304.6" y="1309.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">500</text>
+<line x1="385.0" y1="1287" x2="385.0" y2="1292" stroke="#374151"/>
+<text x="385.0" y="1309.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1000</text>
+<line x1="432.0" y1="1287" x2="432.0" y2="1292" stroke="#374151"/>
+<text x="432.0" y="1309.0" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" font-weight="400" fill="#111827">1500</text>
+<path d="M118.0,1277.5 L198.4,1251.0 L304.6,1175.3 L385.0,1167.7 L432.0,1143.1" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="118.0" cy="1277.5" r="4" fill="#2563eb"/>
+<circle cx="198.4" cy="1251.0" r="4" fill="#2563eb"/>
+<circle cx="304.6" cy="1175.3" r="4" fill="#2563eb"/>
+<circle cx="385.0" cy="1167.7" r="4" fill="#2563eb"/>
+<circle cx="432.0" cy="1143.1" r="4" fill="#2563eb"/>
+<path d="M118.0,1228.3 L198.4,1190.4 L304.6,1165.8 L385.0,1124.1 L432.0,1120.3" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="118.0" cy="1228.3" r="4" fill="#dc2626"/>
+<circle cx="198.4" cy="1190.4" r="4" fill="#dc2626"/>
+<circle cx="304.6" cy="1165.8" r="4" fill="#dc2626"/>
+<circle cx="385.0" cy="1124.1" r="4" fill="#dc2626"/>
+<circle cx="432.0" cy="1120.3" r="4" fill="#dc2626"/>
+<line x1="325" y1="1111" x2="347" y2="1111" stroke="#2563eb" stroke-width="2.5"/>
+<circle cx="336" cy="1111" r="3.5" fill="#2563eb"/>
+<text x="355.0" y="1115.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">baseline</text>
+<line x1="325" y1="1129" x2="347" y2="1129" stroke="#dc2626" stroke-width="2.5"/>
+<circle cx="336" cy="1129" r="3.5" fill="#dc2626"/>
+<text x="355.0" y="1133.0" font-size="11" font-family="Arial, sans-serif" text-anchor="start" font-weight="400" fill="#111827">stage1</text>
+</svg>

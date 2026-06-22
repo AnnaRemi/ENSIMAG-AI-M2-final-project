@@ -1,0 +1,3 @@
+implementation,mode,model,cpu_seconds,engine_seconds,wall_seconds,llm_calls,final_answer_rows,unique_found_movie_ids,true_positives,false_positives,false_negatives,precision,recall,f1
+suql_baseline,llm,ollama/mistral:7b,0.20536500000000046,588.28042224003,588.336716555059,12,6,6,6,0,0,1.0,1.0,1.0
+trummer_heterogen_v1,llm,ollama/mistral:7b,1.013151,892.0219740248285,892.0219740248285,1,7,7,3,4,3,0.42857142857142855,0.5,0.4615384615384615

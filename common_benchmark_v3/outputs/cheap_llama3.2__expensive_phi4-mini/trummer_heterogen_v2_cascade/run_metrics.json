@@ -1,0 +1,33 @@
+{
+  "implementation": "trummer_heterogen_v2_cascade",
+  "mode": "llm",
+  "model": "ollama/llama3.2->ollama/phi4-mini",
+  "cheap_model": "ollama/llama3.2",
+  "expensive_model": "ollama/phi4-mini",
+  "input_movies": 50,
+  "input_reviews": 50,
+  "candidate_pairs": 50,
+  "cheap_calls": 50,
+  "cheap_failures": 0,
+  "cheap_early_accepts": 0,
+  "cheap_early_rejects": 13,
+  "expensive_candidates": 37,
+  "expensive_calls": 5,
+  "expensive_failures": 0,
+  "expensive_accepts": 4,
+  "elapsed_seconds": 114.65113479201682,
+  "cpu_seconds": 0.142714,
+  "engine_seconds": 114.65137408400187,
+  "wall_seconds": 114.65137408400187,
+  "llm_calls": 55,
+  "block_join_calls": 0,
+  "planned_cheap_calls": 50,
+  "planned_expensive_calls": 5,
+  "final_answer_rows": 4,
+  "found_movie_ids": [
+    "tt0114057",
+    "tt0118998",
+    "tt0119196",
+    "tt0337640"
+  ]
+}

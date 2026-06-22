@@ -1,0 +1,11 @@
+{
+  "engine_seconds": 57.75859870799468,
+  "llm_full_calls": 42,
+  "llm_prompts_issued": 42,
+  "llm_early_accept": 0,
+  "llm_early_reject": 0,
+  "result_rows": 10,
+  "structured_candidates": 32,
+  "semantic_rows": 12,
+  "join_rows": 12
+}

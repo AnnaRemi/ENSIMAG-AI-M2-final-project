@@ -1,0 +1,19 @@
+{
+  "benchmark_id": "negative_reviews_1998_v1",
+  "question": "Which movies released in 1998 have reviews expressing an overall negative, critical, or strongly unfavorable opinion of the movie?",
+  "semantic_question": "Does this review express an overall negative, critical, or strongly unfavorable opinion of the movie?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE year = 1998 AND answer(review, 'Does this review express an overall negative, critical, or strongly unfavorable opinion of the movie?') = 'Yes';",
+  "ground_truth_movie_ids": [
+    "tt0120247",
+    "tt0134912",
+    "tt0139465",
+    "tt0145679",
+    "tt0156789",
+    "tt0212829"
+  ],
+  "row_count": 16,
+  "candidate_1998_rows": 12,
+  "ground_truth_count": 6,
+  "annotation_unit": "movie_id",
+  "data_policy": "one manually annotated review per unique movie_id"
+}

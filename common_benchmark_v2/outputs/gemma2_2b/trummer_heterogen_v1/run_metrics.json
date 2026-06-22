@@ -1,0 +1,32 @@
+{
+  "implementation": "trummer_heterogen_v1",
+  "mode": "dry_run_ground_truth_wiring",
+  "model": "ollama/gemma2:2b",
+  "api_base": "http://127.0.0.1:11434",
+  "cpu_seconds": 0.0,
+  "engine_seconds": 0.0,
+  "wall_seconds": 0.0,
+  "llm_calls": 0,
+  "final_answer_rows": 13,
+  "found_movie_ids": [
+    "tt0118998",
+    "tt0119196",
+    "tt0120247",
+    "tt0120706",
+    "tt0120742",
+    "tt0127901",
+    "tt0130229",
+    "tt0138987",
+    "tt0145679",
+    "tt0158653",
+    "tt0163069",
+    "tt0165494",
+    "tt0167038"
+  ],
+  "structured_candidates": 50,
+  "semantic_review_candidates": 50,
+  "year_condition_location": "inside_trummer_join_predicate",
+  "join_prompt_count": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0
+}

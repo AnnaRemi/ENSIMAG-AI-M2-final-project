@@ -1,0 +1,17 @@
+{
+  "implementation": "trummer_heterogen_v1",
+  "mode": "llm",
+  "model": "ollama/qwen2.5:3b",
+  "api_base": "http://127.0.0.1:12280",
+  "cpu_seconds": 0.7851330000000001,
+  "engine_seconds": 597.8642403106205,
+  "wall_seconds": 597.8642403106205,
+  "llm_calls": 1,
+  "final_answer_rows": 0,
+  "found_movie_ids": [],
+  "structured_candidates": 12,
+  "semantic_review_candidates": 12,
+  "join_prompt_count": 1,
+  "prompt_tokens": 3129,
+  "completion_tokens": 22
+}

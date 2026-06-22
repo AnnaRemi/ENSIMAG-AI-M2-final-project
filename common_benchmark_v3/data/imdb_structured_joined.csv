@@ -1,0 +1,51 @@
+movie_id,title,director,year,runtime,genres
+tt0791304,Georgia Rule,Garry Marshall,2007,113.0,"Comedy,Drama"
+tt0479500,Nancy Drew,Andrew Fleming,2007,99.0,"Comedy,Crime,Family"
+tt0417148,Snakes on a Plane,David R. Ellis,2006,105.0,"Action,Adventure,Crime"
+tt0801427,Six Degrees,"Eric Laneuville, Jace Alexander, Juan José Campanella, Rodrigo García, Mary Harron, David Semel, Wendey Stanzler, Tucker Gates, Tony Goldwyn, David Petrarca, Tom Verica, Dean White",2006,,Drama
+tt0410162,The King Maker,Lek Kitaparaporn,2005,92.0,"Adventure,Drama"
+tt0462570,On Probation,Damián Szifron,2005,112.0,"Action,Comedy,Crime"
+tt0334541,Tremors 4: The Legend Begins,S.S. Wilson,2004,101.0,"Action,Adventure,Comedy"
+tt0337640,Hollywood North,Peter O'Brian,2003,89.0,Comedy
+tt0311289,Holes,Andrew Davis,2003,117.0,"Adventure,Comedy,Drama"
+tt0219400,Waking Up in Reno,Jordan Brady,2002,91.0,"Comedy,Romance"
+tt0268380,Ice Age,"Chris Wedge, Carlos Saldanha",2002,81.0,"Adventure,Animation,Comedy"
+tt0218619,Soul Survivors,Stephen Carpenter,2001,84.0,"Horror,Mystery,Thriller"
+tt0284058,Do or Die,Rowan Woods,2001,,Drama
+tt0164052,Hollow Man,Paul Verhoeven,2000,112.0,"Action,Horror,Sci-Fi"
+tt0239625,Mermaid,Peter Masterson,2000,94.0,"Drama,Family"
+tt0120620,Brokedown Palace,Jonathan Kaplan,1999,100.0,"Drama,Mystery,Thriller"
+tt0207823,A Vow to Cherish,John Schmidt,1999,84.0,"Drama,Family"
+tt0118998,Doctor Dolittle,Betty Thomas,1998,85.0,"Comedy,Family,Fantasy"
+tt0119196,The Gingerbread Man,Robert Altman,1998,114.0,"Crime,Mystery,Thriller"
+tt0120247,Surface to Air,Rodney McDonald,1998,93.0,"Action,War"
+tt0120706,The General,John Boorman,1998,124.0,"Biography,Crime,Drama"
+tt0120742,Major League: Back to the Minors,John Warren,1998,100.0,"Comedy,Sport"
+tt0127901,Starstruck,John Enbom,1998,90.0,Drama
+tt0130229,Rupert's Land,Jonathan Tammuz,1998,93.0,Drama
+tt0138987,20 Dates,Myles Berkowitz,1998,87.0,"Biography,Comedy,Romance"
+tt0145679,Blood on Her Hands,Steven Robman,1998,95.0,"Crime,Drama"
+tt0158653,Coming Home,Giles Foster,1998,101.0,"Drama,Romance,War"
+tt0163069,Losing Control,Julie Jordan,1998,93.0,"Mystery,Romance,Thriller"
+tt0165494,Ringmaster,Neil Abramson,1998,90.0,Comedy
+tt0167038,Belle's Magical World,"Bob Kline, Cullen Blaine, Dale Case, Daniel de la Vega, Barbara Dourmashkin-Case, Rick Leon, Burt Medall, Mitch Rochon",1998,92.0,"Adventure,Animation,Family"
+tt0118673,Bade Miyan Chote Miyan,David Dhawan,1998,140.0,"Action,Comedy,Musical"
+tt0120157,Soldier,Paul W.S. Anderson,1998,99.0,"Action,Drama,Sci-Fi"
+tt0120171,The Souler Opposite,Bill Kalmenson,1998,104.0,"Comedy,Drama,Romance"
+tt0120623,A Bug's Life,"John Lasseter, Andrew Stanton",1998,95.0,"Adventure,Animation,Comedy"
+tt0120848,Such a Long Journey,Sturla Gunnarsson,1998,113.0,Drama
+tt0125211,I Woke Up Early the Day I Died,Aris Iliopulos,1998,90.0,"Comedy,Crime,Thriller"
+tt0125454,Paulie,John Roberts,1998,91.0,"Adventure,Comedy,Drama"
+tt0149151,Still Crazy,Brian Gibson,1998,95.0,"Comedy,Drama,Music"
+tt0169164,Radio Arrow,Luciano Ligabue,1998,112.0,Drama
+tt0179029,Little Men,"Robert Malenfant, Don McCutcheon, Don McBrearty, Eleanore Lindo, Graeme Lynch, Michael Kennedy, Richard J. Lewis, Bruce McDonald, Bruce Pittman, Giles Walker",1998,60.0,"Drama,Family"
+tt0184424,Eddie Izzard: Dress to Kill,Lawrence Jordan,1998,115.0,"Comedy,Documentary"
+tt0215174,Sex Files: Sexecutioner,J.T. Finch,1998,88.0,"Adult,Drama"
+tt0118882,Conceiving Ada,Lynn Hershman Leeson,1997,85.0,"Drama,Fantasy,Sci-Fi"
+tt0117894,Thinner,Tom Holland,1996,93.0,"Fantasy,Horror"
+tt0114057,Othello,Oliver Parker,1995,123.0,"Drama,Romance"
+tt0114268,Rent-a-Kid,Fred Gerber,1995,85.0,"Comedy,Drama,Family"
+tt0102951,Soapdish,Michael Hoffman,1991,97.0,"Comedy,Romance"
+tt0096453,Witchery,Fabrizio Laurenti,1989,95.0,Horror
+tt0095088,Elvira: Mistress of the Dark,James Signorelli,1988,96.0,"Comedy,Horror"
+tt0085178,Ardh Satya,Govind Nihalani,1983,130.0,"Crime,Drama"

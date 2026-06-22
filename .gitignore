@@ -1,0 +1,59 @@
+# Operating-system and editor files
+.DS_Store
+**/.DS_Store
+.idea/
+.vscode/
+
+# Python environments and caches
+.venv/
+**/.venv/
+venv/
+**/venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+**/.pytest_cache/
+.mypy_cache/
+**/.mypy_cache/
+.ruff_cache/
+**/.ruff_cache/
+
+# Local plotting caches
+.mplconfig/
+**/.mplconfig/
+
+# Raw IMDb datasets and generated samples
+project SUQL/data/*
+!project SUQL/data/README.md
+project SUQL/data_samples/
+project SUQL/Stage_1/benchmarks/data_sample_*/
+project SUQL/Stage_2/benchmarks/data_sample_*/
+
+# Runtime logs and cluster scheduler artifacts
+*.log
+*.err
+*.out
+OAR.*
+**/logs/
+**/aker_logs/
+
+# Local model/server state
+.ollama/
+
+# Generated LaTeX files
+*.aux
+*.fdb_latexmk
+*.fls
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+
+# Third-party reading material is kept locally
+papers/
+
+# Nested repository metadata backup, if present
+.git.nested-backup/
+**/.git.nested-backup/

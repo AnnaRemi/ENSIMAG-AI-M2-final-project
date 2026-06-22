@@ -1,0 +1,3 @@
+implementation,mode,model,cpu_seconds,engine_seconds,wall_seconds,llm_calls,final_answer_rows,unique_found_movie_ids,true_positives,false_positives,false_negatives,precision,recall,f1
+suql_baseline,llm,ollama/phi4-mini,0.18318499999999993,16.810068207996665,16.816996000008658,12,4,4,4,0,2,1.0,0.6666666666666666,0.8
+trummer_heterogen_v1,llm,ollama/phi4-mini,0.30619599999999997,11.674053750000894,11.674053750000894,1,0,0,0,0,6,0.0,0.0,0.0

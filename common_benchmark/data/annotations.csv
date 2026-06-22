@@ -1,0 +1,17 @@
+source_row,movie_id,title,year,ground_truth,category,annotation_rationale
+366,tt0120247,Surface to Air,1998.0,1,1998_negative,"Calls the film and its acting, directing, and writing bad and boring."
+6591,tt0134912,Provocateur,1998.0,1,1998_negative,Explicitly calls the movie awful and criticizes its premise and execution.
+10254,tt0139465,The Minion,1998.0,1,1998_negative,"Describes the film as among the worst, with awful effects and script."
+4749,tt0145679,Blood on Her Hands,1998.0,1,1998_negative,Calls it one of the worst movies and the acting awful.
+11871,tt0156789,Men in White,1998.0,1,1998_negative,Repeatedly calls the movie bad and says nothing saves it.
+7356,tt0212829,The Brothers,1998.0,1,1998_negative,Says every major aspect of the film is bad and it has no redeeming qualities.
+19410,tt0120157,Soldier,1998.0,0,1998_positive,Praises the science-fiction story and lead performance.
+14973,tt0120623,A Bug's Life,1998.0,0,1998_positive,Strongly praises the film's charm and entertainment value.
+17830,tt0120848,Such a Long Journey,1998.0,0,1998_positive,Calls it a great film with wonderful acting.
+13835,tt0146247,Babylon 5: The River of Souls,1998.0,0,1998_positive,Calls it excellent and praises the performances.
+23672,tt0149151,Still Crazy,1998.0,0,1998_positive,"Reports a warm, happy experience and calls the acting superb."
+15033,tt0179029,Little Men,1998.0,0,1998_positive,Says the reviewer absolutely loved the show and calls it wonderful.
+3011,tt0118537,2103: The Deadly Wake,1997.0,0,1997_negative_distractor,"Negative review, but the movie is from 1997."
+1048,tt0118580,Alibi,1997.0,0,1997_negative_distractor,"Negative review, but the movie is from 1997."
+7179,tt0119087,Executive Power,1997.0,0,1997_negative_distractor,"Negative review, but the movie is from 1997."
+11467,tt0119303,Home Alone 3,1997.0,0,1997_negative_distractor,"Negative review, but the movie is from 1997."

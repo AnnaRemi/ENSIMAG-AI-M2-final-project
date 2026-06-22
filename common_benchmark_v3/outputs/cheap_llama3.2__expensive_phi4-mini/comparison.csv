@@ -1,0 +1,3 @@
+implementation,mode,model,cheap_model,expensive_model,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_early_accepts,cheap_early_rejects,expensive_candidates,final_answer_rows,true_positives,false_positives,false_negatives,precision,recall,f1
+trummer_heterogen_v1,llm,ollama/phi4-mini,,ollama/phi4-mini,113.279428208014,14,0,14,0,0,0,6,2,4,11,0.3333333333333333,0.15384615384615385,0.21052631578947367
+trummer_heterogen_v2_cascade,llm,ollama/llama3.2->ollama/phi4-mini,ollama/llama3.2,ollama/phi4-mini,114.65137408400187,55,50,5,0,13,37,4,2,2,11,0.5,0.15384615384615385,0.23529411764705882

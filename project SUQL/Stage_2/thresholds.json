@@ -1,0 +1,52 @@
+{
+  "cheap_model": "ollama/gemma2:2b",
+  "expensive_model": "ollama/phi4-mini",
+  "api_base": "http://localhost:11434",
+  "thresholds": [
+    {
+      "question": "Does the reviewer describe the movie as funny, humorous, witty, or entertaining?",
+      "cheap_accept_threshold": 1.0,
+      "cheap_reject_threshold": -1.0
+    },
+    {
+      "question": "Does the reviewer praise the acting, performances, cast, or characters?",
+      "cheap_accept_threshold": 1.0,
+      "cheap_reject_threshold": -1.0
+    },
+    {
+      "question": "Does the reviewer mention suspense, tension, scares, fear, or creepy atmosphere?",
+      "cheap_accept_threshold": 1.0,
+      "cheap_reject_threshold": -1.0
+    },
+    {
+      "question": "Does the reviewer praise the chemistry, romance, love story, or relationships?",
+      "cheap_accept_threshold": 1.0,
+      "cheap_reject_threshold": -1.0
+    },
+    {
+      "question": "Does the reviewer describe the movie as exciting, thrilling, intense, energetic, or action-packed?",
+      "cheap_accept_threshold": 1.0,
+      "cheap_reject_threshold": -1.0
+    },
+    {
+      "question": "Does the reviewer praise the science fiction ideas, imagination, visuals, or special effects?",
+      "cheap_accept_threshold": 1.0,
+      "cheap_reject_threshold": -1.0
+    },
+    {
+      "question": "Does the reviewer praise the movie as charming, family-friendly, fun, or adventurous?",
+      "cheap_accept_threshold": 1.0,
+      "cheap_reject_threshold": -1.0
+    },
+    {
+      "question": "Does the reviewer praise the writing, script, story, plot, or dialogue?",
+      "cheap_accept_threshold": 1.0,
+      "cheap_reject_threshold": -1.0
+    },
+    {
+      "question": "Does the reviewer criticize the movie, its pacing, quality, acting, story, or production?",
+      "cheap_accept_threshold": 1.0,
+      "cheap_reject_threshold": -1.0
+    }
+  ]
+}

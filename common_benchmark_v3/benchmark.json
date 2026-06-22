@@ -1,0 +1,30 @@
+{
+  "benchmark_id": "trummer_heterogen_v1_vs_v2_50_rows",
+  "question": "Which movies released in 1998 have reviews expressing an overall negative, critical, or strongly unfavorable opinion of the movie?",
+  "trummer_join_predicate": "the movie row has year=1998, the review chunk is about the same movie based on movie_id/tconst, and the review expresses an overall negative, critical, or strongly unfavorable opinion of the movie",
+  "ground_truth_movie_ids": [
+    "tt0118998",
+    "tt0119196",
+    "tt0120247",
+    "tt0120706",
+    "tt0120742",
+    "tt0127901",
+    "tt0130229",
+    "tt0138987",
+    "tt0145679",
+    "tt0158653",
+    "tt0163069",
+    "tt0165494",
+    "tt0167038"
+  ],
+  "row_count": 50,
+  "candidate_1998_rows": 25,
+  "ground_truth_count": 13,
+  "data_source": "common_benchmark_v2",
+  "comparison_contract": "Both implementations receive all 50 movie rows and all 50 review rows. Year, movie_id/tconst equality, and negative sentiment are part of the shared semantic predicate.",
+  "implementations": [
+    "trummer_heterogen_v1",
+    "trummer_heterogen_v2_cascade"
+  ]
+}
+

@@ -1,0 +1,27 @@
+{
+  "implementation": "trummer_heterogen_v1",
+  "mode": "llm",
+  "model": "ollama/phi4-mini",
+  "cheap_model": "",
+  "expensive_model": "ollama/phi4-mini",
+  "cpu_seconds": 0.372078,
+  "engine_seconds": 113.279428208014,
+  "wall_seconds": 113.279428208014,
+  "llm_calls": 14,
+  "block_join_calls": 14,
+  "cheap_calls": 0,
+  "expensive_calls": 14,
+  "final_answer_rows": 6,
+  "found_movie_ids": [
+    "tt0095088",
+    "tt0119196",
+    "tt0120171",
+    "tt0145679",
+    "tt0149151",
+    "tt0791304"
+  ],
+  "input_movies": 50,
+  "input_reviews": 50,
+  "prompt_tokens": 39708,
+  "completion_tokens": 207
+}

@@ -1,0 +1,3 @@
+approach,models,nonzero_result_models,mean_precision,median_precision,mean_recall,median_recall,mean_f1,median_f1,perfect_f1_models,mean_llm_calls
+SUQL,7,7,0.9166666666666666,1.0,0.880952380952381,1.0,0.8904143475572047,0.9090909090909092,3,12.0
+Trummer,7,2,0.13914656771799627,0.0,0.21428571428571427,0.0,0.1667744020685197,0.0,0,1.0

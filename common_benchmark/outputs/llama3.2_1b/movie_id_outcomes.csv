@@ -1,0 +1,15 @@
+implementation,movie_id,ground_truth,found,classification
+suql_baseline,tt0120157,0,1,FP
+suql_baseline,tt0120247,1,1,TP
+suql_baseline,tt0134912,1,0,FN
+suql_baseline,tt0139465,1,1,TP
+suql_baseline,tt0145679,1,0,FN
+suql_baseline,tt0146247,0,1,FP
+suql_baseline,tt0156789,1,1,TP
+suql_baseline,tt0212829,1,1,TP
+trummer_heterogen_v1,tt0120247,1,0,FN
+trummer_heterogen_v1,tt0134912,1,0,FN
+trummer_heterogen_v1,tt0139465,1,0,FN
+trummer_heterogen_v1,tt0145679,1,0,FN
+trummer_heterogen_v1,tt0156789,1,0,FN
+trummer_heterogen_v1,tt0212829,1,0,FN
