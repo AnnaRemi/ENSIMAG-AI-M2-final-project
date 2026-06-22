@@ -31,14 +31,6 @@ data/*.tsv
 # Runtime outputs
 src_baseline/outputs/
 src_baseline/logs/
-src_online_join/outputs/
-src_online_join/logs/
-benchmarks/*/outputs/
-benchmarks/*/logs/
-benchmarks/run_*/
-
-# Benchmark samples can be regenerated
-benchmarks/data_sample_*/
 
 # Logs
 *.log
