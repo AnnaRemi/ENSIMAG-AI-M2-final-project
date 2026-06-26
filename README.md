@@ -1,4 +1,4 @@
-# LLM-Augmented Movie Retrieval and Semantic Join Experiments
+# Heterogeneous Question Answering over Structured and Unstructured Data using Large Language Models
 
 Master 2 research workspace for comparing LLM-backed query execution over
 structured IMDb metadata and unstructured movie reviews.
