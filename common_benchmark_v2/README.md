@@ -1,5 +1,21 @@
 # Common benchmark v2: 50 mixed-year rows
 
+## Description
+
+`common_benchmark_v2/` is the mixed-year correction of `common_benchmark/`.
+It keeps the same SUQL baseline versus Trummer `heterogen_v1` comparison, but
+uses 50 unique movies with 25 rows from 1998 and 25 rows from other years. The
+ground truth is `year = 1998 AND negative IMDb source sentiment`, so the suite
+tests both semantic review understanding and whether the execution plan handles
+the structured year predicate correctly.
+
+Use this suite when the question is SUQL structured-first filtering versus
+Trummer V1 block-prompt evaluation of the full predicate. It is the preferred
+SUQL-vs-V1 benchmark because Trummer receives all 50 movie rows and all 50
+review rows, forcing the year condition, identity condition, and sentiment
+condition to be represented in the join predicate rather than hidden by the
+dataset construction.
+
 This benchmark keeps the same question and implementations as `common_benchmark`:
 
 > Which movies released in 1998 have reviews expressing an overall negative,
@@ -32,7 +48,7 @@ From `/Users/annremizova/Desktop/lab m2`:
 "project SUQL/.venv/bin/python" common_benchmark_v2/scripts/build_dataset.py
 
 "project SUQL/.venv/bin/python" common_benchmark_v2/scripts/run_all.py \
-  --model ollama/gemma2:2b \
+  --model ollama/gemma4:e4b \
   --dry-run
 ```
 
@@ -43,21 +59,15 @@ Dry-run validates dataset wiring and evaluation only. It is not an LLM result.
 ```bash
 "project SUQL/.venv/bin/python" common_benchmark_v2/scripts/run_all.py \
   --api-base http://127.0.0.1:11434 \
-  --model ollama/gemma2:2b
+  --model ollama/gemma4:e4b
 ```
 
 ## Model pool
 
-The v2 Aker scripts default to the same seven-model pool used by v1:
+The v2 Aker scripts default to the expensive non-cascading model:
 
 ```text
-gemma2:2b
-llama3.2
-llama3.2:1b
-mistral:7b
-phi4-mini
-qwen2.5:3b
-qwen2.5:7b
+gemma4:e4b
 ```
 
 Override `MODELS` to run only a subset.

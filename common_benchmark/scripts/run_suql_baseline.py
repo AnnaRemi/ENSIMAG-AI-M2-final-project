@@ -30,7 +30,7 @@ def cpu_seconds() -> float:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the SUQL baseline on the common benchmark.")
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
-    parser.add_argument("--model", default="ollama/gemma2:2b")
+    parser.add_argument("--model", default="ollama/gemma4:e4b")
     parser.add_argument("--output-dir")
     parser.add_argument("--dry-run", action="store_true", help="Validate data and query without LLM execution.")
     args = parser.parse_args()

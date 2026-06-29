@@ -5,11 +5,12 @@ set -Eeuo pipefail
 
 AKER_ROOT="${AKER_ROOT:-/home/daisy/remizova/common_benchmark_workspace}"
 COMMON_ROOT="$AKER_ROOT/common_benchmark"
-MODELS="${MODELS:-gemma2:2b}"
+MODELS="${MODELS:-gemma4:e4b}"
 PULL_MODELS="${PULL_MODELS:-0}"
 SKIP_SUQL="${SKIP_SUQL:-0}"
 SKIP_TRUMMER="${SKIP_TRUMMER:-0}"
 TRUMMER_REQUEST_TIMEOUT="${TRUMMER_REQUEST_TIMEOUT:-3600}"
+REPETITIONS="${REPETITIONS:-9}"
 RUN_STAMP="${RUN_STAMP:-$(date +%Y%m%d_%H%M%S)}"
 OLLAMA_BIN="${OLLAMA_BIN:-}"
 OLLAMA_CONTEXT_LENGTH="${OLLAMA_CONTEXT_LENGTH:-8192}"
@@ -24,6 +25,7 @@ echo "Models: $MODELS"
 echo "Skip SUQL: $SKIP_SUQL"
 echo "Skip Trummer: $SKIP_TRUMMER"
 echo "Trummer request timeout: $TRUMMER_REQUEST_TIMEOUT seconds"
+echo "Repetitions: $REPETITIONS"
 echo "Run stamp: $RUN_STAMP"
 
 if [[ -z "${OAR_JOB_ID:-}" ]]; then
@@ -168,6 +170,7 @@ for plain_model in "${model_array[@]}"; do
     --python "$PYTHON_BIN" \
     --skip-build-dataset \
     --trummer-request-timeout "$TRUMMER_REQUEST_TIMEOUT" \
+    --repetitions "$REPETITIONS" \
     "${implementation_args[@]}" \
     2>&1 | tee "$console_log"
 done

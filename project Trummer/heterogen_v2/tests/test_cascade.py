@@ -43,18 +43,27 @@ class CascadeTests(unittest.TestCase):
         def classify(candidates, predicate):
             del predicate
             seen_batches.append([item.candidate_id for item in candidates])
+            if len(candidates) > 1:
+                return {1}
             return {item.candidate_id for item in candidates}
 
         join = CascadeJoin(
-            CascadeConfig(accept_threshold=1.5, reject_threshold=-1.5),
+            CascadeConfig(cascade_target=1.0, calibration_budget=3),
             cheap_score=score,
             expensive_classify=classify,
         )
         rows, decisions, metrics = join.run(self.movies, self.reviews, "negative")
         self.assertEqual([item.route for item in decisions], ["cheap_accept", "cheap_reject", "expensive"])
-        self.assertEqual(seen_batches, [[3]])
+        self.assertEqual(seen_batches, [[1, 2, 3], [3]])
         self.assertEqual([row["match_source"] for row in rows], ["cheap_accept", "expensive_accept"])
-        self.assertEqual(metrics.expensive_calls, 1)
+        self.assertEqual(metrics.learned_confidence_threshold, 3.0)
+        self.assertEqual(metrics.calibration_expensive_calls, 1)
+        self.assertEqual(metrics.fallback_expensive_calls, 1)
+        self.assertEqual(metrics.expensive_calls, 2)
+        self.assertAlmostEqual(
+            metrics.cheap_time_percent + metrics.expensive_time_percent,
+            100.0,
+        )
 
     def test_cheap_failure_falls_back_to_expensive(self) -> None:
         def fail(candidate, predicate):
@@ -71,6 +80,42 @@ class CascadeTests(unittest.TestCase):
         self.assertEqual(metrics.cheap_failures, 1)
         self.assertEqual(metrics.expensive_candidates, 1)
 
+    def test_manual_confidence_threshold_routes_without_calibration(self) -> None:
+        expensive_batches = []
+
+        def score(candidate, predicate):
+            del predicate
+            return {"tt1": 2.0, "tt2": -2.0, "tt3": 0.0}[candidate.movie["movie_id"]]
+
+        def classify(candidates, predicate):
+            del predicate
+            expensive_batches.append([item.candidate_id for item in candidates])
+            return {item.candidate_id for item in candidates}
+
+        join = CascadeJoin(
+            CascadeConfig(
+                manual_confidence_threshold=2.0,
+                calibration_budget=20,
+            ),
+            cheap_score=score,
+            expensive_classify=classify,
+        )
+        rows, decisions, metrics = join.run(self.movies, self.reviews, "negative")
+
+        self.assertEqual(
+            [item.route for item in decisions],
+            ["cheap_accept", "cheap_reject", "expensive"],
+        )
+        self.assertEqual(expensive_batches, [[3]])
+        self.assertEqual(metrics.calibration_expensive_calls, 0)
+        self.assertEqual(metrics.manual_confidence_threshold, 2.0)
+        self.assertEqual(metrics.routing_confidence_threshold, 2.0)
+        self.assertEqual(metrics.learned_confidence_threshold, None)
+        self.assertEqual(
+            [row["match_source"] for row in rows],
+            ["cheap_accept", "expensive_accept"],
+        )
+
     def test_binary_log_odds_and_hard_response(self) -> None:
         payload = {"choices": [{"logprobs": {"top_logprobs": [{" 1": -0.2, " 0": -2.2}]}}]}
         self.assertAlmostEqual(extract_binary_log_odds(payload), 2.0)
@@ -79,10 +124,26 @@ class CascadeTests(unittest.TestCase):
             extract_binary_log_odds({"message": {"content": '{"answer": 1}'}}),
             2.0,
         )
+        self.assertEqual(
+            extract_binary_log_odds(
+                {"message": {"content": '```json\n{"answer":"yes"}\n```'}}
+            ),
+            2.0,
+        )
+        self.assertEqual(
+            extract_binary_log_odds(
+                {"message": {"content": "Decision: no"}}
+            ),
+            -2.0,
+        )
 
-    def test_threshold_validation(self) -> None:
+    def test_calibration_config_validation(self) -> None:
         with self.assertRaises(ValueError):
-            CascadeJoin(CascadeConfig(accept_threshold=0, reject_threshold=0))
+            CascadeJoin(CascadeConfig(cascade_target=0))
+        with self.assertRaises(ValueError):
+            CascadeJoin(CascadeConfig(calibration_budget=-1))
+        with self.assertRaises(ValueError):
+            CascadeJoin(CascadeConfig(manual_confidence_threshold=-1))
 
     def test_expensive_parser_accepts_pair_labels_and_unique_movie_ids(self) -> None:
         classifier = OllamaExpensiveClassifier(CascadeConfig())
@@ -95,6 +156,19 @@ class CascadeTests(unittest.TestCase):
         module._post_json = lambda *args, **kwargs: {"message": {"content": answer}}
         try:
             self.assertEqual(classifier.classify(candidates, "negative"), {1, 3})
+        finally:
+            module._post_json = original
+
+    def test_expensive_parser_rejects_blank_response(self) -> None:
+        classifier = OllamaExpensiveClassifier(CascadeConfig())
+        candidates = exact_id_candidates(self.movies, self.reviews)
+        import trummer_join.cascade as module
+
+        original = module._post_json
+        module._post_json = lambda *args, **kwargs: {"message": {"content": ""}}
+        try:
+            with self.assertRaises(ValueError):
+                classifier.classify(candidates, "negative")
         finally:
             module._post_json = original
 

@@ -2,16 +2,19 @@
   "implementation": "trummer_heterogen_v1",
   "mode": "llm",
   "model": "ollama/qwen2.5:3b",
-  "api_base": "http://127.0.0.1:12280",
-  "cpu_seconds": 0.7851330000000001,
-  "engine_seconds": 597.8642403106205,
-  "wall_seconds": 597.8642403106205,
+  "api_base": "http://127.0.0.1:11434",
+  "cpu_seconds": 0.48617299999999997,
+  "engine_seconds": 29.045509375049733,
+  "wall_seconds": 29.045509375049733,
   "llm_calls": 1,
-  "final_answer_rows": 0,
-  "found_movie_ids": [],
+  "final_answer_rows": 2,
+  "found_movie_ids": [
+    "tt0120247",
+    "tt0139465"
+  ],
   "structured_candidates": 12,
   "semantic_review_candidates": 12,
   "join_prompt_count": 1,
-  "prompt_tokens": 3129,
-  "completion_tokens": 22
+  "prompt_tokens": 3152,
+  "completion_tokens": 24
 }

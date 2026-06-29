@@ -26,7 +26,7 @@ def main() -> None:
     parser.add_argument("--predicate", default=DEFAULT_PREDICATE, help="Natural-language join predicate.")
     parser.add_argument("--api-base", default="http://localhost:11434", help="Ollama or OpenAI-compatible API base.")
     parser.add_argument("--api-key", default=None, help="OpenAI-compatible API key. Defaults to OPENAI_API_KEY.")
-    parser.add_argument("--model", default="ollama/phi4-mini", help="Chat model name.")
+    parser.add_argument("--model", default="ollama/gemma4:e4b", help="Chat model name.")
     parser.add_argument("--operator", choices=["block", "adaptive"], default="adaptive")
     parser.add_argument("--selectivity", type=float, default=0.001, help="Initial selectivity estimate.")
     parser.add_argument("--token-threshold", type=int, default=4000, help="Per-request token budget.")

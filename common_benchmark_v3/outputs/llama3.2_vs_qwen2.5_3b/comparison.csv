@@ -1,0 +1,5 @@
+implementation,mode,model,cheap_model,expensive_model,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_early_accepts,cheap_early_rejects,expensive_candidates,final_answer_rows,true_positives,false_positives,false_negatives,precision,recall,f1
+suql_baseline,llm,ollama/qwen2.5:3b,,ollama/qwen2.5:3b,24.83794187498279,25,0,25,0,0,0,13,13,0,0,1.0,1.0,1.0
+trummer_heterogen_v1,llm,ollama/qwen2.5:3b,,ollama/qwen2.5:3b,100.5972913330188,14,0,14,0,0,0,9,3,6,10,0.3333333333333333,0.23076923076923078,0.27272727272727276
+trummer_heterogen_v2_2_structured_pruned,llm,ollama/qwen2.5:3b,,ollama/qwen2.5:3b,28.045204333029687,4,0,4,0,0,0,6,3,3,10,0.5,0.23076923076923078,0.3157894736842105
+trummer_heterogen_v2_cascade,llm,ollama/llama3.2->ollama/qwen2.5:3b,ollama/llama3.2,ollama/qwen2.5:3b,127.47839370905422,55,50,5,0,13,37,22,8,14,5,0.36363636363636365,0.6153846153846154,0.4571428571428572

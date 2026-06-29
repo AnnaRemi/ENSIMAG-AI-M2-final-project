@@ -34,7 +34,7 @@ def cpu_seconds() -> float:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run Trummer heterogen_v1 on the common benchmark.")
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
-    parser.add_argument("--model", default="ollama/gemma2:2b")
+    parser.add_argument("--model", default="ollama/gemma4:e4b")
     parser.add_argument("--output-dir")
     parser.add_argument("--token-threshold", type=int, default=8192)
     parser.add_argument("--selectivity", type=float, default=0.05)

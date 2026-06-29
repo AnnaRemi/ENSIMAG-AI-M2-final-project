@@ -1,5 +1,20 @@
 # Common benchmark: SUQL baseline vs Trummer heterogen_v1
 
+## Description
+
+`common_benchmark/` is the first shared benchmark that puts the SUQL baseline
+and Trummer `heterogen_v1` on the same annotated movie-review rows. It is a
+small, model-sweep-friendly suite: 16 unique movies, one review per movie, and
+six satisfying 1998 negative-review movie IDs. Its main purpose is to compare a
+structured-first SUQL execution plan against a bounded block semantic join while
+keeping the dataset compact enough for repeated runs across multiple local or
+Aker-hosted Ollama models.
+
+Use this suite when the question is model sensitivity: whether changing the
+single non-cascading model changes quality, latency, or answer emptiness for
+SUQL versus Trummer V1. It is not the preferred stress test for year-filter
+behavior because it has only four non-1998 distractors.
+
 This benchmark executes the same annotated movie/review rows with:
 
 - `project SUQL/src_baseline`
@@ -30,7 +45,7 @@ Start Ollama and ensure the shared model exists:
 
 ```bash
 ollama serve
-ollama pull gemma2:2b
+ollama pull gemma4:e4b
 ```
 
 Then, from `/Users/annremizova/Desktop/lab m2`:
@@ -38,7 +53,7 @@ Then, from `/Users/annremizova/Desktop/lab m2`:
 ```bash
 "project SUQL/.venv/bin/python" common_benchmark/scripts/run_all.py \
   --api-base http://127.0.0.1:11434 \
-  --model ollama/gemma2:2b
+  --model ollama/gemma4:e4b
 ```
 
 To validate the complete data, adapter, evaluation, table, and plotting pipeline without an Ollama server:
@@ -54,20 +69,20 @@ Dry-run output is explicitly labeled and must not be reported as an LLM experime
 ```bash
 "project SUQL/.venv/bin/python" common_benchmark/scripts/run_suql_baseline.py \
   --api-base http://127.0.0.1:11434 \
-  --model ollama/gemma2:2b
+  --model ollama/gemma4:e4b
 ```
 
 ```bash
 "project SUQL/.venv/bin/python" common_benchmark/scripts/run_trummer.py \
   --api-base http://127.0.0.1:11434 \
-  --model ollama/gemma2:2b
+  --model ollama/gemma4:e4b
 ```
 
 Regenerate evaluation artifacts from existing run metrics:
 
 ```bash
 "project SUQL/.venv/bin/python" common_benchmark/scripts/evaluate_and_plot.py \
-  --outputs-dir common_benchmark/outputs/gemma2_2b
+  --outputs-dir common_benchmark/outputs/gemma4:e4b
 ```
 
 ## Outputs
@@ -86,7 +101,7 @@ Cross-implementation artifacts are stored alongside them:
 - `outputs/<model_name>/workload_quality_comparison.png`
 
 For example, `ollama/llama3.2` writes to `outputs/llama3.2/`, while
-`ollama/phi4-mini` writes to `outputs/phi4-mini/`.
+`ollama/gemma4:e4b` writes to `outputs/gemma4:e4b/`.
 
 The Trummer adapter deliberately calls the reusable `block_join` operator directly. It does not use `run_use_case3_light.py`'s deterministic fallback, because fallback rows would invalidate LLM precision and recall.
 
@@ -117,7 +132,7 @@ The default remote workspace is:
 ssh remizova@aker.imag.fr
 cd /home/daisy/remizova/common_benchmark_workspace
 
-MODELS="gemma2:2b qwen2.5:3b" \
+MODELS="gemma4:e4b" \
 PULL_MODELS=1 \
 WALLTIME=04:00:00 \
 bash common_benchmark/scripts/submit_aker_common_benchmark.sh
@@ -132,16 +147,7 @@ common_benchmark/outputs/<model_name>/
 
 Set `PULL_MODELS=1` when a model may not already exist in the Ollama cache.
 Model availability and download size depend on the Ollama installation and
-network access on Aker. Suitable examples include:
-
-```text
-gemma2:2b
-llama3.2:1b
-llama3.2:3b
-qwen2.5:1.5b
-qwen2.5:3b
-phi4-mini
-```
+network access on Aker. The default non-cascading model is `gemma4:e4b`.
 
 Do not choose a model that exceeds the allocated GPU memory.
 
@@ -214,10 +220,10 @@ common_benchmark/outputs/model_metric_plots/analysis.md
 
 If one implementation completed before the job failed, preserve its existing
 remote output and skip it in the replacement job. For example, rerun only
-Trummer for `gemma2:2b`:
+Trummer for `gemma4:e4b`:
 
 ```bash
-MODELS="gemma2:2b" \
+MODELS="gemma4:e4b" \
 PULL_MODELS=0 \
 SKIP_SUQL=1 \
 TRUMMER_REQUEST_TIMEOUT=3600 \

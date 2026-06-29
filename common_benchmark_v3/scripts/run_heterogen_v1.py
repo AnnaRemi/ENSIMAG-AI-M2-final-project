@@ -21,11 +21,11 @@ TRUMMER_ROOT = Path(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run Trummer heterogen_v1 for common benchmark v3.")
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
-    parser.add_argument("--model", default="ollama/qwen2.5:3b")
+    parser.add_argument("--model", default="ollama/gemma4:e4b")
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--request-timeout", type=float, default=3600)
     parser.add_argument("--token-threshold", type=int, default=4096)
-    parser.add_argument("--max-completion-tokens", type=int, default=256)
+    parser.add_argument("--max-completion-tokens", type=int, default=512)
     parser.add_argument("--max-movie-block-size", type=int, default=25)
     parser.add_argument("--max-review-block-size", type=int, default=8)
     parser.add_argument("--dry-run", action="store_true")
@@ -78,6 +78,11 @@ def main() -> None:
     stats.to_csv(output_dir / "join_stats.csv", index=False)
     pd.DataFrame(joined_rows).to_csv(output_dir / "joined_evidence.csv", index=False)
     pd.DataFrame(final_rows).to_csv(output_dir / "found_rows.csv", index=False)
+    expensive_seconds = (
+        float(stats["seconds"].sum())
+        if not args.dry_run and "seconds" in stats
+        else 0.0
+    )
     payload = {
         "implementation": "trummer_heterogen_v1",
         "mode": "dry_run" if args.dry_run else "llm",
@@ -91,6 +96,12 @@ def main() -> None:
         "block_join_calls": int(len(stats)),
         "cheap_calls": 0,
         "expensive_calls": 0 if args.dry_run else int(len(stats)),
+        "planned_cheap_calls": 0,
+        "planned_expensive_calls": int(len(stats)),
+        "cheap_seconds": 0.0,
+        "expensive_seconds": expensive_seconds,
+        "cheap_time_percent": 0.0,
+        "expensive_time_percent": 100.0 if expensive_seconds > 0 else 0.0,
         "final_answer_rows": len(final_rows),
         "found_movie_ids": sorted({str(row["movie_id"]) for row in final_rows}),
         "input_movies": len(movies_list),

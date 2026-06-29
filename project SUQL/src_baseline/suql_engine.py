@@ -43,7 +43,7 @@ from litellm import completion
 
 # Same LiteLLM/Ollama calling style as test_table_reclamation.py.
 # This expects an Ollama-compatible server to be running and reachable at API_BASE.
-MODEL = os.environ.get("SUQL_MODEL", "ollama/phi4-mini")
+MODEL = os.environ.get("SUQL_MODEL", "ollama/gemma4:e4b")
 API_BASE = os.environ.get("SUQL_API_BASE", "http://localhost:11434")
 
 

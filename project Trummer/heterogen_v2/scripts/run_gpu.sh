@@ -9,10 +9,10 @@ set -Eeuo pipefail
 
 PROJECT_ROOT="${PROJECT_ROOT:-/home/daisy/remizova/project_Trummer/heterogen_v2}"
 DATA_DIR="${DATA_DIR:-$PROJECT_ROOT/data}"
-CHEAP_MODEL="${CHEAP_MODEL:-gemma2:2b}"
-EXPENSIVE_MODEL="${EXPENSIVE_MODEL:-qwen2.5:3b}"
-CHEAP_ACCEPT_THRESHOLD="${CHEAP_ACCEPT_THRESHOLD:-3.0}"
-CHEAP_REJECT_THRESHOLD="${CHEAP_REJECT_THRESHOLD:--1.5}"
+CHEAP_MODEL="${CHEAP_MODEL:-gemma4:e2b}"
+EXPENSIVE_MODEL="${EXPENSIVE_MODEL:-gemma4:e4b}"
+CASCADE_TARGET="${CASCADE_TARGET:-0.9}"
+CALIBRATION_BUDGET="${CALIBRATION_BUDGET:-20}"
 EXPENSIVE_BATCH_SIZE="${EXPENSIVE_BATCH_SIZE:-8}"
 PULL_MODELS="${PULL_MODELS:-0}"
 OLLAMA_BIN="${OLLAMA_BIN:-}"
@@ -107,8 +107,8 @@ python3 -u run_use_case3.py \
   --api-base "$API_BASE" \
   --cheap-model "$CHEAP_MODEL" \
   --expensive-model "$EXPENSIVE_MODEL" \
-  --cheap-accept-threshold "$CHEAP_ACCEPT_THRESHOLD" \
-  --cheap-reject-threshold "$CHEAP_REJECT_THRESHOLD" \
+  --cascade-target "$CASCADE_TARGET" \
+  --calibration-budget "$CALIBRATION_BUDGET" \
   --expensive-batch-size "$EXPENSIVE_BATCH_SIZE" \
   --output-dir "$OUTPUT_DIR" \
   2>&1 | tee "$CONSOLE_LOG"

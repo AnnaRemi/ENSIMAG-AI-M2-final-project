@@ -34,17 +34,25 @@ class Decision:
 @dataclass(frozen=True)
 class CascadeConfig:
     api_base: str = "http://127.0.0.1:11434"
-    cheap_model: str = "gemma2:2b"
-    expensive_model: str = "qwen2.5:3b"
-    accept_threshold: float = 3.0
-    reject_threshold: float = -1.5
+    cheap_model: str = "gemma4:e2b"
+    expensive_model: str = "gemma4:e4b"
+    cascade_target: float = 0.9
+    calibration_budget: int = 20
+    manual_confidence_threshold: float | None = None
     expensive_batch_size: int = 8
     request_timeout: float = 600.0
     max_review_chars: int = 1800
 
     def validate(self) -> None:
-        if self.reject_threshold >= self.accept_threshold:
-            raise ValueError("reject_threshold must be lower than accept_threshold")
+        if not 0.0 < self.cascade_target <= 1.0:
+            raise ValueError("cascade_target must be in (0, 1]")
+        if self.calibration_budget < 0:
+            raise ValueError("calibration_budget must be non-negative")
+        if (
+            self.manual_confidence_threshold is not None
+            and self.manual_confidence_threshold < 0
+        ):
+            raise ValueError("manual_confidence_threshold must be non-negative")
         if self.expensive_batch_size < 1:
             raise ValueError("expensive_batch_size must be positive")
 
@@ -58,10 +66,22 @@ class CascadeMetrics:
     cheap_failures: int = 0
     cheap_early_accepts: int = 0
     cheap_early_rejects: int = 0
+    calibration_candidates: int = 0
+    calibration_expensive_calls: int = 0
+    calibration_expensive_accepts: int = 0
+    calibration_agreement: float = 0.0
+    learned_confidence_threshold: float | None = None
+    routing_confidence_threshold: float | None = None
+    manual_confidence_threshold: float | None = None
     expensive_candidates: int = 0
     expensive_calls: int = 0
+    fallback_expensive_calls: int = 0
     expensive_failures: int = 0
     expensive_accepts: int = 0
+    cheap_seconds: float = 0.0
+    expensive_seconds: float = 0.0
+    cheap_time_percent: float = 0.0
+    expensive_time_percent: float = 0.0
     elapsed_seconds: float = 0.0
 
 
@@ -71,7 +91,9 @@ class OllamaBinaryScorer:
     def __init__(self, config: CascadeConfig) -> None:
         self.config = config
         self.api_base = config.api_base.rstrip("/")
-        self._completions_supported: bool | None = None
+        self._completions_supported: bool | None = (
+            False if _plain_model(config.cheap_model).startswith("gemma4") else None
+        )
 
     def score(self, candidate: Candidate, predicate: str) -> float:
         prompt = _pair_prompt(candidate, predicate, self.config.max_review_chars)
@@ -105,6 +127,7 @@ class OllamaBinaryScorer:
                     "model": _plain_model(self.config.cheap_model),
                     "messages": [{"role": "user", "content": prompt}],
                     "stream": False,
+                    "think": False,
                     "format": {
                         "type": "object",
                         "properties": {
@@ -138,6 +161,7 @@ class OllamaExpensiveClassifier:
             "model": _plain_model(self.config.expensive_model),
             "messages": [{"role": "user", "content": prompt}],
             "stream": False,
+            "think": False,
             "format": {
                 "type": "object",
                 "properties": {
@@ -174,15 +198,23 @@ class OllamaExpensiveClassifier:
         answer = str(payload.get("message", {}).get("content", ""))
         valid = {candidate.candidate_id for candidate in candidates}
         accepted: set[int] = set()
-        try:
-            structured = json.loads(answer)
-            accepted.update(
-                int(value)
-                for value in structured.get("matching_pair_ids", [])
-                if int(value) in valid
-            )
-        except (TypeError, ValueError, json.JSONDecodeError):
-            pass
+        structured = _extract_json(answer)
+        if isinstance(structured, dict):
+            for key in (
+                "matching_pair_ids",
+                "matching_candidate_ids",
+                "pair_ids",
+                "matches",
+            ):
+                values = structured.get(key, [])
+                if isinstance(values, list):
+                    for value in values:
+                        try:
+                            candidate_id = int(value)
+                        except (TypeError, ValueError):
+                            continue
+                        if candidate_id in valid:
+                            accepted.add(candidate_id)
         accepted.update(
             int(value)
             for value in PAIR_LABEL_RE.findall(answer)
@@ -205,6 +237,11 @@ class OllamaExpensiveClassifier:
         for movie_id, candidate_ids in by_movie_id.items():
             if movie_id and len(candidate_ids) == 1 and movie_id in answer:
                 accepted.add(candidate_ids[0])
+        if not accepted and not _is_valid_empty_match_answer(answer):
+            raise ValueError(
+                "expensive response contained no parseable matching IDs: "
+                + answer[:200]
+            )
         return accepted
 
 
@@ -238,23 +275,54 @@ class CascadeJoin:
         decisions: list[Decision] = []
         accepted: list[Candidate] = []
         uncertain: list[Candidate] = []
+        scored: list[tuple[Candidate, float | None, str]] = []
 
+        cheap_started = time.perf_counter()
         for candidate in candidates:
             metrics.cheap_calls += 1
+            call_started = time.perf_counter()
             try:
                 score = float(self.cheap_score(candidate, predicate))
             except Exception as exc:
+                metrics.cheap_seconds += time.perf_counter() - call_started
                 metrics.cheap_failures += 1
+                scored.append((candidate, None, str(exc)))
+                _print_progress(
+                    "Row-wise cascade cheap scoring",
+                    metrics.cheap_calls,
+                    len(candidates),
+                    cheap_started,
+                )
+                continue
+            metrics.cheap_seconds += time.perf_counter() - call_started
+            scored.append((candidate, score, ""))
+            _print_progress(
+                "Row-wise cascade cheap scoring",
+                metrics.cheap_calls,
+                len(candidates),
+                cheap_started,
+            )
+
+        if self.config.manual_confidence_threshold is None:
+            learned_threshold = self._learn_confidence_threshold(scored, predicate, metrics)
+            routing_threshold = learned_threshold
+        else:
+            learned_threshold = None
+            routing_threshold = self.config.manual_confidence_threshold
+        metrics.learned_confidence_threshold = learned_threshold
+        metrics.routing_confidence_threshold = routing_threshold
+        metrics.manual_confidence_threshold = self.config.manual_confidence_threshold
+
+        for candidate, score, error in scored:
+            if score is None:
                 metrics.expensive_candidates += 1
                 uncertain.append(candidate)
-                decisions.append(_decision(candidate, None, "expensive", str(exc)))
-                continue
-
-            if score >= self.config.accept_threshold:
+                decisions.append(_decision(candidate, None, "expensive", error))
+            elif _is_confident(score, routing_threshold) and score >= 0:
                 metrics.cheap_early_accepts += 1
                 accepted.append(candidate)
                 decisions.append(_decision(candidate, score, "cheap_accept"))
-            elif score <= self.config.reject_threshold:
+            elif _is_confident(score, routing_threshold):
                 metrics.cheap_early_rejects += 1
                 decisions.append(_decision(candidate, score, "cheap_reject"))
             else:
@@ -263,13 +331,31 @@ class CascadeJoin:
                 decisions.append(_decision(candidate, score, "expensive"))
 
         expensive_accepted: set[int] = set()
-        for batch in _blocks(uncertain, self.config.expensive_batch_size):
+        fallback_batches = list(_blocks(uncertain, self.config.expensive_batch_size))
+        fallback_started = time.perf_counter()
+        for batch_index, batch in enumerate(fallback_batches, 1):
             metrics.expensive_calls += 1
+            metrics.fallback_expensive_calls += 1
+            call_started = time.perf_counter()
             try:
                 expensive_accepted.update(self.expensive_classify(batch, predicate))
             except Exception:
+                metrics.expensive_seconds += time.perf_counter() - call_started
                 metrics.expensive_failures += 1
+                _print_progress(
+                    "Row-wise cascade expensive fallback",
+                    batch_index,
+                    len(fallback_batches),
+                    fallback_started,
+                )
                 continue
+            metrics.expensive_seconds += time.perf_counter() - call_started
+            _print_progress(
+                "Row-wise cascade expensive fallback",
+                batch_index,
+                len(fallback_batches),
+                fallback_started,
+            )
 
         by_id = {candidate.candidate_id: candidate for candidate in uncertain}
         accepted.extend(
@@ -279,6 +365,7 @@ class CascadeJoin:
         )
         metrics.expensive_accepts = len(expensive_accepted & by_id.keys())
         metrics.elapsed_seconds = time.perf_counter() - started
+        _set_time_percentages(metrics)
 
         rows = [
             joined_row(
@@ -294,6 +381,68 @@ class CascadeJoin:
             for candidate in accepted
         ]
         return _deduplicate(rows), decisions, metrics
+
+    def _learn_confidence_threshold(
+        self,
+        scored: list[tuple[Candidate, float | None, str]],
+        predicate: str,
+        metrics: CascadeMetrics,
+    ) -> float | None:
+        calibration_candidates = _calibration_sample(
+            scored,
+            self.config.calibration_budget,
+        )
+        if not calibration_candidates:
+            return None
+        scores_by_id = {
+            candidate.candidate_id: score
+            for candidate, score, _ in scored
+            if score is not None
+        }
+        records: list[tuple[float, bool, bool]] = []
+        calibration_batches = list(
+            _blocks(calibration_candidates, self.config.expensive_batch_size)
+        )
+        calibration_started = time.perf_counter()
+        for batch_index, batch in enumerate(calibration_batches, 1):
+            metrics.calibration_candidates += len(batch)
+            metrics.calibration_expensive_calls += 1
+            metrics.expensive_calls += 1
+            call_started = time.perf_counter()
+            try:
+                oracle_accepts = self.expensive_classify(batch, predicate)
+            except Exception:
+                metrics.expensive_seconds += time.perf_counter() - call_started
+                metrics.expensive_failures += 1
+                _print_progress(
+                    "Row-wise cascade threshold calibration",
+                    batch_index,
+                    len(calibration_batches),
+                    calibration_started,
+                )
+                continue
+            metrics.expensive_seconds += time.perf_counter() - call_started
+            _print_progress(
+                "Row-wise cascade threshold calibration",
+                batch_index,
+                len(calibration_batches),
+                calibration_started,
+            )
+            metrics.calibration_expensive_accepts += len(oracle_accepts)
+            for candidate in batch:
+                score = scores_by_id.get(candidate.candidate_id)
+                if score is None:
+                    continue
+                records.append(
+                    (
+                        abs(score),
+                        score >= 0,
+                        candidate.candidate_id in oracle_accepts,
+                    )
+                )
+        threshold, agreement = _learn_threshold(records, self.config.cascade_target)
+        metrics.calibration_agreement = agreement
+        return threshold
 
 
 def exact_id_candidates(
@@ -322,30 +471,64 @@ def extract_binary_log_odds(payload: dict) -> float:
                         values[label] = float(logprob)
         text = choice.get("text")
         if text is not None and not values:
-            label = _binary_label(text)
+            label = _binary_answer(text)
             if label is not None:
                 return 2.0 if label == "1" else -2.0
     if "1" in values and "0" in values:
         return values["1"] - values["0"]
     message_content = payload.get("message", {}).get("content", "")
     if message_content:
-        try:
-            answer = json.loads(str(message_content)).get("answer")
-            if answer in {0, 1, "0", "1"}:
-                return 2.0 if str(answer) == "1" else -2.0
-        except (AttributeError, json.JSONDecodeError):
-            pass
-        label = _binary_label(message_content)
+        label = _binary_answer(message_content)
         if label is not None:
             return 2.0 if label == "1" else -2.0
-    label = _binary_label(payload.get("response", ""))
+    label = _binary_answer(payload.get("response", ""))
     if label is not None:
         return 2.0 if label == "1" else -2.0
-    raise ValueError("model response did not contain a binary 1/0 decision")
+    sample = (
+        payload.get("message", {}).get("content")
+        or payload.get("response")
+        or next(
+            (
+                choice.get("text")
+                for choice in payload.get("choices", [])
+                if choice.get("text")
+            ),
+            "",
+        )
+    )
+    raise ValueError(
+        "model response did not contain a binary 1/0 decision: "
+        + str(sample)[:200]
+    )
 
 
-def metrics_dict(metrics: CascadeMetrics) -> dict[str, int | float]:
+def metrics_dict(metrics: CascadeMetrics) -> dict[str, object]:
     return asdict(metrics)
+
+
+def _print_progress(label: str, done: int, total: int, started: float) -> None:
+    if total <= 0:
+        return
+    elapsed = time.perf_counter() - started
+    rate = done / elapsed if elapsed > 0 else 0.0
+    eta = (total - done) / rate if rate > 0 else 0.0
+    percent = 100.0 * done / total
+    width = 24
+    filled = min(width, int(width * done / total))
+    bar = "#" * filled + "-" * (width - filled)
+    print(
+        f"{label}: [{bar}] {done}/{total} ({percent:.1f}%) "
+        f"elapsed={elapsed:.1f}s eta={eta:.1f}s",
+        flush=True,
+    )
+
+
+def _set_time_percentages(metrics: CascadeMetrics) -> None:
+    model_seconds = metrics.cheap_seconds + metrics.expensive_seconds
+    if model_seconds <= 0:
+        return
+    metrics.cheap_time_percent = 100.0 * metrics.cheap_seconds / model_seconds
+    metrics.expensive_time_percent = 100.0 * metrics.expensive_seconds / model_seconds
 
 
 def joined_row(candidate: Candidate, source: str) -> dict[str, str]:
@@ -424,8 +607,137 @@ def _binary_label(value: object) -> str | None:
     return "1" if match.group(1).lower() in {"1", "yes", "true"} else "0"
 
 
+def _binary_answer(value: object) -> str | None:
+    if isinstance(value, bool):
+        return "1" if value else "0"
+    if isinstance(value, (int, float)) and value in (0, 1):
+        return str(value)
+    if isinstance(value, dict):
+        for key in ("answer", "label", "decision", "match", "result"):
+            if key in value:
+                return _binary_answer(value[key])
+        return None
+    text = str(value).strip()
+    parsed = _extract_json(text)
+    if parsed is not None and parsed != value:
+        label = _binary_answer(parsed)
+        if label is not None:
+            return label
+    label = _binary_label(text)
+    if label is not None:
+        return label
+    match = re.search(
+        r"\b(?:answer|label|decision|match|result)\b\s*[:=]\s*[\"']?"
+        r"(1|0|yes|no|true|false)\b",
+        text,
+        re.IGNORECASE,
+    )
+    if not match:
+        return None
+    return "1" if match.group(1).lower() in {"1", "yes", "true"} else "0"
+
+
+def _extract_json(text: str) -> object | None:
+    stripped = text.strip()
+    if stripped.startswith("```"):
+        stripped = re.sub(r"^```(?:json)?\s*", "", stripped, flags=re.IGNORECASE)
+        stripped = re.sub(r"\s*```$", "", stripped)
+    try:
+        return json.loads(stripped)
+    except json.JSONDecodeError:
+        pass
+    decoder = json.JSONDecoder()
+    for index, char in enumerate(stripped):
+        if char not in "[{":
+            continue
+        try:
+            value, _ = decoder.raw_decode(stripped[index:])
+            return value
+        except json.JSONDecodeError:
+            continue
+    return None
+
+
+def _is_valid_empty_match_answer(answer: str) -> bool:
+    parsed = _extract_json(answer)
+    if isinstance(parsed, dict):
+        return any(
+            key in parsed
+            for key in (
+                "matching_pair_ids",
+                "matching_candidate_ids",
+                "pair_ids",
+                "matches",
+            )
+        )
+    if parsed == []:
+        return True
+    return bool(
+        re.search(
+            r"\b(?:none|no matches|no matching (?:pairs|candidates))\b",
+            answer,
+            re.IGNORECASE,
+        )
+    )
+
+
 def _plain_model(model: str) -> str:
     return model.removeprefix("ollama/")
+
+
+def _calibration_sample(
+    scored: list[tuple[Candidate, float | None, str]],
+    budget: int,
+) -> list[Candidate]:
+    if budget <= 0:
+        return []
+    eligible = [
+        (candidate, abs(score))
+        for candidate, score, _ in scored
+        if score is not None
+    ]
+    if len(eligible) <= budget:
+        return [candidate for candidate, _ in eligible]
+    ranked = sorted(eligible, key=lambda item: (-item[1], item[0].candidate_id))
+    if budget == 1:
+        return [ranked[0][0]]
+    selected: list[Candidate] = []
+    selected_ids: set[int] = set()
+    for index in range(budget):
+        rank = round(index * (len(ranked) - 1) / (budget - 1))
+        candidate = ranked[rank][0]
+        if candidate.candidate_id in selected_ids:
+            continue
+        selected.append(candidate)
+        selected_ids.add(candidate.candidate_id)
+    return selected
+
+
+def _learn_threshold(
+    records: list[tuple[float, bool, bool]],
+    target: float,
+) -> tuple[float | None, float]:
+    best_agreement = 0.0
+    for threshold in sorted({confidence for confidence, _, _ in records}):
+        selected = [
+            (proxy_label, oracle_label)
+            for confidence, proxy_label, oracle_label in records
+            if confidence >= threshold
+        ]
+        if not selected:
+            continue
+        agreement = sum(
+            int(proxy_label == oracle_label)
+            for proxy_label, oracle_label in selected
+        ) / len(selected)
+        best_agreement = max(best_agreement, agreement)
+        if agreement >= target:
+            return threshold, agreement
+    return None, best_agreement
+
+
+def _is_confident(score: float, threshold: float | None) -> bool:
+    return threshold is not None and abs(score) >= threshold
 
 
 def _post_json(url: str, payload: dict, timeout: float) -> dict:

@@ -8,6 +8,9 @@ AKER_ROOT="${AKER_ROOT:-/home/daisy/remizova/common_benchmark_v3_workspace}"
 LAB_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 COMMON="$LAB_ROOT/common_benchmark_v3"
 V1="$LAB_ROOT/project Trummer/heterogen_v1"
+V22="$LAB_ROOT/project Trummer/heterogen_v2_2"
+V23="$LAB_ROOT/project Trummer/heterogen_v2_3"
+V3="$LAB_ROOT/project Trummer/heterogen_v3"
 V2="$LAB_ROOT/project Trummer/heterogen_v2"
 
 for path in \
@@ -15,6 +18,11 @@ for path in \
   "$COMMON/data/imdb_structured_joined.csv" \
   "$COMMON/data/imdb_reviews.csv" \
   "$V1/trummer_join/operators.py" \
+  "$V22/trummer_join/operators.py" \
+  "$V22/trummer_join/structured_filter.py" \
+  "$V23/trummer_join/cascade.py" \
+  "$V3/trummer_join/cascade.py" \
+  "$V3/trummer_join/structured_filter.py" \
   "$V2/trummer_join/cascade.py"
 do
   if [[ ! -f "$path" ]]; then
@@ -26,6 +34,9 @@ done
 ssh "$AKER_HOST" \
   "mkdir -p '$AKER_ROOT/common_benchmark_v3' \
     '$AKER_ROOT/project_Trummer/heterogen_v1/trummer_join' \
+    '$AKER_ROOT/project_Trummer/heterogen_v2_2/trummer_join' \
+    '$AKER_ROOT/project_Trummer/heterogen_v2_3/trummer_join' \
+    '$AKER_ROOT/project_Trummer/heterogen_v3/trummer_join' \
     '$AKER_ROOT/project_Trummer/heterogen_v2/trummer_join'"
 
 rsync -av \
@@ -35,9 +46,17 @@ rsync -av \
   "$V1/trummer_join/__init__.py" "$V1/trummer_join/client.py" "$V1/trummer_join/operators.py" \
   "$AKER_HOST:$AKER_ROOT/project_Trummer/heterogen_v1/trummer_join/"
 rsync -av \
+  "$V22/trummer_join/__init__.py" "$V22/trummer_join/client.py" "$V22/trummer_join/operators.py" "$V22/trummer_join/structured_filter.py" \
+  "$AKER_HOST:$AKER_ROOT/project_Trummer/heterogen_v2_2/trummer_join/"
+rsync -av \
+  "$V23/trummer_join/__init__.py" "$V23/trummer_join/cascade.py" \
+  "$AKER_HOST:$AKER_ROOT/project_Trummer/heterogen_v2_3/trummer_join/"
+rsync -av \
+  "$V3/trummer_join/__init__.py" "$V3/trummer_join/cascade.py" "$V3/trummer_join/structured_filter.py" \
+  "$AKER_HOST:$AKER_ROOT/project_Trummer/heterogen_v3/trummer_join/"
+rsync -av \
   "$V2/trummer_join/__init__.py" "$V2/trummer_join/cascade.py" \
   "$AKER_HOST:$AKER_ROOT/project_Trummer/heterogen_v2/trummer_join/"
 
 echo "Sync complete."
 echo "Aker: cd '$AKER_ROOT' && bash common_benchmark_v3/scripts/submit_aker_common_benchmark.sh"
-

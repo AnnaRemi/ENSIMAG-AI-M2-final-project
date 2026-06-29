@@ -1,0 +1,36 @@
+{
+  "benchmark_id": "common_benchmark_three_questions_q2_medium",
+  "difficulty": 2,
+  "difficulty_label": "medium",
+  "question": "Which Drama movies under 100 minutes have reviews that explicitly praise the acting or performances?",
+  "semantic_question": "Does this review explicitly praise the acting, cast, portrayal, or performances in this movie?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Drama%' AND runtime < 100 AND answer(review, 'Does this review explicitly praise the acting, cast, portrayal, or performances in this movie?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Drama"
+    },
+    {
+      "column": "runtime",
+      "op": "lt",
+      "value": "100"
+    }
+  ],
+  "semantic_task": "aspect-level praise extraction",
+  "annotation_policy": "manually curated evidence excerpts; no evaluated LLM used",
+  "row_count": 60,
+  "structured_candidate_count": 20,
+  "ground_truth_movie_ids": [
+    "tt0037932",
+    "tt0043132",
+    "tt0044166",
+    "tt0087685",
+    "tt0105226",
+    "tt0111880",
+    "tt0149151",
+    "tt0215369",
+    "tt0345119",
+    "tt0436608"
+  ]
+}

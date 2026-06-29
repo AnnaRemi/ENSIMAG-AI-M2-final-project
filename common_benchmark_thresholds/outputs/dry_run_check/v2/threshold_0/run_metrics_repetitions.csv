@@ -1,0 +1,3 @@
+repetition,implementation,mode,model,wall_seconds,engine_seconds,cpu_seconds,llm_calls,cheap_calls,expensive_calls,final_answer_rows,true_positives,false_positives,false_negatives,precision,recall,f1
+1,trummer_heterogen_v2_cascade,dry_run,ollama/test-cheap->ollama/test-expensive,0.0009430830832570791,0.0009430830832570791,0.0009460000000000024,0,0,0,13,13.0,0.0,0.0,1.0,1.0,1.0
+2,trummer_heterogen_v2_cascade,dry_run,ollama/test-cheap->ollama/test-expensive,0.0008260420290753245,0.0008260420290753245,0.0008350000000000024,0,0,0,13,13.0,0.0,0.0,1.0,1.0,1.0

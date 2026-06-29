@@ -20,10 +20,11 @@ TRUMMER_ROOT = Path(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run Trummer heterogen_v2 cascade for common benchmark v3.")
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
-    parser.add_argument("--cheap-model", default="ollama/gemma2:2b")
-    parser.add_argument("--expensive-model", default="ollama/qwen2.5:3b")
-    parser.add_argument("--cheap-accept-threshold", type=float, default=3.0)
-    parser.add_argument("--cheap-reject-threshold", type=float, default=-1.5)
+    parser.add_argument("--cheap-model", default="ollama/gemma4:e2b")
+    parser.add_argument("--expensive-model", default="ollama/gemma4:e4b")
+    parser.add_argument("--cascade-target", type=float, default=0.9)
+    parser.add_argument("--calibration-budget", type=int, default=20)
+    parser.add_argument("--manual-confidence-threshold", type=float)
     parser.add_argument("--expensive-batch-size", type=int, default=8)
     parser.add_argument("--request-timeout", type=float, default=600)
     parser.add_argument("--output-dir", required=True)
@@ -43,8 +44,9 @@ def main() -> None:
         api_base=args.api_base,
         cheap_model=args.cheap_model,
         expensive_model=args.expensive_model,
-        accept_threshold=args.cheap_accept_threshold,
-        reject_threshold=args.cheap_reject_threshold,
+        cascade_target=args.cascade_target,
+        calibration_budget=args.calibration_budget,
+        manual_confidence_threshold=args.manual_confidence_threshold,
         expensive_batch_size=args.expensive_batch_size,
         request_timeout=args.request_timeout,
     )

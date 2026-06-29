@@ -23,10 +23,11 @@ def main() -> None:
     parser.add_argument("--year", type=int, default=1998)
     parser.add_argument("--predicate", default=DEFAULT_PREDICATE)
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
-    parser.add_argument("--cheap-model", default="gemma2:2b")
-    parser.add_argument("--expensive-model", default="qwen2.5:3b")
-    parser.add_argument("--cheap-accept-threshold", type=float, default=3.0)
-    parser.add_argument("--cheap-reject-threshold", type=float, default=-1.5)
+    parser.add_argument("--cheap-model", default="gemma4:e2b")
+    parser.add_argument("--expensive-model", default="gemma4:e4b")
+    parser.add_argument("--cascade-target", type=float, default=0.9)
+    parser.add_argument("--calibration-budget", type=int, default=20)
+    parser.add_argument("--manual-confidence-threshold", type=float)
     parser.add_argument("--expensive-batch-size", type=int, default=8)
     parser.add_argument("--request-timeout", type=float, default=600)
     parser.add_argument("--max-movies", type=int)
@@ -46,8 +47,9 @@ def main() -> None:
         api_base=args.api_base,
         cheap_model=args.cheap_model,
         expensive_model=args.expensive_model,
-        accept_threshold=args.cheap_accept_threshold,
-        reject_threshold=args.cheap_reject_threshold,
+        cascade_target=args.cascade_target,
+        calibration_budget=args.calibration_budget,
+        manual_confidence_threshold=args.manual_confidence_threshold,
         expensive_batch_size=args.expensive_batch_size,
         request_timeout=args.request_timeout,
     )

@@ -2,10 +2,13 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import subprocess
 import sys
 from pathlib import Path
+
+from repetitions import run_repeated
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,7 +28,7 @@ def run(command: list[str], env: dict[str, str]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run and evaluate both common-benchmark-v2 implementations.")
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
-    parser.add_argument("--model", default="ollama/gemma2:2b")
+    parser.add_argument("--model", default="ollama/gemma4:e4b")
     parser.add_argument("--python", default=str(DEFAULT_PYTHON))
     parser.add_argument(
         "--trummer-request-timeout",
@@ -38,6 +41,12 @@ def main() -> None:
     parser.add_argument("--trummer-max-movie-block-size", type=int, default=25)
     parser.add_argument("--trummer-max-review-block-size", type=int, default=8)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--repetitions",
+        type=int,
+        default=9,
+        help="Run each experiment this many times and aggregate numeric metrics by mean.",
+    )
     parser.add_argument(
         "--skip-build-dataset",
         action="store_true",
@@ -60,6 +69,8 @@ def main() -> None:
         python_path = (LAB_ROOT / python_path).absolute()
     python = str(python_path)
     experiment_dir = ROOT / "outputs" / model_slug(args.model)
+    benchmark = json.loads((ROOT / "benchmark.json").read_text())
+    truth = {str(movie_id) for movie_id in benchmark["ground_truth_movie_ids"]}
     env = os.environ.copy()
     env.setdefault("MPLCONFIGDIR", str(ROOT / ".mplconfig"))
     env.setdefault("MPLBACKEND", "Agg")
@@ -107,7 +118,7 @@ def main() -> None:
             if command[1].endswith(("run_suql_baseline.py", "run_trummer.py")):
                 command.append("--dry-run")
     for command in commands:
-        run(command, env)
+        run_repeated(command, env, ROOT, args.repetitions, truth)
     run(
         [
             python,

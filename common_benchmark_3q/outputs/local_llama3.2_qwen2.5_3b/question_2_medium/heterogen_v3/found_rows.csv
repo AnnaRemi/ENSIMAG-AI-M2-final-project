@@ -1,0 +1,6 @@
+movie_id,title,year,runtime,director,genres,match_source
+tt0037932,My Name Is Julia Ross,1945,65,Joseph H. Lewis,"Crime,Drama,Film-Noir",expensive_accept
+tt0043132,Where the Sidewalk Ends,1950,95,Otto Preminger,"Crime,Drama,Film-Noir",expensive_accept
+tt0044166,The Unknown Man,1951,86,Richard Thorpe,"Crime,Drama,Film-Noir",expensive_accept
+tt0087685,Martin's Day,1985,98,Alan Gibson,Drama,expensive_accept
+tt0105226,Red Rock West,1993,98,John Dahl,"Crime,Drama,Thriller",expensive_accept

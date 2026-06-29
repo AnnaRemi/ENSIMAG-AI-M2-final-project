@@ -1,0 +1,31 @@
+{
+  "implementation": "trummer_heterogen_v1",
+  "mode": "llm",
+  "model": "ollama/gemma3:1b",
+  "cheap_model": "",
+  "expensive_model": "ollama/gemma3:1b",
+  "cpu_seconds": 0.29609700000000005,
+  "engine_seconds": 15.466443249955773,
+  "wall_seconds": 15.466443249955773,
+  "llm_calls": 14,
+  "block_join_calls": 14,
+  "cheap_calls": 0,
+  "expensive_calls": 14,
+  "planned_cheap_calls": 0,
+  "planned_expensive_calls": 14,
+  "cheap_seconds": 0.0,
+  "expensive_seconds": 15.45149302482605,
+  "cheap_time_percent": 0.0,
+  "expensive_time_percent": 100.0,
+  "final_answer_rows": 4,
+  "found_movie_ids": [
+    "tt0120171",
+    "tt0145679",
+    "tt0184424",
+    "tt0791304"
+  ],
+  "input_movies": 50,
+  "input_reviews": 50,
+  "prompt_tokens": 44127,
+  "completion_tokens": 280
+}

@@ -38,7 +38,7 @@ Run with Ollama:
 ```bash
 python3 run_use_case3.py \
   --api-base http://127.0.0.1:11434 \
-  --model ollama/gemma2:2b
+  --model ollama/gemma4:e4b
 ```
 
 Dependency-light runner:
@@ -46,7 +46,7 @@ Dependency-light runner:
 ```bash
 python3 run_use_case3_light.py \
   --data-dir "../../project SUQL/data" \
-  --model gemma2:2b \
+  --model gemma4:e4b \
   --max-movies 100 \
   --max-reviews 1000 \
   --prefilter-reviews-by-movie-id

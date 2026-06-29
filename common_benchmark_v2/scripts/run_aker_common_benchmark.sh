@@ -5,7 +5,7 @@ set -Eeuo pipefail
 
 AKER_ROOT="${AKER_ROOT:-/home/daisy/remizova/common_benchmark_v2_workspace}"
 COMMON_ROOT="$AKER_ROOT/common_benchmark_v2"
-MODELS="${MODELS:-gemma2:2b llama3.2 llama3.2:1b mistral:7b phi4-mini qwen2.5:3b qwen2.5:7b}"
+MODELS="${MODELS:-gemma4:e4b}"
 PULL_MODELS="${PULL_MODELS:-0}"
 SKIP_SUQL="${SKIP_SUQL:-0}"
 SKIP_TRUMMER="${SKIP_TRUMMER:-0}"
@@ -14,6 +14,7 @@ TRUMMER_TOKEN_THRESHOLD="${TRUMMER_TOKEN_THRESHOLD:-4096}"
 TRUMMER_MAX_COMPLETION_TOKENS="${TRUMMER_MAX_COMPLETION_TOKENS:-256}"
 TRUMMER_MAX_MOVIE_BLOCK_SIZE="${TRUMMER_MAX_MOVIE_BLOCK_SIZE:-25}"
 TRUMMER_MAX_REVIEW_BLOCK_SIZE="${TRUMMER_MAX_REVIEW_BLOCK_SIZE:-8}"
+REPETITIONS="${REPETITIONS:-9}"
 RUN_STAMP="${RUN_STAMP:-$(date +%Y%m%d_%H%M%S)}"
 OLLAMA_BIN="${OLLAMA_BIN:-}"
 OLLAMA_CONTEXT_LENGTH="${OLLAMA_CONTEXT_LENGTH:-8192}"
@@ -31,6 +32,7 @@ echo "Trummer request timeout: $TRUMMER_REQUEST_TIMEOUT seconds"
 echo "Trummer token threshold: $TRUMMER_TOKEN_THRESHOLD"
 echo "Trummer max completion tokens: $TRUMMER_MAX_COMPLETION_TOKENS"
 echo "Trummer max block sizes: movies=$TRUMMER_MAX_MOVIE_BLOCK_SIZE reviews=$TRUMMER_MAX_REVIEW_BLOCK_SIZE"
+echo "Repetitions: $REPETITIONS"
 echo "Run stamp: $RUN_STAMP"
 
 if [[ -z "${OAR_JOB_ID:-}" ]]; then
@@ -179,6 +181,7 @@ for plain_model in "${model_array[@]}"; do
     --trummer-max-completion-tokens "$TRUMMER_MAX_COMPLETION_TOKENS" \
     --trummer-max-movie-block-size "$TRUMMER_MAX_MOVIE_BLOCK_SIZE" \
     --trummer-max-review-block-size "$TRUMMER_MAX_REVIEW_BLOCK_SIZE" \
+    --repetitions "$REPETITIONS" \
     "${implementation_args[@]}" \
     2>&1 | tee "$console_log"
 done

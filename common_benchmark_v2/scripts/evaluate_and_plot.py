@@ -32,12 +32,7 @@ def main() -> None:
     for path in metric_files:
         run = json.loads(path.read_text())
         found = set(run["found_movie_ids"])
-        tp = len(found & truth)
-        fp = len(found - truth)
-        fn = len(truth - found)
-        precision = tp / (tp + fp) if tp + fp else 0.0
-        recall = tp / (tp + fn) if tp + fn else 0.0
-        f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+        tp, fp, fn, precision, recall, f1 = quality_from_run(run, found, truth)
         rows.append(
             {
                 "implementation": run["implementation"],
@@ -79,6 +74,29 @@ def main() -> None:
     plot_times(comparison, outputs_dir / "time_comparison.png")
     plot_workload_quality(comparison, outputs_dir / "workload_quality_comparison.png")
     print(comparison.to_string(index=False))
+
+
+def quality_from_run(
+    run: dict,
+    found: set[str],
+    truth: set[str],
+) -> tuple[float, float, float, float, float, float]:
+    if run.get("repetition_source") == "mean":
+        return (
+            float(run.get("true_positives", 0.0)),
+            float(run.get("false_positives", 0.0)),
+            float(run.get("false_negatives", 0.0)),
+            float(run.get("precision", 0.0)),
+            float(run.get("recall", 0.0)),
+            float(run.get("f1", 0.0)),
+        )
+    tp = len(found & truth)
+    fp = len(found - truth)
+    fn = len(truth - found)
+    precision = tp / (tp + fp) if tp + fp else 0.0
+    recall = tp / (tp + fn) if tp + fn else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+    return float(tp), float(fp), float(fn), precision, recall, f1
 
 
 def write_markdown(df: pd.DataFrame, path: Path, question: str) -> None:

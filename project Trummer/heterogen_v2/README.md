@@ -4,12 +4,17 @@ This implementation is separate from `heterogen_v1`. It performs:
 
 1. an exact structured `movie_id = tconst` candidate join;
 2. one cheap binary model score per candidate;
-3. early acceptance or rejection outside the uncertainty band;
-4. batched expensive-model classification only for uncertain candidates.
+3. a BARGAIN-style calibration pass that asks the expensive model to label a
+   sample and learns a confidence threshold from cheap/oracle agreement;
+4. early acceptance or rejection only when the cheap score is confident enough;
+5. batched expensive-model classification for the remaining candidates.
 
 Cheap-model failures fail open to the expensive stage. The expensive prompt
 contains explicit candidate pairs, so it cannot introduce unrelated
 cross-product pairs. Every route and aggregate count is written to disk.
+Run metrics also include `cheap_seconds`, `expensive_seconds`,
+`cheap_time_percent`, and `expensive_time_percent`. Percentages use total
+model-call time as their denominator.
 
 ## Local
 
@@ -24,15 +29,16 @@ With a local Ollama server:
 ```bash
 python3 run_use_case3.py \
   --api-base http://127.0.0.1:11434 \
-  --cheap-model gemma2:2b \
-  --expensive-model qwen2.5:3b \
+  --cheap-model gemma4:e2b \
+  --expensive-model gemma4:e4b \
   --output-dir outputs/local_llm
 ```
 
-The default thresholds are `reject <= -1.5` and `accept >= 3.0`. With Ollama's
-hard `0/1` fallback scores (`-2/+2`), cheap negative decisions are rejected and
-cheap positive decisions are verified by the expensive model. Calibrate these
-thresholds on labeled data before treating them as final.
+There are no fixed accept/reject thresholds. The cheap model's score sign is the
+proxy label and `abs(score)` is confidence; the run learns the confidence cutoff
+from the calibration sample. Tune `--cascade-target` and
+`--calibration-budget` to control the oracle-agreement target and calibration
+cost, not the threshold itself.
 
 ## Aker GPU
 
@@ -58,7 +64,7 @@ bash scripts/run_gpu.sh
 Override models or install missing models:
 
 ```bash
-CHEAP_MODEL=gemma2:2b EXPENSIVE_MODEL=qwen2.5:3b PULL_MODELS=1 \
+CHEAP_MODEL=gemma4:e2b EXPENSIVE_MODEL=gemma4:e4b PULL_MODELS=1 \
   bash scripts/run_gpu.sh
 ```
 

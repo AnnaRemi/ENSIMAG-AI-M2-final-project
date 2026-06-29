@@ -3,9 +3,9 @@
   "mode": "llm",
   "model": "ollama/qwen2.5:3b",
   "api_base": "http://127.0.0.1:11434",
-  "cpu_seconds": 0.8383049999999999,
-  "engine_seconds": 203.59439262497472,
-  "wall_seconds": 203.59439262497472,
+  "cpu_seconds": 0.849685,
+  "engine_seconds": 202.6892386249965,
+  "wall_seconds": 202.6892386249965,
   "llm_calls": 14,
   "final_answer_rows": 7,
   "found_movie_ids": [

@@ -1,0 +1,36 @@
+{
+  "implementation": "trummer_heterogen_v2_2_structured_pruned",
+  "mode": "llm",
+  "model": "ollama/qwen2.5:3b",
+  "cheap_model": "",
+  "expensive_model": "ollama/qwen2.5:3b",
+  "cpu_seconds": 0.49953899999999996,
+  "engine_seconds": 32.692760000005364,
+  "wall_seconds": 32.692760000005364,
+  "llm_calls": 4,
+  "block_join_calls": 4,
+  "cheap_calls": 0,
+  "expensive_calls": 4,
+  "final_answer_rows": 3,
+  "found_movie_ids": [
+    "tt0188453",
+    "tt0272069",
+    "tt0325597"
+  ],
+  "original_movies": 60,
+  "original_reviews": 60,
+  "pruned_movies": 24,
+  "pruned_reviews": 24,
+  "structured_filters": [
+    {
+      "column": "year",
+      "op": "eq",
+      "value": "2001",
+      "source": "2001"
+    }
+  ],
+  "prompt_tokens": 12171,
+  "completion_tokens": 61,
+  "question_dir": "question_1_easy",
+  "question": "Which movies released in 2001 have reviews expressing an overall negative opinion?"
+}

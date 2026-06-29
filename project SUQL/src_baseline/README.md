@@ -83,13 +83,13 @@ pip install -r requirements.txt
 ```
 
 The project uses LiteLLM with an Ollama-compatible server. By default it connects
-to `http://localhost:11434` and uses `ollama/phi4-mini`.
+to `http://localhost:11434` and uses `ollama/gemma4:e4b`.
 
 You can override these values:
 
 ```bash
 export SUQL_API_BASE="http://localhost:11434"
-export SUQL_MODEL="ollama/phi4-mini"
+export SUQL_MODEL="ollama/gemma4:e4b"
 export SUQL_DATA_PATH="../data/imdb_joined.csv"
 ```
 
@@ -125,7 +125,7 @@ shell on the same allocated host:
 
 ```bash
 export SUQL_API_BASE="http://127.0.0.1:11434"
-export SUQL_MODEL="ollama/phi4-mini"
+export SUQL_MODEL="ollama/gemma4:e4b"
 python main.py "What horror movies from the 80s do reviewers find genuinely scary?"
 ```
 

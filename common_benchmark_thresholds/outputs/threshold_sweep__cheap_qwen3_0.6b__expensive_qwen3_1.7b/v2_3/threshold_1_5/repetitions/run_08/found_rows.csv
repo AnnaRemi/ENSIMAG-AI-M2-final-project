@@ -1,0 +1,17 @@
+movie_id,title,year,runtime,director,genres,match_source
+tt0120157,Soldier,1998,99.0,Paul W.S. Anderson,"Action,Drama,Sci-Fi",expensive_accept
+tt0120171,The Souler Opposite,1998,104.0,Bill Kalmenson,"Comedy,Drama,Romance",expensive_accept
+tt0120623,A Bug's Life,1998,95.0,"John Lasseter, Andrew Stanton","Adventure,Animation,Comedy",expensive_accept
+tt0120848,Such a Long Journey,1998,113.0,Sturla Gunnarsson,Drama,expensive_accept
+tt0125211,I Woke Up Early the Day I Died,1998,90.0,Aris Iliopulos,"Comedy,Crime,Thriller",expensive_accept
+tt0125454,Paulie,1998,91.0,John Roberts,"Adventure,Comedy,Drama",expensive_accept
+tt0149151,Still Crazy,1998,95.0,Brian Gibson,"Comedy,Drama,Music",expensive_accept
+tt0169164,Radio Arrow,1998,112.0,Luciano Ligabue,Drama,expensive_accept
+tt0215174,Sex Files: Sexecutioner,1998,88.0,J.T. Finch,"Adult,Drama",expensive_accept
+tt0118882,Conceiving Ada,1997,85.0,Lynn Hershman Leeson,"Drama,Fantasy,Sci-Fi",expensive_accept
+tt0117894,Thinner,1996,93.0,Tom Holland,"Fantasy,Horror",expensive_accept
+tt0114057,Othello,1995,123.0,Oliver Parker,"Drama,Romance",expensive_accept
+tt0114268,Rent-a-Kid,1995,85.0,Fred Gerber,"Comedy,Drama,Family",expensive_accept
+tt0102951,Soapdish,1991,97.0,Michael Hoffman,"Comedy,Romance",expensive_accept
+tt0096453,Witchery,1989,95.0,Fabrizio Laurenti,Horror,expensive_accept
+tt0085178,Ardh Satya,1983,130.0,Govind Nihalani,"Crime,Drama",expensive_accept

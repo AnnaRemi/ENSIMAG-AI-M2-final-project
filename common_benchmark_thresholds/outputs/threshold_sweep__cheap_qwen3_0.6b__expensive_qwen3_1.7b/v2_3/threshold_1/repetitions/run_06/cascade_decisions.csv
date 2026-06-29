@@ -1,0 +1,51 @@
+candidate_id,movie_id,tconst,score,route,error
+1,tt0791304,tt0791304,-2.0,cheap_reject,
+2,tt0479500,tt0479500,,expensive,cheap batch omitted candidate
+3,tt0417148,tt0417148,,expensive,cheap batch omitted candidate
+4,tt0801427,tt0801427,,expensive,cheap batch omitted candidate
+5,tt0410162,tt0410162,,expensive,cheap batch omitted candidate
+6,tt0462570,tt0462570,,expensive,cheap batch omitted candidate
+7,tt0334541,tt0334541,,expensive,cheap batch omitted candidate
+8,tt0337640,tt0337640,,expensive,cheap batch omitted candidate
+9,tt0311289,tt0311289,,expensive,cheap batch omitted candidate
+10,tt0219400,tt0219400,,expensive,cheap batch omitted candidate
+11,tt0268380,tt0268380,,expensive,cheap batch omitted candidate
+12,tt0218619,tt0218619,-2.0,cheap_reject,
+13,tt0284058,tt0284058,,expensive,cheap batch omitted candidate
+14,tt0164052,tt0164052,,expensive,cheap batch omitted candidate
+15,tt0239625,tt0239625,,expensive,cheap batch omitted candidate
+16,tt0120620,tt0120620,,expensive,cheap batch omitted candidate
+17,tt0207823,tt0207823,,expensive,cheap batch omitted candidate
+18,tt0118998,tt0118998,-2.0,cheap_reject,
+19,tt0119196,tt0119196,,expensive,cheap batch omitted candidate
+20,tt0120247,tt0120247,,expensive,cheap batch omitted candidate
+21,tt0120706,tt0120706,,expensive,cheap batch omitted candidate
+22,tt0120742,tt0120742,,expensive,cheap batch omitted candidate
+23,tt0127901,tt0127901,,expensive,cheap batch omitted candidate
+24,tt0130229,tt0130229,,expensive,cheap batch omitted candidate
+25,tt0138987,tt0138987,-2.0,cheap_reject,
+26,tt0145679,tt0145679,,expensive,cheap batch omitted candidate
+27,tt0158653,tt0158653,,expensive,cheap batch omitted candidate
+28,tt0163069,tt0163069,,expensive,cheap batch omitted candidate
+29,tt0165494,tt0165494,,expensive,cheap batch omitted candidate
+30,tt0167038,tt0167038,,expensive,cheap batch omitted candidate
+31,tt0118673,tt0118673,,expensive,cheap batch omitted candidate
+32,tt0120157,tt0120157,,expensive,cheap batch omitted candidate
+33,tt0120171,tt0120171,,expensive,cheap batch omitted candidate
+34,tt0120623,tt0120623,,expensive,cheap batch omitted candidate
+35,tt0120848,tt0120848,,expensive,cheap batch omitted candidate
+36,tt0125211,tt0125211,,expensive,cheap batch omitted candidate
+37,tt0125454,tt0125454,,expensive,cheap batch omitted candidate
+38,tt0149151,tt0149151,,expensive,cheap batch omitted candidate
+39,tt0169164,tt0169164,,expensive,cheap batch omitted candidate
+40,tt0179029,tt0179029,-2.0,cheap_reject,
+41,tt0184424,tt0184424,-2.0,cheap_reject,
+42,tt0215174,tt0215174,,expensive,cheap batch omitted candidate
+43,tt0118882,tt0118882,,expensive,cheap batch omitted candidate
+44,tt0117894,tt0117894,,expensive,cheap batch omitted candidate
+45,tt0114057,tt0114057,,expensive,cheap batch omitted candidate
+46,tt0114268,tt0114268,,expensive,cheap batch omitted candidate
+47,tt0102951,tt0102951,,expensive,cheap batch omitted candidate
+48,tt0096453,tt0096453,,expensive,cheap batch omitted candidate
+49,tt0095088,tt0095088,-2.0,cheap_reject,
+50,tt0085178,tt0085178,,expensive,cheap batch omitted candidate

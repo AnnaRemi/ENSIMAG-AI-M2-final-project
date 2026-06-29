@@ -3,12 +3,14 @@
 Master 2 research workspace for comparing LLM-backed query execution over
 structured IMDb metadata and unstructured movie reviews.
 
-The retained work has two focuses:
+The retained work has three focuses:
 
 1. SUQL structured-first execution: baseline, Stage 1 calibrated early exits,
    and Stage 2 cheap-to-expensive routing.
-2. Semantic joins: Trummer heterogeneous v1 versus heterogeneous v2, and
-   Trummer heterogeneous v1 versus the SUQL baseline on shared annotated data.
+2. Semantic joins: Trummer heterogeneous block joins, structured pruning,
+   row-wise cascades, and batched cascades on shared annotated data.
+3. Benchmark suites for one-question comparisons, threshold sweeps, and
+   three-question difficulty scaling.
 
 ## Retained Systems
 
@@ -19,44 +21,78 @@ The retained work has two focuses:
 | SUQL Stage 2 | `project SUQL/src_baseline_stage2/`, `project SUQL/Stage_2/` | Use a cheap binary scorer and route uncertain candidates to an expensive full-answer model. |
 | Trummer heterogeneous v1 | `project Trummer/heterogen_v1/` | Evaluate movie/review blocks with bounded semantic-join prompts and schema-constrained outputs. |
 | Trummer heterogeneous v2 | `project Trummer/heterogen_v2/` | Generate exact-ID candidates, score them cheaply, and verify uncertain candidates with an expensive model. |
+| Trummer heterogeneous v2_2 | `project Trummer/heterogen_v2_2/` | Prune year and exact movie/review IDs deterministically, then run Trummer block prompts for sentiment matching. |
+| Trummer heterogeneous v2_3 | `project Trummer/heterogen_v2_3/` | Score exact-ID candidates in cheap batches and coalesce uncertain candidates into larger expensive batches. |
+| Trummer heterogeneous v3 | `project Trummer/heterogen_v3/` | Combine structured pruning with the cheap-to-expensive cascade. |
 
 Stage 1 and Stage 2 are experimental physical operators inspired by calibrated
 cascades and Stretto-style operator selection. They are not complete
 implementations of the Stretto execution engine.
 
+## Implementation Variants
+
+The Trummer variants represent different physical plans for the same
+movie-review semantic join:
+
+| Variant | Structured pruning | Candidate unit | Cheap model use | Expensive model use |
+| --- | --- | --- | --- | --- |
+| V1 block join | None | Movie block x review block | None | Evaluates identity, year, and sentiment inside each block prompt. |
+| V2 row-wise cascade | Exact `movie_id = tconst` join only | One movie-review pair | Scores every exact-ID pair independently. | Verifies uncertain pairs in fallback batches. |
+| V2_2 structured-pruned block join | Question-derived movie filters plus exact review IDs | Pruned movie block x review block | None | Evaluates only the remaining semantic review predicate. |
+| V2_3 batch-wise cascade | Exact `movie_id = tconst` join only | Batch of exact-ID pairs | Scores multiple pairs per cheap request. | Coalesces uncertain candidates into larger expensive batches. |
+| V3 pruned cascade | Question-derived movie filters plus exact review IDs | Pruned exact-ID pair | Scores only candidates that survive structured pruning. | Verifies uncertain pruned candidates, capped by `--max-expensive-calls`. |
+
+V2_2 and V3 use the structured predicate extractor from the newer heterogeneous
+implementations. It maps question constraints onto the movie schema
+(`movie_id`, `title`, `director`, `year`, `runtime`, and `genres`) and leaves
+review sentiment or opinion matching to the LLM. V2_3 changes request
+granularity rather than the predicate semantics: it keeps the same exact-ID
+candidate set as V2, but reduces request overhead by classifying and verifying
+batches.
+
 ## Main Comparisons
 
-### Trummer heterogeneous v1 versus v2
+### Trummer heterogeneous variants
 
-`common_benchmark_v3/` compares both Trummer implementations on the same
-50-movie, 50-review dataset. The shared predicate requires:
+`common_benchmark_v3/` compares the Trummer heterogeneous variants on the same
+50-movie, 50-review dataset. The shared task requires:
 
 1. movie year is 1998;
 2. `movie_id = tconst`;
 3. the review expresses a negative or strongly critical opinion.
 
 V1 sends bounded cross-product blocks to one model. V2 first creates exact-ID
-candidates, then applies a cheap-to-expensive cascade.
+candidates, then applies a row-wise cheap-to-expensive cascade. V2_2 adds
+structured pruning before block prompts, V2_3 batches cascade requests, and V3
+combines structured pruning with the cascade.
 
-For the retained `llama3.2 -> qwen2.5:3b` experiment:
+The newest retained focused plot set uses `qwen3:0.6b -> qwen3:1.7b` with
+9 repetitions. It compares the three primary execution shapes: block join,
+row-wise cascade, and batch-wise cascade.
 
-| Metric | Heterogeneous v1 | Heterogeneous v2 |
-| --- | ---: | ---: |
-| Wall time | 96.66 s | 110.69 s |
-| Total LLM calls | 14 | 55 |
-| True positives | 3 | 8 |
-| False positives | 6 | 14 |
-| Recall | 0.231 | 0.615 |
-| F1 | 0.273 | 0.457 |
+| Metric | Block join V1 | Row-wise cascade V2 | Batch-wise cascade V2_3 |
+| --- | ---: | ---: | ---: |
+| Wall time | 19.66 s | 24.98 s | 27.01 s |
+| Total LLM calls | 14 | 60 | 10 |
+| Cheap calls | 0 | 50 | 7 |
+| Expensive calls | 14 | 10 | 3 |
+| Precision | 0.400 | 0.325 | 0.333 |
+| Recall | 0.154 | 1.000 | 0.923 |
+| F1 | 0.222 | 0.491 | 0.490 |
 
-The cascade improved recall and F1, but it was slower and issued more total
-calls. The result demonstrates a quality/cost tradeoff, not a universal win for
-v2.
+The cascades improve recall and F1 on this run. V2_3 reaches nearly the same F1
+as row-wise V2 while issuing far fewer total LLM calls, but its larger expensive
+batches make wall time slightly higher in this local result.
 
-![Trummer heterogeneous v1 versus v2](common_benchmark_v3/outputs/cheap_llama3.2__expensive_qwen2.5_3b/comparison.png)
+![Precision, recall, and F1 for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b/metrics_precision_recall_f1.png)
+
+![Wall time for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b/time_bar_plot.png)
+
+![LLM calls for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b/calls_bar_plot.png)
 
 Source metrics:
-[`comparison.csv`](common_benchmark_v3/outputs/cheap_llama3.2__expensive_qwen2.5_3b/comparison.csv).
+[`all_metrics.csv`](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b/all_metrics.csv) and
+[`summary.md`](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b/summary.md).
 
 ### Trummer heterogeneous v1 versus SUQL baseline
 
@@ -92,6 +128,36 @@ Source metrics:
 useful for model-sensitivity analysis, while `common_benchmark_v2/` is the
 preferred mixed-year comparison because the Trummer predicate must enforce the
 year condition itself.
+
+### Threshold and three-question suites
+
+`common_benchmark_thresholds/` sweeps the cascade confidence threshold for V2
+and V2_3. The newest saved run uses `qwen3:0.6b -> qwen3:1.7b` over thresholds
+from `0` to `3`, averaged across 9 repetitions.
+
+![Cascade quality versus threshold](common_benchmark_thresholds/outputs/threshold_sweep__cheap_qwen3_0.6b__expensive_qwen3_1.7b/quality_metrics_vs_threshold.png)
+
+`common_benchmark_3q/` adds three 60-row movie-review questions with increasing
+semantic difficulty. The retained aggregate plot compares SUQL, structured
+pruned block join V2_2, and pruned cascade V3.
+
+![Three-question benchmark aggregate](common_benchmark_3q/outputs/local_llama3.2_qwen2.5_3b/comparison.png)
+
+## Experiment Suites
+
+| Suite | Dataset and comparison | Use it for | Main runner | Primary outputs |
+| --- | --- | --- | --- | --- |
+| `common_benchmark/` | 16 unique movies for the 1998 negative-review task; SUQL baseline versus Trummer V1 block join. | Compact model-sensitivity runs across one non-cascading model at a time. | `python3 common_benchmark/scripts/run_all.py` | `comparison.csv`, `comparison.md`, `movie_id_outcomes.csv`, time and workload/quality plots, cross-model plots. |
+| `common_benchmark_v2/` | 50 mixed-year movies for the same task; SUQL baseline versus Trummer V1 block join. | Preferred SUQL-vs-V1 test because Trummer must evaluate year, identity, and sentiment over all rows. | `python3 common_benchmark_v2/scripts/run_all.py` | `comparison.csv`, `comparison.md`, `movie_id_outcomes.csv`, time and workload/quality plots. |
+| `common_benchmark_v3/` | Reuses the v2 50-row dataset; SUQL plus V1, V2, V2_2, V2_3, and V3. | Comparing physical semantic-join plans under one fixed question. | `python3 common_benchmark_v3/scripts/run_all.py` | `comparison.csv`, `comparison.md`, `movie_id_outcomes.csv`, focused quality/time/call plots. |
+| `common_benchmark_v3/` all-Heterogen | Same v2 50-row dataset, but only V1, V2, V2_2, V2_3, and V3 with repetition averaging and Aker helpers. | Isolating Trummer heterogen variants without SUQL in the result set. | `python3 common_benchmark_v3/scripts/run_all_heterogen.py` | `all_metrics.csv`, `summary.md`, `experiment_config.json`, per-implementation `run_metrics_repetitions.csv`, focused plots. |
+| `common_benchmark_thresholds/` | Same v3 one-question dataset; manual confidence-threshold sweep for V2 and V2_3. | Understanding how threshold choice changes quality, final rows, early decisions, and fallback load. | `python3 common_benchmark_thresholds/scripts/run_threshold_sweep.py` | `threshold_metrics.csv`, `summary.md`, quality-vs-threshold and final-rows plots. |
+| `common_benchmark_3q/` | Three disjoint 60-row datasets with easy, medium, and hard semantic predicates; SUQL, V2_2, V2_3, and V3. | Testing robustness beyond the single 1998-negative-review task. | `python3 common_benchmark_3q/scripts/run_all.py` | Per-question run folders, `comparison.csv`, `aggregate.csv`, `comparison.png`. |
+
+The benchmark runners preserve per-run artifacts rather than only aggregate
+tables. Cascade runs keep `cascade_decisions.csv`; block-join runs keep
+`joined_evidence.csv` and `join_stats.csv`; repeated runs keep
+`run_metrics_repetitions.csv` next to the averaged `run_metrics.json`.
 
 ## SUQL Baseline, Stage 1, and Stage 2
 
@@ -144,10 +210,15 @@ Retained Stage 2 experiments are under `project SUQL/Stage_2/benchmarks/`.
 ├── project Trummer/
 │   ├── baseline/                 # paper-style semantic join reproduction
 │   ├── heterogen_v1/             # bounded block semantic join
-│   └── heterogen_v2/             # exact-ID cascade semantic join
+│   ├── heterogen_v2/             # pair-level exact-ID cascade semantic join
+│   ├── heterogen_v2_2/           # structured-pruned bounded block semantic join
+│   ├── heterogen_v2_3/           # batched exact-ID cascade semantic join
+│   └── heterogen_v3/             # structured-pruned cascade semantic join
 ├── common_benchmark/             # legacy SUQL baseline vs v1 model sweep
 ├── common_benchmark_v2/          # mixed-year SUQL baseline vs fixed-output v1
-├── common_benchmark_v3/          # v1 vs v2 cascade
+├── common_benchmark_v3/          # one-question heterogen implementation comparison
+├── common_benchmark_thresholds/   # cascade-threshold sweep
+├── common_benchmark_3q/           # three-question difficulty benchmark
 ├── presentations/                # final project and paper-review slides
 └── papers/                       # local reading material, not tracked
 ```
@@ -172,8 +243,8 @@ pip install -r common_benchmark_v3/requirements.txt
 Install representative models:
 
 ```bash
-ollama pull gemma2:2b
-ollama pull phi4-mini
+ollama pull qwen3:0.6b
+ollama pull qwen3:1.7b
 ollama pull qwen2.5:3b
 ```
 
@@ -181,9 +252,9 @@ Configure the local endpoint:
 
 ```bash
 export SUQL_API_BASE="http://127.0.0.1:11434"
-export SUQL_MODEL="ollama/phi4-mini"
-export SUQL_CHEAP_MODEL="ollama/gemma2:2b"
-export SUQL_EXPENSIVE_MODEL="ollama/phi4-mini"
+export SUQL_MODEL="ollama/qwen3:1.7b"
+export SUQL_CHEAP_MODEL="ollama/qwen3:0.6b"
+export SUQL_EXPENSIVE_MODEL="ollama/qwen3:1.7b"
 ```
 
 ## Running SUQL Experiments
@@ -233,15 +304,47 @@ cd "/path/to/lab m2"
   --skip-build-dataset
 ```
 
-Run Trummer heterogeneous v1 versus v2:
+Run the Trummer heterogeneous variants:
 
 ```bash
 python3 -m unittest discover -s common_benchmark_v3/tests -v
 
+python3 common_benchmark_v3/scripts/run_all_heterogen.py \
+  --api-base "$SUQL_API_BASE" \
+  --cheap-model "$SUQL_CHEAP_MODEL" \
+  --expensive-model "$SUQL_EXPENSIVE_MODEL" \
+  --repetitions 9
+```
+
+Run SUQL plus the heterogen variants on the same one-question benchmark:
+
+```bash
 python3 common_benchmark_v3/scripts/run_all.py \
   --api-base "$SUQL_API_BASE" \
-  --cheap-model ollama/llama3.2 \
-  --expensive-model ollama/qwen2.5:3b
+  --cheap-model "$SUQL_CHEAP_MODEL" \
+  --expensive-model "$SUQL_EXPENSIVE_MODEL" \
+  --repetitions 9
+```
+
+Run the threshold sweep for V2 and V2_3:
+
+```bash
+python3 common_benchmark_thresholds/scripts/run_threshold_sweep.py \
+  --api-base "$SUQL_API_BASE" \
+  --cheap-model "$SUQL_CHEAP_MODEL" \
+  --expensive-model "$SUQL_EXPENSIVE_MODEL" \
+  --thresholds 0,0.5,1,1.5,2,2.5,3 \
+  --repetitions 9
+```
+
+Run the three-question suite:
+
+```bash
+python3 common_benchmark_3q/scripts/run_all.py \
+  --api-base "$SUQL_API_BASE" \
+  --cheap-model "$SUQL_CHEAP_MODEL" \
+  --expensive-model "$SUQL_EXPENSIVE_MODEL" \
+  --output-dir outputs/qwen3_current
 ```
 
 Each common benchmark contains local execution, Aker synchronization, OAR
@@ -259,7 +362,22 @@ for the exact workflow and output contract.
 
 ## References
 
-- Liu et al., *SUQL: Conversational Search over Structured and Unstructured
-  Data with Large Language Models*.
-- Trummer et al., *Implementing Semantic Join Operators Efficiently*.
-- Stretto work on physical operators for LLM-augmented data systems.
+The project uses the following literature as design and comparison context.
+Local PDF copies may exist under `papers/`, but that directory is intentionally
+not tracked in Git.
+
+| Work | Used for | Link |
+| --- | --- | --- |
+| Shicheng Liu, Jialiang Xu, Wesley Tjangnaka, Sina Semnani, Chen Yu, and Monica Lam. *SUQL: Conversational Search over Structured and Unstructured Data with Large Language Models*. Findings of NAACL 2024. | Structured-first query execution, `answer()`/`summary()` semantics, and the SUQL baseline. | <https://aclanthology.org/2024.findings-naacl.283/> |
+| Immanuel Trummer. *Implementing Semantic Join Operators Efficiently*. arXiv:2510.08489. | Tuple, block, and adaptive semantic-join execution plans; basis for Trummer baseline and heterogeneous block joins. | <https://arxiv.org/abs/2510.08489> |
+| Gabriele Sanmartino, Matthias Urban, Paolo Papotti, and Carsten Binnig. *The Stretto Execution Engine for LLM-Augmented Data Systems*. arXiv:2602.04430. | Physical-operator selection, runtime-quality tradeoffs, and error-budget/cascade framing for Stage 1, Stage 2, and heterogen cascades. | <https://arxiv.org/abs/2602.04430> |
+| Matthias Urban and Carsten Binnig. *ELEET: Efficient Learned Query Execution over Text and Tables*. arXiv:2410.22522. | Learned query execution over mixed text/table data and comparison point for non-LLM or smaller-model execution. | <https://arxiv.org/abs/2410.22522> |
+| Xuanhe Zhou, Junxuan He, Wei Zhou, Haodong Chen, Zirui Tang, Haoyu Zhao, Xin Tong, Guoliang Li, Youmin Chen, Jun Zhou, Zhaojun Sun, Binyuan Hui, Shuo Wang, Conghui He, Zhiyuan Liu, Jingren Zhou, and Fan Wu. *A Survey of LLM x DATA*. arXiv:2505.18458. | Broader LLM4Data/Data4LLM taxonomy used in presentation and project positioning. | <https://arxiv.org/abs/2505.18458> |
+
+Additional source material:
+
+- SUQL implementation reference: <https://github.com/stanford-oval/suql>.
+- Trummer semantic-join implementation reference and IMDb review sample:
+  <https://github.com/itrummer/llmjoins>.
+- IMDb 50K review dataset cited by the Trummer baseline data provenance:
+  <https://www.kaggle.com/datasets/atulanandjha/imdb-50k-movie-reviews-test-your-bert>.

@@ -1,0 +1,27 @@
+{
+  "implementation": "suql_baseline",
+  "mode": "llm",
+  "model": "ollama/qwen2.5:3b",
+  "cheap_model": "",
+  "expensive_model": "ollama/qwen2.5:3b",
+  "cpu_seconds": 0.19278799999999996,
+  "engine_seconds": 23.643298709008377,
+  "wall_seconds": 23.64810645801481,
+  "llm_calls": 26,
+  "block_join_calls": 0,
+  "cheap_calls": 0,
+  "expensive_calls": 26,
+  "final_answer_rows": 7,
+  "found_movie_ids": [
+    "tt0077275",
+    "tt0077372",
+    "tt0081751",
+    "tt0095654",
+    "tt0099422",
+    "tt0104567",
+    "tt0117589"
+  ],
+  "structured_candidates": 26,
+  "question_dir": "question_3_hard",
+  "question": "Which Comedy movies over 90 minutes have reviews that are overall unfavorable but still explicitly praise at least one specific aspect such as acting, direction, soundtrack, visuals, or effects?"
+}

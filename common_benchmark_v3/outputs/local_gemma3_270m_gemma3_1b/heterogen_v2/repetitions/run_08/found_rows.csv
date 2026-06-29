@@ -1,0 +1,26 @@
+movie_id,title,year,runtime,director,genres,match_source
+tt0479500,Nancy Drew,2007,99.0,Andrew Fleming,"Comedy,Crime,Family",expensive_accept
+tt0417148,Snakes on a Plane,2006,105.0,David R. Ellis,"Action,Adventure,Crime",expensive_accept
+tt0801427,Six Degrees,2006,,"Eric Laneuville, Jace Alexander, Juan José Campanella, Rodrigo García, Mary Harron, David Semel, Wendey Stanzler, Tucker Gates, Tony Goldwyn, David Petrarca, Tom Verica, Dean White",Drama,expensive_accept
+tt0410162,The King Maker,2005,92.0,Lek Kitaparaporn,"Adventure,Drama",expensive_accept
+tt0462570,On Probation,2005,112.0,Damián Szifron,"Action,Comedy,Crime",expensive_accept
+tt0334541,Tremors 4: The Legend Begins,2004,101.0,S.S. Wilson,"Action,Adventure,Comedy",expensive_accept
+tt0218619,Soul Survivors,2001,84.0,Stephen Carpenter,"Horror,Mystery,Thriller",expensive_accept
+tt0284058,Do or Die,2001,,Rowan Woods,Drama,expensive_accept
+tt0120247,Surface to Air,1998,93.0,Rodney McDonald,"Action,War",expensive_accept
+tt0120706,The General,1998,124.0,John Boorman,"Biography,Crime,Drama",expensive_accept
+tt0138987,20 Dates,1998,87.0,Myles Berkowitz,"Biography,Comedy,Romance",expensive_accept
+tt0145679,Blood on Her Hands,1998,95.0,Steven Robman,"Crime,Drama",expensive_accept
+tt0120171,The Souler Opposite,1998,104.0,Bill Kalmenson,"Comedy,Drama,Romance",expensive_accept
+tt0120623,A Bug's Life,1998,95.0,"John Lasseter, Andrew Stanton","Adventure,Animation,Comedy",expensive_accept
+tt0120848,Such a Long Journey,1998,113.0,Sturla Gunnarsson,Drama,expensive_accept
+tt0125211,I Woke Up Early the Day I Died,1998,90.0,Aris Iliopulos,"Comedy,Crime,Thriller",expensive_accept
+tt0125454,Paulie,1998,91.0,John Roberts,"Adventure,Comedy,Drama",expensive_accept
+tt0149151,Still Crazy,1998,95.0,Brian Gibson,"Comedy,Drama,Music",expensive_accept
+tt0169164,Radio Arrow,1998,112.0,Luciano Ligabue,Drama,expensive_accept
+tt0184424,Eddie Izzard: Dress to Kill,1998,115.0,Lawrence Jordan,"Comedy,Documentary",expensive_accept
+tt0215174,Sex Files: Sexecutioner,1998,88.0,J.T. Finch,"Adult,Drama",expensive_accept
+tt0118882,Conceiving Ada,1997,85.0,Lynn Hershman Leeson,"Drama,Fantasy,Sci-Fi",expensive_accept
+tt0117894,Thinner,1996,93.0,Tom Holland,"Fantasy,Horror",expensive_accept
+tt0114057,Othello,1995,123.0,Oliver Parker,"Drama,Romance",expensive_accept
+tt0085178,Ardh Satya,1983,130.0,Govind Nihalani,"Crime,Drama",expensive_accept

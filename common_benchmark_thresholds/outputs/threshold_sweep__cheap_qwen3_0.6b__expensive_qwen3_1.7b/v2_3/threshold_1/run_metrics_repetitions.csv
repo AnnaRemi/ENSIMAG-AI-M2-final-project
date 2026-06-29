@@ -1,0 +1,10 @@
+repetition,implementation,mode,model,wall_seconds,engine_seconds,cpu_seconds,llm_calls,cheap_calls,expensive_calls,final_answer_rows,true_positives,false_positives,false_negatives,precision,recall,f1
+1,trummer_heterogen_v2_3_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,13.908253083005548,13.908253083005548,0.039681999999999995,9,7,2,16,0.0,16.0,13.0,0.0,0.0,0.0
+2,trummer_heterogen_v2_3_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,13.998059208039194,13.998059208039194,0.03870899999999999,9,7,2,16,0.0,16.0,13.0,0.0,0.0,0.0
+3,trummer_heterogen_v2_3_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,14.278329915949143,14.278329915949143,0.03219800000000002,9,7,2,16,0.0,16.0,13.0,0.0,0.0,0.0
+4,trummer_heterogen_v2_3_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,13.940918958978727,13.940918958978727,0.03473000000000001,9,7,2,16,0.0,16.0,13.0,0.0,0.0,0.0
+5,trummer_heterogen_v2_3_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,14.214177292073146,14.214177292073146,0.03753099999999998,9,7,2,16,0.0,16.0,13.0,0.0,0.0,0.0
+6,trummer_heterogen_v2_3_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,15.087259749998339,15.087259749998339,0.040888999999999995,9,7,2,16,0.0,16.0,13.0,0.0,0.0,0.0
+7,trummer_heterogen_v2_3_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,16.388000083039515,16.388000083039515,0.040147,9,7,2,16,0.0,16.0,13.0,0.0,0.0,0.0
+8,trummer_heterogen_v2_3_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,15.779152416973375,15.779152416973375,0.03540599999999999,9,7,2,16,0.0,16.0,13.0,0.0,0.0,0.0
+9,trummer_heterogen_v2_3_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,14.957416457938962,14.957416457938962,0.035572999999999994,9,7,2,16,0.0,16.0,13.0,0.0,0.0,0.0

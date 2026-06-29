@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
-# OAR worker: runs v1 and v2 on the same GPU node and Ollama server.
+# OAR worker: runs all common benchmark v3 implementations on one GPU/Ollama server.
 
 set -Eeuo pipefail
 
 AKER_ROOT="${AKER_ROOT:-/home/daisy/remizova/common_benchmark_v3_workspace}"
 COMMON_ROOT="$AKER_ROOT/common_benchmark_v3"
-CHEAP_MODEL="${CHEAP_MODEL:-gemma2:2b}"
-EXPENSIVE_MODELS="${EXPENSIVE_MODELS:-qwen2.5:3b}"
+CHEAP_MODEL="${CHEAP_MODEL:-gemma4:e2b}"
+EXPENSIVE_MODELS="${EXPENSIVE_MODELS:-gemma4:e4b}"
 PULL_MODELS="${PULL_MODELS:-0}"
-CHEAP_ACCEPT_THRESHOLD="${CHEAP_ACCEPT_THRESHOLD:-3.0}"
-CHEAP_REJECT_THRESHOLD="${CHEAP_REJECT_THRESHOLD:--1.5}"
+CASCADE_TARGET="${CASCADE_TARGET:-0.9}"
+CALIBRATION_BUDGET="${CALIBRATION_BUDGET:-20}"
+CHEAP_BATCH_SIZE="${CHEAP_BATCH_SIZE:-8}"
 EXPENSIVE_BATCH_SIZE="${EXPENSIVE_BATCH_SIZE:-8}"
+V2_3_EXPENSIVE_BATCH_SIZE="${V2_3_EXPENSIVE_BATCH_SIZE:-32}"
+PARALLEL_WORKERS="${PARALLEL_WORKERS:-4}"
 REQUEST_TIMEOUT="${REQUEST_TIMEOUT:-3600}"
+REPETITIONS="${REPETITIONS:-9}"
 RUN_STAMP="${RUN_STAMP:-$(date +%Y%m%d_%H%M%S)}"
 OLLAMA_BIN="${OLLAMA_BIN:-}"
 
@@ -58,7 +62,8 @@ cleanup() {
   fi
 }
 trap cleanup EXIT
-OLLAMA_HOST="$OLLAMA_HOST" nohup "$OLLAMA_BIN" serve >"$OLLAMA_LOG" 2>&1 &
+OLLAMA_HOST="$OLLAMA_HOST" OLLAMA_NUM_PARALLEL="$PARALLEL_WORKERS" \
+  nohup "$OLLAMA_BIN" serve >"$OLLAMA_LOG" 2>&1 &
 ollama_pid="$!"
 
 ready=0
@@ -87,8 +92,12 @@ for model in $models; do
   model="${model#ollama/}"
   if [[ -n "${checked[$model]:-}" ]]; then continue; fi
   checked["$model"]=1
+  echo "Checking Ollama model: $model"
   if [[ "$PULL_MODELS" == "1" ]]; then
-    OLLAMA_HOST="$OLLAMA_HOST" "$OLLAMA_BIN" pull "$model"
+    if ! OLLAMA_HOST="$OLLAMA_HOST" "$OLLAMA_BIN" pull "$model"; then
+      echo "ERROR: failed to pull Ollama model '$model'." >&2
+      exit 1
+    fi
   elif ! OLLAMA_HOST="$OLLAMA_HOST" "$OLLAMA_BIN" show "$model" >/dev/null 2>&1; then
     echo "ERROR: missing model '$model'; resubmit with PULL_MODELS=1." >&2
     exit 1
@@ -96,6 +105,9 @@ for model in $models; do
 done
 
 export COMMON_BENCHMARK_V3_HETEROGEN_V1_ROOT="$AKER_ROOT/project_Trummer/heterogen_v1"
+export COMMON_BENCHMARK_V3_HETEROGEN_V2_2_ROOT="$AKER_ROOT/project_Trummer/heterogen_v2_2"
+export COMMON_BENCHMARK_V3_HETEROGEN_V2_3_ROOT="$AKER_ROOT/project_Trummer/heterogen_v2_3"
+export COMMON_BENCHMARK_V3_HETEROGEN_V3_ROOT="$AKER_ROOT/project_Trummer/heterogen_v3"
 export COMMON_BENCHMARK_V3_HETEROGEN_V2_ROOT="$AKER_ROOT/project_Trummer/heterogen_v2"
 for expensive_model in $EXPENSIVE_MODELS; do
   console_slug="$(printf '%s__%s' "$CHEAP_MODEL" "$expensive_model" | sed 's#[/:]#_#g')"
@@ -108,10 +120,14 @@ for expensive_model in $EXPENSIVE_MODELS; do
       --api-base "$API_BASE" \
       --cheap-model "ollama/${CHEAP_MODEL#ollama/}" \
       --expensive-model "ollama/${expensive_model#ollama/}" \
-      --cheap-accept-threshold "$CHEAP_ACCEPT_THRESHOLD" \
-      --cheap-reject-threshold "$CHEAP_REJECT_THRESHOLD" \
+      --cascade-target "$CASCADE_TARGET" \
+      --calibration-budget "$CALIBRATION_BUDGET" \
+      --cheap-batch-size "$CHEAP_BATCH_SIZE" \
       --expensive-batch-size "$EXPENSIVE_BATCH_SIZE" \
+      --v2-3-expensive-batch-size "$V2_3_EXPENSIVE_BATCH_SIZE" \
+      --parallel-workers "$PARALLEL_WORKERS" \
       --request-timeout "$REQUEST_TIMEOUT" \
+      --repetitions "$REPETITIONS" \
       2>&1 | tee "$console_log"
 done
 

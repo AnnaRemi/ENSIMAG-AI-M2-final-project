@@ -1,2 +1,0 @@
-model,suql_engine_seconds,trummer_engine_seconds,trummer_time_vs_suql,suql_llm_calls,trummer_llm_calls,suql_rows,trummer_rows,suql_precision,trummer_precision,suql_recall,trummer_recall,suql_f1,trummer_f1
-gemma2:2b,0.0,0.0,,0,0,13,13,1.0,1.0,1.0,1.0,1.0,1.0

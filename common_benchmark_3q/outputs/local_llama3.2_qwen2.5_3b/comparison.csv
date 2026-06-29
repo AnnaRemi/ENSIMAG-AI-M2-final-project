@@ -1,0 +1,10 @@
+question,difficulty,implementation,method,wall_seconds,llm_calls,cheap_calls,expensive_calls,true_positives,false_positives,false_negatives,precision,recall,f1
+question_1_easy,1,suql_baseline,SUQL,27.43757899996126,24,0,24,8,0,4,1.0,0.6666666666666666,0.8
+question_1_easy,1,trummer_heterogen_v2_2_structured_pruned,V2_2,32.692760000005364,4,0,4,2,1,10,0.6666666666666666,0.16666666666666666,0.26666666666666666
+question_1_easy,1,trummer_heterogen_v3_pruned_cascade,V3,67.08762899995781,27,24,3,6,3,6,0.6666666666666666,0.5,0.5714285714285715
+question_2_medium,2,suql_baseline,SUQL,21.041867374966387,20,0,20,7,0,3,1.0,0.7,0.8235294117647058
+question_2_medium,2,trummer_heterogen_v2_2_structured_pruned,V2_2,24.231582250038628,3,0,3,3,0,7,1.0,0.3,0.4615384615384615
+question_2_medium,2,trummer_heterogen_v3_pruned_cascade,V3,51.17667012498714,22,20,2,5,0,5,1.0,0.5,0.6666666666666666
+question_3_hard,3,suql_baseline,SUQL,23.64810645801481,26,0,26,6,1,4,0.8571428571428571,0.6,0.7058823529411764
+question_3_hard,3,trummer_heterogen_v2_2_structured_pruned,V2_2,50.553520957997534,8,0,8,1,6,9,0.14285714285714285,0.1,0.11764705882352941
+question_3_hard,3,trummer_heterogen_v3_pruned_cascade,V3,68.0774302079808,30,26,4,3,5,7,0.375,0.3,0.33333333333333326
