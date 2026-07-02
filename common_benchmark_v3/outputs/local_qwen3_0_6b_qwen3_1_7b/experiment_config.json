@@ -23,6 +23,6 @@
   "max_completion_tokens": 512,
   "max_movie_block_size": 25,
   "max_review_block_size": 8,
-  "repetitions": 9,
+  "repetitions": 11,
   "dry_run": false
 }

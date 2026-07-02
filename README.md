@@ -66,33 +66,35 @@ candidates, then applies a row-wise cheap-to-expensive cascade. V2_2 adds
 structured pruning before block prompts, V2_3 batches cascade requests, and V3
 combines structured pruning with the cascade.
 
-The newest retained focused plot set uses `qwen3:0.6b -> qwen3:1.7b` with
-9 repetitions. It compares the three primary execution shapes: block join,
-row-wise cascade, and batch-wise cascade.
+The newest retained focused plot set uses `qwen3:0.6b` as the cheap model and
+`qwen3:1.7b` as the expensive model with 11 repetitions. It compares cheap-only
+block join, expensive-only block join, row-wise cascade, structured-pruned
+block join, batch-wise cascade, and structured-pruned cascade.
 
-| Metric | Block join V1 | Row-wise cascade V2 | Batch-wise cascade V2_3 |
-| --- | ---: | ---: | ---: |
-| Wall time | 19.66 s | 24.98 s | 27.01 s |
-| Total LLM calls | 14 | 60 | 10 |
-| Cheap calls | 0 | 50 | 7 |
-| Expensive calls | 14 | 10 | 3 |
-| Precision | 0.400 | 0.325 | 0.333 |
-| Recall | 0.154 | 1.000 | 0.923 |
-| F1 | 0.222 | 0.491 | 0.490 |
+| Version | Wall time | Total LLM calls | Cheap calls | Expensive calls | Final rows | Precision | Recall | F1 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Block join cheap | 11.84 s | 14 | 14 | 0 | 3.00 | 0.667 | 0.154 | 0.250 |
+| Block join expensive | 24.00 s | 14 | 0 | 14 | 5.00 | 0.400 | 0.154 | 0.222 |
+| Row-wise cascade | 33.56 s | 60 | 50 | 10 | 40.00 | 0.325 | 1.000 | 0.491 |
+| Structured pruning block join | 11.23 s | 4 | 0 | 4 | 10.00 | 0.800 | 0.615 | 0.696 |
+| Batch-wise cascade | 37.65 s | 10 | 7 | 3 | 36.00 | 0.333 | 0.923 | 0.490 |
+| Structured pruning cascade | 13.34 s | 28 | 25 | 3 | 24.91 | 0.522 | 1.000 | 0.686 |
 
-The cascades improve recall and F1 on this run. V2_3 reaches nearly the same F1
-as row-wise V2 while issuing far fewer total LLM calls, but its larger expensive
-batches make wall time slightly higher in this local result.
+Structured pruning is the strongest improvement in this local run. V2_2 gives
+the best F1 and precision while using only four expensive block-join calls. V3
+keeps perfect recall after pruning and learned-threshold routing, with much
+better F1 than the unpruned cascades. V2_3 still issues far fewer total calls
+than row-wise V2, but its large expensive fallback batches dominate wall time.
 
-![Precision, recall, and F1 for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b/metrics_precision_recall_f1.png)
+![Precision, recall, and F1 for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_all/metrics_precision_recall_f1.png)
 
-![Wall time for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b/time_bar_plot.png)
+![Wall time for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_all/time_bar_plot.png)
 
-![LLM calls for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b/calls_bar_plot.png)
+![LLM calls for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_all/calls_bar_plot.png)
 
 Source metrics:
-[`all_metrics.csv`](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b/all_metrics.csv) and
-[`summary.md`](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b/summary.md).
+[`all_metrics.csv`](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_all/all_metrics.csv) and
+[`summary.md`](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_all/summary.md).
 
 ### Trummer heterogeneous v1 versus SUQL baseline
 

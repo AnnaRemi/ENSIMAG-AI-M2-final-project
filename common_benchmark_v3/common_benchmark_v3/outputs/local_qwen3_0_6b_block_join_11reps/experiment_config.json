@@ -1,0 +1,28 @@
+{
+  "benchmark_id": "trummer_heterogen_v1_vs_v2_50_rows",
+  "question": "Which movies released in 1998 have reviews expressing an overall negative, critical, or strongly unfavorable opinion of the movie?",
+  "implementations": [
+    "heterogen_v1",
+    "heterogen_v2",
+    "heterogen_v2_2",
+    "heterogen_v2_3",
+    "heterogen_v3"
+  ],
+  "cheap_model": "ollama/qwen3:0.6b",
+  "expensive_model": "ollama/qwen3:0.6b",
+  "cascade_target": 0.9,
+  "calibration_budget": 20,
+  "v2_manual_confidence_threshold": null,
+  "cheap_batch_size": 8,
+  "expensive_batch_size": 8,
+  "v2_3_expensive_batch_size": 32,
+  "max_expensive_calls": 4,
+  "parallel_workers": 4,
+  "request_timeout": 3600,
+  "token_threshold": 4096,
+  "max_completion_tokens": 512,
+  "max_movie_block_size": 25,
+  "max_review_block_size": 8,
+  "repetitions": 11,
+  "dry_run": false
+}

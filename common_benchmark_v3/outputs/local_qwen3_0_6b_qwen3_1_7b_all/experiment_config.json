@@ -1,0 +1,12 @@
+{
+  "cheap_block_dir": "common_benchmark_v3/outputs/local_qwen3_0_6b_block_join_11reps",
+  "heterogen_dir": "common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_11reps_all",
+  "plotted_implementations": [
+    "cheap_block_join",
+    "trummer_heterogen_v1",
+    "trummer_heterogen_v2_cascade",
+    "trummer_heterogen_v2_2_structured_pruned",
+    "trummer_heterogen_v2_3_batched_cascade",
+    "trummer_heterogen_v3_pruned_cascade"
+  ]
+}

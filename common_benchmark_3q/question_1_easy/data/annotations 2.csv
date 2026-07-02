@@ -1,0 +1,61 @@
+movie_id,source_row,title,year,runtime,genres,source_sentiment,structured_match,semantic_label,ground_truth,annotation_source,evidence_excerpt,annotation_rationale
+tt0188453,12686,Birthday Girl,2001,93,"Comedy,Crime,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0230011,12972,Atlantis: The Lost Empire,2001,95,"Action,Adventure,Animation",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0242798,201,Proximity,2001,100,"Action,Crime,Mystery",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0242998,231,Valentine,2001,96,"Horror,Mystery,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0245407,289,Crush,2001,108,"Comedy,Drama,Romance",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0248928,12854,The River,2001,104,"Drama,Romance",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0253335,285,No Turning Back,2001,98,"Crime,Drama,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0253840,170,The Triumph of Love,2001,112,"Comedy,Romance",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0255798,273,The Animal,2001,84,"Comedy,Sci-Fi",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0256692,363,Chori Chori Chupke Chupke,2001,165,"Comedy,Drama,Musical",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0259054,227,Ordinary Sinner,2001,91,"Drama,Romance",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0259711,13000,Vanilla Sky,2001,136,"Fantasy,Mystery,Romance",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0262418,304,Farligt förflutet,2001,80,"Action,Crime,Drama",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0264616,12826,Frailty,2001,100,"Crime,Drama,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0270419,12886,The Human Body,2001,40,"Documentary,Short",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0272069,238,Demonicus,2001,72,Horror,negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0286098,13020,Zu Warriors,2001,104,"Action,Fantasy",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0290661,13092,Dog Days,2001,121,Drama,positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0300533,280,Survivor Series,2001,156,"Action,Sport",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0303397,12551,Soft for Digging,2001,74,"Drama,Horror,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0307385,13095,Rivers and Tides,2001,90,Documentary,positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0325597,176,The Captives,2001,71,"Drama,Horror,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: year is 2001 and the source sentiment label is negative.
+tt0385586,12831,Cat Soup,2001,34,"Animation,Comedy,Fantasy",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0502165,12582,12:00 a.m.-1:00 a.m.,2001,60,"Action,Crime,Drama",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is positive.
+tt0000010,12506,Leaving the Factory,1895,1,"Documentary,Short",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0042752,12508,Trio,1950,91,"Drama,Romance",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0071266,12511,Caged Heat,1974,80,"Action,Comedy,Drama",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0076191,69,The Incredible Melting Man,1977,86,"Horror,Sci-Fi",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0076683,12501,The Sentinel,1977,92,Horror,positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0079813,12515,Rock 'n' Roll High School,1979,93,"Comedy,Music",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0080520,12517,Cheech and Chong's Next Movie,1980,99,"Comedy,Crime",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0084021,45,Grease 2,1982,115,"Comedy,Music,Musical",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0087499,80,"The Jerk, Too",1984,95,Comedy,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0087507,12500,Johnny Dangerously,1984,90,"Comedy,Crime",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0088176,12513,The Stone Boy,1984,91,Drama,positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0091631,66,Nightmare Weekend,1986,85,"Horror,Sci-Fi",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0096870,68,Going Overboard,1989,99,Comedy,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0110099,12502,I.Q.,1994,100,"Comedy,Romance",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0114129,12509,Picture Bride,1994,94,"Drama,Romance",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0117283,74,The Pallbearer,1996,98,"Comedy,Romance",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0119700,63,Moonbase,1997,89,"Action,Sci-Fi",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0120157,12512,Soldier,1998,99,"Action,Drama,Sci-Fi",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0120848,12510,Such a Long Journey,1998,113,Drama,positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0184463,62,The Fear: Resurrection,1999,87,Horror,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0201538,43,Les convoyeurs attendent,1999,94,"Comedy,Drama",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0207823,12507,A Vow to Cherish,1999,84,"Drama,Family",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0252028,56,Surviving Christmas,2004,91,"Comedy,Romance",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0256639,12514,The Beaver Trilogy,2000,83,"Comedy,Documentary,Drama",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0268380,12505,Ice Age,2002,81,"Adventure,Animation,Comedy",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0319147,25,Casomai,2002,114,"Comedy,Romance",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0334541,1,Tremors 4: The Legend Begins,2004,101,"Action,Adventure,Comedy",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0408309,78,"Carmilla, the Lesbian Vampire",2004,85,"Drama,Horror",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0430768,19,Wild Tigers I Have Known,2006,88,Drama,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0444628,59,Fay Grim,2006,118,"Action,Comedy,Thriller",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0453671,79,Garam Masala,2005,146,"Comedy,Romance",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0462346,12503,How to Eat Fried Worms,2006,84,"Comedy,Family",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0479500,12518,Nancy Drew,2007,99,"Comedy,Crime,Family",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0806203,4,Carriers,2009,84,"Adventure,Drama,Horror",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0810945,12516,Live!,2007,96,Drama,positive,False,False,0,IMDb 50K source sentiment split,,Excluded by year.
+tt0815241,75,Religulous,2008,101,"Comedy,Documentary,War",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by year.
