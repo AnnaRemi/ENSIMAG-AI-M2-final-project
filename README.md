@@ -122,6 +122,15 @@ cascade gets perfect recall by first screening candidates with the cheap model
 and sending only 3 calls to the expensive model, but it accepts more false
 positives, so its precision and F1 are lower than V2_2.
 
+![Precision, recall, and F1 for SUQL versus the best heterogeneous variants](presentations/suql_vs_best_heterogen_qwen3/suql_vs_best_metrics.png)
+
+![Wall time for SUQL versus the best heterogeneous variants](presentations/suql_vs_best_heterogen_qwen3/suql_vs_best_time.png)
+
+![LLM calls for SUQL versus the best heterogeneous variants](presentations/suql_vs_best_heterogen_qwen3/suql_vs_best_calls.png)
+
+Source metrics:
+[`suql_vs_best_heterogen_qwen3.csv`](presentations/suql_vs_best_heterogen_qwen3/suql_vs_best_heterogen_qwen3.csv).
+
 `common_benchmark/` retains the earlier 16-row multi-model comparison. It is
 useful for model-sensitivity analysis, while `common_benchmark_v2/` is the
 preferred mixed-year comparison because the Trummer predicate must enforce the
