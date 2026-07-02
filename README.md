@@ -61,40 +61,40 @@ batches.
 2. `movie_id = tconst`;
 3. the review expresses a negative or strongly critical opinion.
 
-V1 sends bounded cross-product blocks to one model. V2 first creates exact-ID
-candidates, then applies a row-wise cheap-to-expensive cascade. V2_2 adds
-structured pruning before block prompts, V2_3 batches cascade requests, and V3
-combines structured pruning with the cascade.
+The focused comparison below keeps only four model-use patterns:
+cheap-only block join, expensive-only block join, row-wise cascading, and
+batch-wise cascading. The cascade variants first create exact-ID candidates,
+score them with the cheap model, and send uncertain candidates to the expensive
+model. The batch-wise variant keeps the same logic but groups cheap scoring and
+expensive fallback requests into batches.
 
-The newest retained focused plot set uses `qwen3:0.6b` as the cheap model and
-`qwen3:1.7b` as the expensive model with 11 repetitions. It compares cheap-only
-block join, expensive-only block join, row-wise cascade, structured-pruned
-block join, batch-wise cascade, and structured-pruned cascade.
+The retained local plot set uses `qwen3:0.6b` as the cheap model and
+`qwen3:1.7b` as the expensive model with 11 repetitions.
 
 | Version | Wall time | Total LLM calls | Cheap calls | Expensive calls | Final rows | Precision | Recall | F1 |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Block join cheap | 11.84 s | 14 | 14 | 0 | 3.00 | 0.667 | 0.154 | 0.250 |
 | Block join expensive | 24.00 s | 14 | 0 | 14 | 5.00 | 0.400 | 0.154 | 0.222 |
 | Row-wise cascade | 33.56 s | 60 | 50 | 10 | 40.00 | 0.325 | 1.000 | 0.491 |
-| Structured pruning block join | 11.23 s | 4 | 0 | 4 | 10.00 | 0.800 | 0.615 | 0.696 |
 | Batch-wise cascade | 37.65 s | 10 | 7 | 3 | 36.00 | 0.333 | 0.923 | 0.490 |
-| Structured pruning cascade | 13.34 s | 28 | 25 | 3 | 24.91 | 0.522 | 1.000 | 0.686 |
 
-Structured pruning is the strongest improvement in this local run. V2_2 gives
-the best F1 and precision while using only four expensive block-join calls. V3
-keeps perfect recall after pruning and learned-threshold routing, with much
-better F1 than the unpruned cascades. V2_3 still issues far fewer total calls
-than row-wise V2, but its large expensive fallback batches dominate wall time.
+The cheap-only block join is fastest, but it misses most true matches. The
+expensive-only block join is slower and does not improve recall on this task,
+which suggests that prompt shape and candidate construction matter as much as
+model size. Row-wise cascading gives the best recall and the highest F1 among
+these four variants, but it is call-heavy: 50 cheap calls plus 10 expensive
+calls. Batch-wise cascading keeps almost the same F1 while reducing total calls
+from 60 to 10. Its runtime is still high because the expensive fallback batches
+dominate wall time.
 
-![Precision, recall, and F1 for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_all/metrics_precision_recall_f1.png)
+![Precision, recall, and F1 for four Trummer variants](presentations/heterogen_four_way_plots/four_way_metrics.png)
 
-![Wall time for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_all/time_bar_plot.png)
+![Wall time for four Trummer variants](presentations/heterogen_four_way_plots/four_way_time.png)
 
-![LLM calls for Trummer variants](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_all/calls_bar_plot.png)
+![LLM calls for four Trummer variants](presentations/heterogen_four_way_plots/four_way_calls.png)
 
 Source metrics:
-[`all_metrics.csv`](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_all/all_metrics.csv) and
-[`summary.md`](common_benchmark_v3/outputs/local_qwen3_0_6b_qwen3_1_7b_all/summary.md).
+[`four_way_metrics.csv`](presentations/heterogen_four_way_plots/four_way_metrics.csv).
 
 ### Trummer heterogeneous v1 versus SUQL baseline
 
