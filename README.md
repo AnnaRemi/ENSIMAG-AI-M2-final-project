@@ -96,35 +96,31 @@ dominate wall time.
 Source metrics:
 [`four_way_metrics.csv`](presentations/heterogen_four_way_plots/four_way_metrics.csv).
 
-### Trummer heterogeneous v1 versus SUQL baseline
+### SUQL baseline versus best heterogeneous variants
 
-`common_benchmark_v2/` compares the fixed-output heterogeneous v1 operator with
-the SUQL baseline on the same 50 rows and 13 ground-truth movie IDs.
+The last local qwen3 comparison keeps SUQL and the two strongest heterogeneous
+plans: structured-pruning block join (V2_2) and structured-pruning cascade
+(V3). SUQL and every expensive semantic stage use `qwen3:1.7b`; the structured
+parser and cheap cascade stage use `qwen3:0.6b`. Each experiment is run 9 times
+and numeric metrics are averaged.
 
-For the retained local `qwen2.5:3b` experiment:
+| Version | Wall time | Total LLM calls | Cheap calls | Expensive calls | Final rows | Precision | Recall | F1 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| SUQL baseline | 148.37 s | 25 | 0 | 25 | 3.44 | 1.000 | 0.265 | 0.416 |
+| Structured pruning block join | 8.33 s | 4 | 0 | 4 | 11.00 | 0.818 | 0.692 | 0.750 |
+| Structured pruning cascade | 14.28 s | 28 | 25 | 3 | 24.00 | 0.542 | 1.000 | 0.703 |
 
-| Metric | SUQL baseline | Heterogeneous v1 |
-| --- | ---: | ---: |
-| Engine time | 47.83 s | 203.59 s |
-| LLM calls | 25 | 14 |
-| True positives | 13 | 2 |
-| False positives | 0 | 5 |
-| False negatives | 0 | 11 |
-| Precision | 1.000 | 0.286 |
-| Recall | 1.000 | 0.154 |
-| F1 | 1.000 | 0.200 |
+SUQL is very precise in this run: the rows it returns are correct. Its weakness
+is recall. It evaluates 25 reviews after the structured year filter but returns
+only about 3.4 final rows on average, so it misses most of the 13 ground-truth
+movies.
 
-All 14 v1 requests returned valid structured JSON and none overflowed.
-Therefore, this run's low quality is attributable to semantic block decisions,
-not to the former positional-output parsing problem. SUQL performed more calls,
-but each call evaluated one review after the structured year filter; v1 used
-fewer but much larger block prompts over all 50 movies and reviews.
-
-![SUQL versus Trummer quality and workload](common_benchmark_v2/outputs/qwen2.5_3b/workload_quality_comparison.png)
-
-Source metrics:
-[`comparison.csv`](common_benchmark_v2/outputs/qwen2.5_3b/comparison.csv) and
-[`join_stats.csv`](common_benchmark_v2/outputs/qwen2.5_3b/trummer_heterogen_v1/join_stats.csv).
+The structured-pruning block join is the best overall tradeoff. Deterministic
+year and ID pruning reduces the semantic work to 4 expensive block calls, which
+makes it much faster than SUQL while giving the highest F1. The structured
+cascade gets perfect recall by first screening candidates with the cheap model
+and sending only 3 calls to the expensive model, but it accepts more false
+positives, so its precision and F1 are lower than V2_2.
 
 `common_benchmark/` retains the earlier 16-row multi-model comparison. It is
 useful for model-sensitivity analysis, while `common_benchmark_v2/` is the
