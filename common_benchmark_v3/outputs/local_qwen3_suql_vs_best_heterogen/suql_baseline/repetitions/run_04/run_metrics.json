@@ -1,0 +1,20 @@
+{
+  "implementation": "suql_baseline",
+  "mode": "llm",
+  "model": "ollama/qwen3:1.7b",
+  "cheap_model": "",
+  "expensive_model": "ollama/qwen3:1.7b",
+  "cpu_seconds": 0.43595900000000043,
+  "engine_seconds": 157.20422700000927,
+  "wall_seconds": 157.20937287493143,
+  "llm_calls": 25,
+  "block_join_calls": 0,
+  "cheap_calls": 0,
+  "expensive_calls": 25,
+  "final_answer_rows": 2,
+  "found_movie_ids": [
+    "tt0118998",
+    "tt0120706"
+  ],
+  "structured_candidates": 25
+}

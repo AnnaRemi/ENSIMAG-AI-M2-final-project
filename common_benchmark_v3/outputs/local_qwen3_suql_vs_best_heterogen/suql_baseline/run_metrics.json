@@ -1,0 +1,31 @@
+{
+  "implementation": "suql_baseline",
+  "mode": "llm",
+  "model": "ollama/qwen3:1.7b",
+  "cheap_model": "",
+  "expensive_model": "ollama/qwen3:1.7b",
+  "cpu_seconds": 0.43270433333333336,
+  "engine_seconds": 148.36126115257179,
+  "wall_seconds": 148.36783108335092,
+  "llm_calls": 25.0,
+  "block_join_calls": 0.0,
+  "cheap_calls": 0.0,
+  "expensive_calls": 25.0,
+  "final_answer_rows": 3.4444444444444446,
+  "found_movie_ids": [
+    "tt0118998",
+    "tt0120247",
+    "tt0127901",
+    "tt0158653"
+  ],
+  "structured_candidates": 25.0,
+  "true_positives": 3.4444444444444446,
+  "false_positives": 0.0,
+  "false_negatives": 9.555555555555555,
+  "precision": 1.0,
+  "recall": 0.26495726495726496,
+  "f1": 0.41606753812636166,
+  "repetitions": 9,
+  "repetition_metrics_file": "run_metrics_repetitions.csv",
+  "repetition_source": "mean"
+}

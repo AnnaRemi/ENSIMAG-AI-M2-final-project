@@ -257,6 +257,7 @@ def _build_sqlite(df: pd.DataFrame) -> sqlite3.Connection:
 # Simple in-process cache keyed on (review_hash, question) to avoid
 # repeat LLM calls for the same (text, question) pair (paper §5.3).
 _answer_cache: dict[str, str] = {}
+YES_NO_RE = re.compile(r"\b(yes|no)\b", re.IGNORECASE)
 
 ANSWER_SYSTEM = textwrap.dedent("""
 You are evaluating a single movie review to answer a question about it.
@@ -293,11 +294,15 @@ def answer_fn(review_text: str, question: str) -> str:
         result = "No"
     else:
         prompt = f"Review:\n{review_text[:1500]}\n\nQuestion: {question}"
-        result = _llm_call(ANSWER_SYSTEM, prompt, max_tokens=20)
+        result = _llm_call(ANSWER_SYSTEM, prompt, max_tokens=200)
         # Normalise yes/no
         low = result.lower().strip().rstrip(".")
         if low in ("yes", "no"):
             result = low.capitalize()
+        else:
+            match = YES_NO_RE.search(result)
+            if match:
+                result = match.group(1).capitalize()
 
     _answer_cache[key] = result
     return result
