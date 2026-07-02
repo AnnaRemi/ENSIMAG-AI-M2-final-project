@@ -19,21 +19,10 @@ FOCUS_IMPLEMENTATIONS = [
     "trummer_heterogen_v2_3_batched_cascade",
 ]
 FOCUS_LABELS = {
-    "suql_baseline": "SUQL\nbaseline",
     "trummer_heterogen_v1": "Block join",
     "trummer_heterogen_v2_cascade": "Row-wise cascade",
-    "trummer_heterogen_v2_2_structured_pruned": "Structured pruning\nblock join",
     "trummer_heterogen_v2_3_batched_cascade": "Batch-wise cascade",
-    "trummer_heterogen_v3_pruned_cascade": "Structured pruning\ncascade",
 }
-FALLBACK_FOCUS_ORDER = [
-    "suql_baseline",
-    "trummer_heterogen_v2_2_structured_pruned",
-    "trummer_heterogen_v3_pruned_cascade",
-    "trummer_heterogen_v1",
-    "trummer_heterogen_v2_cascade",
-    "trummer_heterogen_v2_3_batched_cascade",
-]
 QUALITY_COLORS = {
     "precision": "#2878B5",
     "recall": "#E07A1F",
@@ -60,35 +49,20 @@ def main() -> None:
         run = json.loads(path.read_text())
         found = set(run["found_movie_ids"])
         tp, fp, fn, precision, recall, f1 = quality_from_run(run, found, truth)
-        wall_seconds = float(run["wall_seconds"])
-        cheap_calls = float(run.get("cheap_calls", 0))
-        expensive_calls = float(run.get("expensive_calls", 0))
-        cheap_seconds = float(run.get("cheap_seconds", 0.0))
-        expensive_seconds = float(run.get("expensive_seconds", 0.0))
-        cheap_time_percent = float(run.get("cheap_time_percent", 0.0))
-        expensive_time_percent = float(run.get("expensive_time_percent", 0.0))
-        if (
-            expensive_calls > 0
-            and cheap_calls == 0
-            and cheap_seconds == 0
-            and expensive_seconds == 0
-        ):
-            expensive_seconds = wall_seconds
-            expensive_time_percent = 100.0
         rows.append({
             "implementation": run["implementation"],
             "mode": run["mode"],
             "model": run["model"],
             "cheap_model": run.get("cheap_model", ""),
             "expensive_model": run.get("expensive_model", ""),
-            "wall_seconds": wall_seconds,
+            "wall_seconds": run["wall_seconds"],
             "llm_calls": float(run["llm_calls"]),
-            "cheap_calls": cheap_calls,
-            "expensive_calls": expensive_calls,
-            "cheap_seconds": cheap_seconds,
-            "expensive_seconds": expensive_seconds,
-            "cheap_time_percent": cheap_time_percent,
-            "expensive_time_percent": expensive_time_percent,
+            "cheap_calls": float(run.get("cheap_calls", 0)),
+            "expensive_calls": float(run.get("expensive_calls", 0)),
+            "cheap_seconds": run.get("cheap_seconds", 0.0),
+            "expensive_seconds": run.get("expensive_seconds", 0.0),
+            "cheap_time_percent": run.get("cheap_time_percent", 0.0),
+            "expensive_time_percent": run.get("expensive_time_percent", 0.0),
             "cheap_early_accepts": float(run.get("cheap_early_accepts", 0)),
             "cheap_early_rejects": float(run.get("cheap_early_rejects", 0)),
             "expensive_candidates": float(run.get("expensive_candidates", 0)),
@@ -159,9 +133,9 @@ def write_markdown(frame: pd.DataFrame, path: Path) -> None:
     indexed = frame.set_index("implementation")
     lines += [
         "",
-        "SUQL applies structured SQL filters before calling answer() on the remaining reviews.",
-        "The structured-pruned Trummer variants report their original input size and then apply deterministic year and ID pruning before semantic model calls.",
-        "For cascade variants, `llm_calls = cheap_calls + expensive_calls`; non-cascade variants use expensive calls only.",
+        "The baseline block-join and cascade implementations receive all 50 movies and all 50 reviews.",
+        "The structured-pruned variant reports its original input size and then applies deterministic year and ID pruning before the LLM.",
+        "For cascade variants, `llm_calls = cheap_calls + expensive_calls`; block-join variants use block calls only.",
         "",
         "## Routing interpretation",
         "",
@@ -218,12 +192,13 @@ def plot_requested(frame: pd.DataFrame, outputs_dir: Path) -> None:
 
 def focus_frame(frame: pd.DataFrame) -> pd.DataFrame:
     indexed = frame.set_index("implementation")
-    if all(item in indexed.index for item in FOCUS_IMPLEMENTATIONS):
-        present = FOCUS_IMPLEMENTATIONS
-    else:
-        present = [item for item in FALLBACK_FOCUS_ORDER if item in indexed.index]
-    if not present:
-        raise SystemExit(f"No plottable implementations found in {frame}")
+    missing = [item for item in FOCUS_IMPLEMENTATIONS if item not in indexed.index]
+    if missing:
+        raise SystemExit(
+            "Missing run_metrics.json for focused plots: "
+            + ", ".join(FOCUS_LABELS[item] for item in missing)
+        )
+    present = FOCUS_IMPLEMENTATIONS
     focus = indexed.loc[present].copy()
     focus["plot_label"] = [FOCUS_LABELS[item] for item in present]
     return focus
@@ -276,10 +251,6 @@ def plot_time(frame: pd.DataFrame, path: Path) -> None:
         cheap_seconds,
         expensive_seconds,
     )
-    positive_wall = wall[wall > 0]
-    if len(positive_wall) and max(positive_wall) / min(positive_wall) > 5:
-        plot_time_horizontal(labels, wall, cheap_part, expensive_part, cheap_pct, expensive_pct, path)
-        return
     fig, ax = plt.subplots(figsize=(9, 5.5))
     cheap_bars = ax.bar(labels, cheap_part, color=CHEAP_COLOR, label="Cheap-model time")
     expensive_bars = ax.bar(
@@ -306,70 +277,6 @@ def plot_time(frame: pd.DataFrame, path: Path) -> None:
     ax.set_title("Wall time split by cheap and expensive model-call time")
     ax.legend()
     ax.grid(axis="y", alpha=0.25)
-    finish(fig, path)
-
-
-def plot_time_horizontal(
-    labels: list[str],
-    wall: np.ndarray,
-    cheap_part: np.ndarray,
-    expensive_part: np.ndarray,
-    cheap_pct: np.ndarray,
-    expensive_pct: np.ndarray,
-    path: Path,
-) -> None:
-    y = np.arange(len(labels))
-    fig, ax = plt.subplots(figsize=(10.5, 5.5))
-    cheap_bars = ax.barh(
-        y,
-        cheap_part,
-        color=CHEAP_COLOR,
-        label="Cheap-model time",
-    )
-    expensive_bars = ax.barh(
-        y,
-        expensive_part,
-        left=cheap_part,
-        color=EXPENSIVE_COLOR,
-        label="Expensive-model time",
-    )
-    xmax = max(wall) * 1.18 if len(wall) and max(wall) > 0 else 1
-    label_x = xmax * 0.54
-    for index, total in enumerate(wall):
-        if cheap_part[index] > 0 and expensive_part[index] > 0:
-            split_label = f"{cheap_pct[index]:.0f}% cheap / {expensive_pct[index]:.0f}% expensive"
-        elif cheap_part[index] > 0:
-            split_label = f"{cheap_pct[index]:.0f}% cheap"
-        else:
-            split_label = f"{expensive_pct[index]:.0f}% expensive"
-        ax.text(
-            label_x,
-            index,
-            split_label,
-            va="center",
-            ha="left",
-            color="white" if total > label_x else "black",
-            fontweight="bold",
-            bbox=(
-                None
-                if total > label_x
-                else {"facecolor": "white", "edgecolor": "none", "alpha": 0.75, "pad": 1.5}
-            ),
-        )
-        ax.text(
-            total + xmax * 0.012,
-            index,
-            f"{total:.2f}s",
-            va="center",
-            fontweight="bold",
-        )
-    ax.set_yticks(y, labels)
-    ax.invert_yaxis()
-    ax.set_xlim(0, xmax)
-    ax.set_xlabel("Wall time (seconds)")
-    ax.set_title("Wall time split by cheap and expensive model-call time")
-    ax.legend(loc="lower right")
-    ax.grid(axis="x", alpha=0.25)
     finish(fig, path)
 
 
@@ -416,42 +323,6 @@ def annotate_time_segments(
             fontweight="bold",
             fontsize=9,
         )
-
-
-def annotate_horizontal_time_segments(
-    ax: plt.Axes,
-    bars,
-    values: np.ndarray,
-    lefts: np.ndarray,
-    percentages: np.ndarray,
-    label: str,
-    xmax: float,
-) -> None:
-    for bar, value, left, percent in zip(bars, values, lefts, percentages):
-        if value <= 0:
-            continue
-        text = f"{percent:.0f}% {label}"
-        if value >= xmax * 0.1:
-            ax.text(
-                left + value / 2,
-                bar.get_y() + bar.get_height() / 2,
-                text,
-                ha="center",
-                va="center",
-                color="white",
-                fontweight="bold",
-                fontsize=9,
-            )
-        else:
-            ax.text(
-                left + value + xmax * 0.012,
-                bar.get_y() + bar.get_height() / 2,
-                text,
-                ha="left",
-                va="center",
-                color="black",
-                fontsize=9,
-            )
 
 
 def plot_calls(frame: pd.DataFrame, path: Path) -> None:
