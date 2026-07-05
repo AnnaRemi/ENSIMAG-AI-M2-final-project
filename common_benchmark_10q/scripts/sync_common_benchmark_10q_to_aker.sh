@@ -34,23 +34,26 @@ ssh "$AKER_HOST" \
     '$AKER_ROOT/project Trummer/heterogen_v2_3' \
     '$AKER_ROOT/project Trummer/heterogen_v3'"
 
-RSYNC=(rsync -av --protect-args)
+RSYNC=(rsync -av)
+remote_path() {
+  printf "%s:%q" "$AKER_HOST" "$1"
+}
 
 "${RSYNC[@]}" \
   --exclude outputs/ --exclude logs/ --exclude jobs/ --exclude .mplconfig/ --exclude __pycache__/ \
-  "$COMMON/" "$AKER_HOST:$AKER_ROOT/common_benchmark_10q/"
+  "$COMMON/" "$(remote_path "$AKER_ROOT/common_benchmark_10q/")"
 "${RSYNC[@]}" \
   --exclude __pycache__/ \
-  "$SUQL_BASELINE/" "$AKER_HOST:$AKER_ROOT/project SUQL/src_baseline/"
+  "$SUQL_BASELINE/" "$(remote_path "$AKER_ROOT/project SUQL/src_baseline/")"
 "${RSYNC[@]}" \
   --exclude outputs/ --exclude __pycache__/ \
-  "$TRUMMER_ROOT/heterogen_v2_2/" "$AKER_HOST:$AKER_ROOT/project Trummer/heterogen_v2_2/"
+  "$TRUMMER_ROOT/heterogen_v2_2/" "$(remote_path "$AKER_ROOT/project Trummer/heterogen_v2_2/")"
 "${RSYNC[@]}" \
   --exclude outputs/ --exclude __pycache__/ \
-  "$TRUMMER_ROOT/heterogen_v2_3/" "$AKER_HOST:$AKER_ROOT/project Trummer/heterogen_v2_3/"
+  "$TRUMMER_ROOT/heterogen_v2_3/" "$(remote_path "$AKER_ROOT/project Trummer/heterogen_v2_3/")"
 "${RSYNC[@]}" \
   --exclude outputs/ --exclude __pycache__/ \
-  "$TRUMMER_ROOT/heterogen_v3/" "$AKER_HOST:$AKER_ROOT/project Trummer/heterogen_v3/"
+  "$TRUMMER_ROOT/heterogen_v3/" "$(remote_path "$AKER_ROOT/project Trummer/heterogen_v3/")"
 
 ssh "$AKER_HOST" "chmod +x '$AKER_ROOT/common_benchmark_10q/scripts/'*.sh"
 ssh "$AKER_HOST" \
