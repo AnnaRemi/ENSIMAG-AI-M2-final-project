@@ -38,6 +38,8 @@ The run writes:
 - `aggregate.csv`
 - `summary.md`
 - `metrics_precision_recall_f1.png`
+- `quality_by_question.png`
+- `question_quality_plots/q*_quality.png`
 - `time_bar_plot.png`
 - `calls_bar_plot.png`
 

@@ -141,6 +141,8 @@ def main() -> None:
     aggregate.to_csv(outputs_dir / "aggregate.csv", index=False)
     write_summary(outputs_dir, frame, aggregate)
     plot_quality(frame, outputs_dir / "metrics_precision_recall_f1.png")
+    plot_quality_by_question(frame, outputs_dir / "quality_by_question.png")
+    plot_quality_per_question(frame, outputs_dir / "question_quality_plots")
     plot_metric(frame, "wall_seconds", "Mean wall time by question", "Seconds", outputs_dir / "time_bar_plot.png")
     plot_metric(frame, "llm_calls", "Mean LLM calls by question", "Calls", outputs_dir / "calls_bar_plot.png")
     print(frame.to_string(index=False))
@@ -224,6 +226,83 @@ def plot_quality(frame: pd.DataFrame, path: Path) -> None:
     fig.tight_layout()
     fig.savefig(path, dpi=180)
     plt.close(fig)
+
+
+def plot_quality_by_question(frame: pd.DataFrame, path: Path) -> None:
+    methods = [method for method in METHOD_ORDER if method in set(frame["method"].astype(str))]
+    questions = list(frame.sort_values("question_index")["question"].drop_duplicates())
+    labels = [f"Q{index}" for index in range(1, len(questions) + 1)]
+    x = np.arange(len(questions))
+    width = min(0.18, 0.75 / max(len(methods), 1))
+    center = (len(methods) - 1) / 2
+    fig, axes = plt.subplots(3, 1, figsize=(13, 11), sharex=True)
+    for ax, column, title in zip(
+        axes,
+        ["precision", "recall", "f1"],
+        ["Precision by question", "Recall by question", "F1 by question"],
+    ):
+        for index, method in enumerate(methods):
+            subset = (
+                frame[frame["method"].astype(str).eq(method)]
+                .set_index("question")
+                .reindex(questions)
+            )
+            ax.bar(
+                x + (index - center) * width,
+                subset[column],
+                width,
+                label=method,
+                color=COLORS[method],
+            )
+        ax.set_ylim(0, 1.05)
+        ax.set_ylabel(column.title())
+        ax.set_title(title)
+        ax.grid(axis="y", alpha=0.25)
+    axes[-1].set_xticks(x, labels)
+    axes[0].legend(ncol=len(methods))
+    fig.tight_layout()
+    fig.savefig(path, dpi=180)
+    plt.close(fig)
+
+
+def plot_quality_per_question(frame: pd.DataFrame, output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    methods = [method for method in METHOD_ORDER if method in set(frame["method"].astype(str))]
+    metrics = ["precision", "recall", "f1"]
+    width = 0.24
+    x = np.arange(len(metrics))
+    for _, question_frame in frame.groupby("question", sort=False, observed=True):
+        question = str(question_frame["question"].iloc[0])
+        question_index = int(question_frame["question_index"].iloc[0])
+        ordered = (
+            question_frame.set_index("method")
+            .reindex(methods)
+            .reset_index()
+        )
+        fig, ax = plt.subplots(figsize=(8, 4.5))
+        center = (len(methods) - 1) / 2
+        for index, method in enumerate(methods):
+            row = ordered[ordered["method"].astype(str).eq(method)]
+            values = []
+            for metric in metrics:
+                value = row[metric].iloc[0] if not row.empty else 0.0
+                values.append(float(value) if pd.notna(value) else 0.0)
+            ax.bar(
+                x + (index - center) * width,
+                values,
+                width,
+                label=method,
+                color=COLORS[method],
+            )
+        ax.set_xticks(x, ["Precision", "Recall", "F1"])
+        ax.set_ylim(0, 1.05)
+        ax.set_ylabel("Score")
+        ax.set_title(f"Q{question_index}: quality metrics")
+        ax.grid(axis="y", alpha=0.25)
+        ax.legend(ncol=2)
+        fig.tight_layout()
+        fig.savefig(output_dir / f"q{question_index:02d}_{question}_quality.png", dpi=180)
+        plt.close(fig)
 
 
 def plot_metric(frame: pd.DataFrame, column: str, title: str, ylabel: str, path: Path) -> None:
