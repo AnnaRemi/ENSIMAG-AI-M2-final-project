@@ -9,8 +9,6 @@ import sys
 from pathlib import Path
 
 from common import ROOT
-
-sys.path.insert(0, str(ROOT.parent / "common_benchmark_v3" / "scripts"))
 from repetitions import run_repeated
 
 
