@@ -1,0 +1,38 @@
+{
+  "benchmark_id": "common_benchmark_10q_q09",
+  "difficulty": 5,
+  "difficulty_label": "very_hard",
+  "question": "Which Sci-Fi movies over 90 minutes have reviews expressing an overall negative opinion?",
+  "semantic_question": "Does this review express an overall negative opinion of the movie?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Sci-Fi%' AND runtime > 90 AND answer(review, 'Does this review express an overall negative opinion of the movie?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Sci-Fi"
+    },
+    {
+      "column": "runtime",
+      "op": "gt",
+      "value": "90"
+    }
+  ],
+  "semantic_task": "overall negative sentiment classification",
+  "annotation_policy": "IMDb source sentiment label; no evaluated LLM used",
+  "row_count": 60,
+  "structured_candidate_count": 24,
+  "ground_truth_movie_ids": [
+    "tt0045064",
+    "tt0065738",
+    "tt0097874",
+    "tt0098375",
+    "tt0120764",
+    "tt0295725",
+    "tt0343818",
+    "tt0369226",
+    "tt0377713",
+    "tt0383353",
+    "tt0417191",
+    "tt0445161"
+  ]
+}

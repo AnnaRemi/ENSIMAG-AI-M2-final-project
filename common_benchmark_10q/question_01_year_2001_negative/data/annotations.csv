@@ -1,0 +1,61 @@
+movie_id,source_row,title,year,runtime,genres,source_sentiment,structured_match,semantic_label,ground_truth,annotation_source,evidence_excerpt,annotation_rationale
+tt0188453,12686,Birthday Girl,2001,93,"Comedy,Crime,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0200374,51,Shaka Zulu: The Citadel,2001,179,Drama,negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0230011,12972,Atlantis: The Lost Empire,2001,95,"Action,Adventure,Animation",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0242798,201,Proximity,2001,100,"Action,Crime,Mystery",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0242998,231,Valentine,2001,96,"Horror,Mystery,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0245407,289,Crush,2001,108,"Comedy,Drama,Romance",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0248928,12854,The River,2001,104,"Drama,Romance",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0253335,285,No Turning Back,2001,98,"Crime,Drama,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0253840,170,The Triumph of Love,2001,112,"Comedy,Romance",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0254199,89,CQ,2001,88,"Comedy,Drama,Sci-Fi",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0255798,273,The Animal,2001,84,"Comedy,Sci-Fi",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0259711,13000,Vanilla Sky,2001,136,"Fantasy,Mystery,Romance",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0262418,304,Farligt förflutet,2001,80,"Action,Crime,Drama",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0264616,12826,Frailty,2001,100,"Crime,Drama,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0270419,12886,The Human Body,2001,40,"Documentary,Short",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0272069,238,Demonicus,2001,72,Horror,negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0286098,13020,Zu Warriors,2001,104,"Action,Fantasy",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0290661,13092,Dog Days,2001,121,Drama,positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0300533,280,Survivor Series,2001,156,"Action,Sport",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0303397,12551,Soft for Digging,2001,74,"Drama,Horror,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0307385,13095,Rivers and Tides,2001,90,Documentary,positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0325597,176,The Captives,2001,71,"Drama,Horror,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0385586,12831,Cat Soup,2001,34,"Animation,Comedy,Fantasy",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0502165,12582,12:00 a.m.-1:00 a.m.,2001,60,"Action,Crime,Drama",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0039497,12565,The Invisible Mouse,1947,7,"Animation,Comedy,Family",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0043132,12542,Where the Sidewalk Ends,1950,95,"Crime,Drama,Film-Noir",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0062032,47,Succubus,1968,79,"Horror,Mystery,Thriller",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0071864,12566,Love at the Top,1974,105,"Comedy,Drama",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0075265,12547,A Star Is Born,1976,139,"Drama,Music,Romance",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0079322,12545,I... For Icarus,1979,123,"Crime,Drama,Mystery",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0084021,45,Grease 2,1982,115,"Comedy,Music,Musical",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0096453,40,Witchery,1989,95,Horror,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0097044,12548,Chances Are,1989,108,"Comedy,Fantasy,Romance",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0100332,12560,Paris Is Burning,1990,78,Documentary,positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0105699,44,Unlawful Entry,1992,111,"Crime,Drama,Thriller",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0117894,61,Thinner,1996,93,"Fantasy,Horror",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0119196,46,The Gingerbread Man,1998,114,"Crime,Mystery,Thriller",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0119303,58,Home Alone 3,1997,102,"Action,Comedy,Crime",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0119700,63,Moonbase,1997,89,"Action,Sci-Fi",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0143096,49,The All New Adventures of Laurel & Hardy in 'For Love or Mummy',1999,85,Comedy,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0184463,62,The Fear: Resurrection,1999,87,Horror,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0187078,12555,Gone in 60 Seconds,2000,118,"Action,Crime,Thriller",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0201538,43,Les convoyeurs attendent,1999,94,"Comedy,Drama",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0230631,12550,A Perfect Son,2000,89,Drama,positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0251677,12544,Cuban Blood,2003,109,"Comedy,Drama",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0264689,12563,Home Room,2002,133,"Crime,Drama",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0306063,48,Severed,2002,89,Horror,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0339531,42,Sasquatch Hunters,2005,88,"Action,Horror,Thriller",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0367817,57,S.I.C.K. Serial Insane Clown Killer,2003,97,"Horror,Thriller",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0375210,60,White Noise,2005,101,"Drama,Horror,Mystery",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0389326,12549,Riding Giants,2004,105,"Biography,Documentary,History",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0425638,12561,The War of the Worlds,2005,179,"Action,Adventure,Sci-Fi",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0433047,12546,Schizophreniac: The Whore Mangler,1997,84,"Comedy,Drama,Horror",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0442722,12553,The Doodlebops,2004,21,"Family,Music",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0444628,59,Fay Grim,2006,118,"Action,Comedy,Thriller",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0459293,12562,"Gandhi, My Father",2007,136,"Biography,Drama,History",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0461887,52,Space Race,2005,240,"Documentary,Drama",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0462570,12558,On Probation,2005,112,"Action,Comedy,Crime",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0468482,41,Fungicide,2002,84,"Comedy,Horror",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0765447,12557,Evening,2007,117,"Drama,Romance",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.

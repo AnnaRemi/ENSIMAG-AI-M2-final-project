@@ -1,0 +1,61 @@
+movie_id,title,director,year,runtime,genres
+tt0047200,The Mad Magician,John Brahm,1954,72,"Drama,Horror"
+tt0068509,"Drive, He Said",Jack Nicholson,1971,90,"Comedy,Drama,Sport"
+tt0072752,The Beast,Walerian Borowczyk,1975,98,"Drama,Fantasy,Horror"
+tt0082508,Heartland,Richard Pearce,1979,96,"Drama,Western"
+tt0087685,Martin's Day,Alan Gibson,1985,98,Drama
+tt0114268,Rent-a-Kid,Fred Gerber,1995,85,"Comedy,Drama,Family"
+tt0123385,Artemisia,Agnès Merlet,1997,98,"Biography,Drama,History"
+tt0126604,Pecker,John Waters,1998,87,"Comedy,Drama"
+tt0190524,Left Behind: The Movie,Vic Sarin,2000,96,"Action,Drama,Fantasy"
+tt0196267,Cruel Intentions 2,Roger Kumble,2000,87,Drama
+tt0215174,Sex Files: Sexecutioner,J.T. Finch,1998,88,"Adult,Drama"
+tt0215369,Shower,Yang Zhang,1999,92,"Comedy,Drama"
+tt0239625,Mermaid,Peter Masterson,2000,94,"Drama,Family"
+tt0389957,Edison,David J. Burke,2005,99,"Action,Crime,Drama"
+tt0408309,"Carmilla, the Lesbian Vampire",Vince D'Amato,2004,85,"Drama,Horror"
+tt0419773,Ghosts,Christian Petzold,2005,85,Drama
+tt0431170,Joseph Smith: Prophet of the Restoration,"T.C. Christensen, Gary Cook",2011,60,"Biography,Drama,History"
+tt0459387,The Great Ecstasy of Robert Carmichael,Thomas Clay,2005,96,"Crime,Drama"
+tt0465643,Time of Her Life,Steven M. Smith,2005,93,"Drama,Fantasy"
+tt0466500,Life Hits,Christian E. Christiansen,2006,93,Drama
+tt0469913,Good Time Max,James Franco,2007,79,Drama
+tt0499603,10 Items or Less,Brad Silberling,2006,82,"Comedy,Drama"
+tt0840094,Five Days,"Otto Bathurst, Toby Haynes, Simon Curtis, Peter Hoar",2007,60,"Crime,Drama,Mystery"
+tt0887971,While She Was Out,Susan Montford,2008,86,"Crime,Drama,Thriller"
+tt0022150,Le Million,René Clair,1931,91,"Comedy,Musical"
+tt0025529,Murder at the Vanities,Mitchell Leisen,1934,89,"Crime,Music,Musical"
+tt0028057,The Old Mill Pond,Hugh Harman,1936,8,"Animation,Music,Short"
+tt0032155,Young Mr. Lincoln,John Ford,1939,100,"Biography,Drama"
+tt0034613,The Corpse Vanishes,Wallace Fox,1942,64,"Horror,Sci-Fi"
+tt0040907,The Truce Hurts,"Joseph Barbera, William Hanna",1948,8,"Animation,Comedy,Family"
+tt0063385,Oliver!,Carol Reed,1968,153,"Drama,Family,Musical"
+tt0076191,The Incredible Melting Man,William Sachs,1977,86,"Horror,Sci-Fi"
+tt0079672,Opening Night,John Cassavetes,1977,144,Drama
+tt0086250,Scarface,Brian De Palma,1983,170,"Crime,Drama"
+tt0087499,"The Jerk, Too",Michael Schultz,1984,95,Comedy
+tt0087803,1984,Michael Radford,1984,113,"Drama,Sci-Fi"
+tt0091631,Nightmare Weekend,Henri Sala,1986,85,"Horror,Sci-Fi"
+tt0092656,The Big Town,"Ben Bolt, Harold Becker",1987,109,"Drama,Romance,Thriller"
+tt0093176,Hello Mary Lou: Prom Night II,Bruce Pittman,1987,97,"Horror,Thriller"
+tt0093223,House of Games,David Mamet,1987,102,"Crime,Drama,Thriller"
+tt0096870,Going Overboard,Valerie Breiman,1989,99,Comedy
+tt0098525,True Blood,Frank Kerr,1989,100,"Action,Drama"
+tt0102210,Killer Tomatoes Eat France!,John De Bello,1992,94,Comedy
+tt0115994,Curdled,Reb Braddock,1996,88,"Comedy,Crime,Thriller"
+tt0119173,G.I. Jane,Ridley Scott,1997,125,"Action,Drama,War"
+tt0120171,The Souler Opposite,Bill Kalmenson,1998,104,"Comedy,Drama,Romance"
+tt0165494,Ringmaster,Neil Abramson,1998,90,Comedy
+tt0272147,Vampires: Los Muertos,Tommy Lee Wallace,2002,93,"Action,Horror,Thriller"
+tt0328107,Man on Fire,Tony Scott,2004,146,"Action,Crime,Drama"
+tt0340883,Open House,Dan Mirvish,2004,95,Musical
+tt0366555,The Hazing,Rolfe Kanefsky,2004,87,"Comedy,Horror"
+tt0405422,The 40-Year-Old Virgin,Judd Apatow,2005,116,"Comedy,Romance"
+tt0434008,Election,Johnnie To,2005,101,"Crime,Drama,Thriller"
+tt0439932,The Jane Show,"George Bloomfield, T.W. Peacocke, Brian K. Roberts, Paul Fox, Craig Pryce, Ron Murphy, Chris Deacon",2004,30,Comedy
+tt0453671,Garam Masala,Priyadarshan,2005,146,"Comedy,Romance"
+tt0455538,How to Lose Friends & Alienate People,Robert B. Weide,2008,110,"Biography,Comedy,Drama"
+tt0497116,An Inconvenient Truth,Davis Guggenheim,2006,96,Documentary
+tt0783608,The Walker,Paul Schrader,2007,108,"Crime,Drama,Mystery"
+tt0815241,Religulous,Larry Charles,2008,101,"Comedy,Documentary,War"
+tt0970935,Frownland,Ronald Bronstein,2007,106,"Comedy,Drama"

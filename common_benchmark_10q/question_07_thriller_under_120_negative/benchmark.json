@@ -1,0 +1,38 @@
+{
+  "benchmark_id": "common_benchmark_10q_q07",
+  "difficulty": 4,
+  "difficulty_label": "hard",
+  "question": "Which Thriller movies under 120 minutes have reviews expressing an overall negative opinion?",
+  "semantic_question": "Does this review express an overall negative opinion of the movie?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Thriller%' AND runtime < 120 AND answer(review, 'Does this review express an overall negative opinion of the movie?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Thriller"
+    },
+    {
+      "column": "runtime",
+      "op": "lt",
+      "value": "120"
+    }
+  ],
+  "semantic_task": "overall negative sentiment classification",
+  "annotation_policy": "IMDb source sentiment label; no evaluated LLM used",
+  "row_count": 60,
+  "structured_candidate_count": 24,
+  "ground_truth_movie_ids": [
+    "tt0001032",
+    "tt0083113",
+    "tt0100156",
+    "tt0106753",
+    "tt0125510",
+    "tt0295529",
+    "tt0304584",
+    "tt0329334",
+    "tt0450345",
+    "tt0486968",
+    "tt0489318",
+    "tt0497323"
+  ]
+}

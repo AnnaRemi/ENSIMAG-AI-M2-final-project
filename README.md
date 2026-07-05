@@ -10,7 +10,7 @@ The retained work has three focuses:
 2. Semantic joins: Trummer heterogeneous block joins, structured pruning,
    row-wise cascades, and batched cascades on shared annotated data.
 3. Benchmark suites for one-question comparisons, threshold sweeps, and
-   three-question difficulty scaling.
+   multi-question difficulty scaling.
 
 ## Retained Systems
 
@@ -24,6 +24,7 @@ The retained work has three focuses:
 | Trummer heterogeneous v2_2 | `project Trummer/heterogen_v2_2/` | Prune year and exact movie/review IDs deterministically, then run Trummer block prompts for sentiment matching. |
 | Trummer heterogeneous v2_3 | `project Trummer/heterogen_v2_3/` | Score exact-ID candidates in cheap batches and coalesce uncertain candidates into larger expensive batches. |
 | Trummer heterogeneous v3 | `project Trummer/heterogen_v3/` | Combine structured pruning with the cheap-to-expensive cascade. |
+| Trummer heterogeneous v3_2 | implemented by `common_benchmark_3q/scripts/run_method.py` and `common_benchmark_10q/scripts/run_method.py` using `heterogen_v3` pruning plus `heterogen_v2_3` batching | Apply structured pruning first, then run the batched cheap-to-expensive cascade on the pruned exact-ID candidates. |
 
 Stage 1 and Stage 2 are experimental physical operators inspired by calibrated
 cascades and Stretto-style operator selection. They are not complete
@@ -41,6 +42,7 @@ movie-review semantic join:
 | V2_2 structured-pruned block join | Question-derived movie filters plus exact review IDs | Pruned movie block x review block | None | Evaluates only the remaining semantic review predicate. |
 | V2_3 batch-wise cascade | Exact `movie_id = tconst` join only | Batch of exact-ID pairs | Scores multiple pairs per cheap request. | Coalesces uncertain candidates into larger expensive batches. |
 | V3 pruned cascade | Question-derived movie filters plus exact review IDs | Pruned exact-ID pair | Scores only candidates that survive structured pruning. | Verifies uncertain pruned candidates, capped by `--max-expensive-calls`. |
+| V3_2 pruned batch-wise cascade | Question-derived movie filters plus exact review IDs | Batch of pruned exact-ID pairs | Scores only pruned candidates, grouped into cheap batches. | Coalesces uncertain pruned candidates into larger expensive batches. |
 
 V2_2 and V3 use the structured predicate extractor from the newer heterogeneous
 implementations. It maps question constraints onto the movie schema
@@ -48,7 +50,9 @@ implementations. It maps question constraints onto the movie schema
 review sentiment or opinion matching to the LLM. V2_3 changes request
 granularity rather than the predicate semantics: it keeps the same exact-ID
 candidate set as V2, but reduces request overhead by classifying and verifying
-batches.
+batches. V3_2 combines the two later optimizations: it uses V3-style
+structured pruning to reduce the candidate set, then runs the V2_3 batched
+cascade over the remaining exact-ID movie/review pairs.
 
 ## Main Comparisons
 
@@ -136,7 +140,7 @@ useful for model-sensitivity analysis, while `common_benchmark_v2/` is the
 preferred mixed-year comparison because the Trummer predicate must enforce the
 year condition itself.
 
-### Threshold and three-question suites
+### Threshold and multi-question suites
 
 `common_benchmark_thresholds/` sweeps the cascade confidence threshold for V2
 and V2_3. The newest saved run uses `qwen3:0.6b -> qwen3:1.7b` over thresholds
@@ -150,6 +154,19 @@ pruned block join V2_2, and pruned cascade V3.
 
 ![Three-question benchmark aggregate](common_benchmark_3q/outputs/local_llama3.2_qwen2.5_3b/comparison.png)
 
+`common_benchmark_10q/` is the newest shared benchmark. It contains ten
+disjoint 60-row movie-review questions. Every question has 24 structured
+candidates and 12 ground-truth movie IDs, so no question has an empty target
+set. The benchmark compares SUQL baseline, V2_3, V3, and V3_2 with quality
+metrics, wall time, and cheap/expensive call counts. Each question/method pair
+defaults to 11 repetitions, and the final `run_metrics.json`, comparison CSV,
+aggregate CSV, summary, and plots use the mean across those repetitions.
+
+The Aker runner for this suite defaults to `gemma4:e2b` as the cheap model and
+`gemma4:e4b` as the expensive model. It requests one GPU through OAR and refuses
+to run unless the GPU is visible and Ollama appears in `nvidia-smi` for both
+models.
+
 ## Experiment Suites
 
 | Suite | Dataset and comparison | Use it for | Main runner | Primary outputs |
@@ -160,6 +177,7 @@ pruned block join V2_2, and pruned cascade V3.
 | `common_benchmark_v3/` all-Heterogen | Same v2 50-row dataset, but only V1, V2, V2_2, V2_3, and V3 with repetition averaging and Aker helpers. | Isolating Trummer heterogen variants without SUQL in the result set. | `python3 common_benchmark_v3/scripts/run_all_heterogen.py` | `all_metrics.csv`, `summary.md`, `experiment_config.json`, per-implementation `run_metrics_repetitions.csv`, focused plots. |
 | `common_benchmark_thresholds/` | Same v3 one-question dataset; manual confidence-threshold sweep for V2 and V2_3. | Understanding how threshold choice changes quality, final rows, early decisions, and fallback load. | `python3 common_benchmark_thresholds/scripts/run_threshold_sweep.py` | `threshold_metrics.csv`, `summary.md`, quality-vs-threshold and final-rows plots. |
 | `common_benchmark_3q/` | Three disjoint 60-row datasets with easy, medium, and hard semantic predicates; SUQL, V2_2, V2_3, and V3. | Testing robustness beyond the single 1998-negative-review task. | `python3 common_benchmark_3q/scripts/run_all.py` | Per-question run folders, `comparison.csv`, `aggregate.csv`, `comparison.png`. |
+| `common_benchmark_10q/` | Ten disjoint 60-row datasets; each has 24 structured candidates and 12 ground-truth rows; SUQL, V2_3, V3, and V3_2 with 11-repetition averaging. | Current larger shared benchmark for quality, time, and call-count comparisons across question shapes. | `python3 common_benchmark_10q/scripts/run_all.py` | Per-question run folders, averaged `run_metrics.json`, `run_metrics_repetitions.csv`, `comparison.csv`, `aggregate.csv`, `summary.md`, quality/time/call plots. |
 
 The benchmark runners preserve per-run artifacts rather than only aggregate
 tables. Cascade runs keep `cascade_decisions.csv`; block-join runs keep
@@ -226,6 +244,7 @@ Retained Stage 2 experiments are under `project SUQL/Stage_2/benchmarks/`.
 ├── common_benchmark_v3/          # one-question heterogen implementation comparison
 ├── common_benchmark_thresholds/   # cascade-threshold sweep
 ├── common_benchmark_3q/           # three-question difficulty benchmark
+├── common_benchmark_10q/          # ten-question SUQL/V2_3/V3/V3_2 benchmark
 ├── presentations/                # final project and paper-review slides
 └── papers/                       # local reading material, not tracked
 ```
@@ -253,6 +272,8 @@ Install representative models:
 ollama pull qwen3:0.6b
 ollama pull qwen3:1.7b
 ollama pull qwen2.5:3b
+ollama pull gemma4:e2b
+ollama pull gemma4:e4b
 ```
 
 Configure the local endpoint:
@@ -354,9 +375,39 @@ python3 common_benchmark_3q/scripts/run_all.py \
   --output-dir outputs/qwen3_current
 ```
 
-Each common benchmark contains local execution, Aker synchronization, OAR
-submission, progress monitoring, and result-retrieval scripts. See its README
-for the exact workflow and output contract.
+Run the ten-question suite locally:
+
+```bash
+python3 common_benchmark_10q/scripts/build_datasets.py
+python3 -m unittest discover -s common_benchmark_10q/tests -v
+
+python3 common_benchmark_10q/scripts/run_all.py \
+  --api-base "$SUQL_API_BASE" \
+  --cheap-model ollama/gemma4:e2b \
+  --expensive-model ollama/gemma4:e4b \
+  --repetitions 11 \
+  --output-dir outputs/local_gemma4_e2b_e4b_10q_11reps
+```
+
+Run the ten-question suite on Aker:
+
+```bash
+# Local Mac
+bash common_benchmark_10q/scripts/sync_common_benchmark_10q_to_aker.sh
+
+# Aker login node
+cd /home/daisy/remizova/common_benchmark_10q_workspace
+PULL_MODELS=1 bash common_benchmark_10q/scripts/submit_aker_common_benchmark_10q.sh
+```
+
+The Aker worker defaults to `REQUIRE_GPU=1`. It stops before the benchmark if
+it is not inside an OAR allocation, if `nvidia-smi` cannot see a GPU, or if
+Ollama does not appear in the GPU compute-app list while loading both
+`gemma4:e2b` and `gemma4:e4b`.
+
+The common benchmark suites contain local execution scripts and, where needed,
+Aker synchronization and OAR submission helpers. See each suite README for the
+exact workflow, monitoring commands, and output contract.
 
 ## Reading Results
 

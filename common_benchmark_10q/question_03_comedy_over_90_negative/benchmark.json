@@ -1,0 +1,38 @@
+{
+  "benchmark_id": "common_benchmark_10q_q03",
+  "difficulty": 2,
+  "difficulty_label": "medium",
+  "question": "Which Comedy movies over 90 minutes have reviews expressing an overall negative opinion?",
+  "semantic_question": "Does this review express an overall negative opinion of the movie?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Comedy%' AND runtime > 90 AND answer(review, 'Does this review express an overall negative opinion of the movie?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Comedy"
+    },
+    {
+      "column": "runtime",
+      "op": "gt",
+      "value": "90"
+    }
+  ],
+  "semantic_task": "overall negative sentiment classification",
+  "annotation_policy": "IMDb source sentiment label; no evaluated LLM used",
+  "row_count": 60,
+  "structured_candidate_count": 24,
+  "ground_truth_movie_ids": [
+    "tt0044070",
+    "tt0077372",
+    "tt0080731",
+    "tt0091129",
+    "tt0097029",
+    "tt0114658",
+    "tt0119427",
+    "tt0120742",
+    "tt0179443",
+    "tt0180303",
+    "tt0331509",
+    "tt0464095"
+  ]
+}

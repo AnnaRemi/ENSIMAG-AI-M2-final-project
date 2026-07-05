@@ -1,0 +1,61 @@
+movie_id,title,director,year,runtime,genres
+tt0029626,"Swing High, Swing Low",Mitchell Leisen,1937,92,"Comedy,Drama,Musical"
+tt0044070,Starlift,Roy Del Ruth,1951,103,"Comedy,Drama,Music"
+tt0048140,Guys and Dolls,Joseph L. Mankiewicz,1955,150,"Comedy,Crime,Musical"
+tt0064597,Lock Up Your Daughters!,Peter Coe,1969,102,Comedy
+tt0077372,Corvette Summer,Matthew Robbins,1978,105,"Adventure,Comedy"
+tt0080731,The Fiendish Plot of Dr. Fu Manchu,"Piers Haggard, Peter Sellers",1980,100,"Comedy,Crime,Fantasy"
+tt0084266,Dragon Lord,Jackie Chan,1982,102,"Action,Comedy,Sport"
+tt0090713,The Best of Times,Roger Spottiswoode,1986,104,"Comedy,Drama,Sport"
+tt0091129,The Golden Child,Michael Ritchie,1986,94,"Action,Adventure,Comedy"
+tt0095088,Elvira: Mistress of the Dark,James Signorelli,1988,96,"Comedy,Horror"
+tt0097029,Catch Me If You Can,Stephen Sommers,1989,106,"Action,Comedy,Drama"
+tt0114658,Theodore Rex,Jonathan R. Betuel,1995,92,"Action,Comedy,Family"
+tt0119427,Judaai,Raj Kanwar,1997,167,"Comedy,Drama,Romance"
+tt0120742,Major League: Back to the Minors,John Warren,1998,100,"Comedy,Sport"
+tt0120861,The Theory of Flight,Paul Greengrass,1998,101,"Comedy,Drama,Romance"
+tt0179443,Rancid Aluminum,Edward Thomas,2000,91,"Comedy,Crime,Drama"
+tt0180303,If You Only Knew,David Snedeker,1999,107,"Comedy,Romance"
+tt0188045,Magicians,James Merendino,2000,108,Comedy
+tt0292242,Solino,Fatih Akin,2002,124,"Comedy,Drama"
+tt0311289,Holes,Andrew Davis,2003,117,"Adventure,Comedy,Drama"
+tt0326901,Good Fences,Ernest Dickerson,2003,119,"Comedy,Drama"
+tt0331509,Funky Monkey,"Harry Basil, Gene Quintano",2004,94,"Comedy,Family"
+tt0382330,As It Is in Heaven,Kay Pollak,2004,133,"Comedy,Drama,Music"
+tt0464095,The Lives of the Saints,"Chris Cottam, Rankin",2006,97,"Comedy,Drama"
+tt0041737,Passport to Pimlico,Henry Cornelius,1949,84,Comedy
+tt0061809,In Cold Blood,Richard Brooks,1967,134,"Biography,Crime,Drama"
+tt0064665,Midnight Cowboy,John Schlesinger,1969,113,Drama
+tt0067328,The Last Picture Show,Peter Bogdanovich,1971,118,"Drama,Romance"
+tt0070359,The Mother and the Whore,Jean Eustache,1973,210,"Drama,Romance"
+tt0071075,The World at War,"Peter Batty, David Elstein, Hugh Raggett, John Pett, Ted Childs, Michael Darlow, Martin Smith, Jeremy Isaacs, Phillip Whitehead",1973,52,"Documentary,History,War"
+tt0085178,Ardh Satya,Govind Nihalani,1983,130,"Crime,Drama"
+tt0089308,Howling II: ... Your Sister Is a Werewolf,Philippe Mora,1985,91,"Horror,Thriller"
+tt0092067,Castle in the Sky,Hayao Miyazaki,1986,124,"Adventure,Animation,Family"
+tt0093629,A Nightmare on Elm Street 3: Dream Warriors,Chuck Russell,1987,96,"Fantasy,Horror"
+tt0102800,Robot Jox,Stuart Gordon,1989,85,"Action,Sci-Fi,Thriller"
+tt0106669,Darkness,Leif Jonker,1993,90,Horror
+tt0107719,The Nutcracker,Emile Ardolino,1991,92,"Family,Fantasy,Music"
+tt0116075,The Dentist,Brian Yuzna,1996,92,"Horror,Thriller"
+tt0116762,Keys to Tulsa,Leslie Greif,1997,113,"Crime,Drama,Thriller"
+tt0144191,A Face in the Fog,Robert F. Hill,1936,61,"Mystery,Thriller"
+tt0170691,Tigerland,Joel Schumacher,2000,101,"Drama,War"
+tt0203019,Men of Honor,George Tillman Jr.,2000,129,"Biography,Drama"
+tt0210075,Girlfight,Karyn Kusama,2000,110,"Drama,Sport"
+tt0274711,People I Know,Daniel Algrant,2002,100,"Crime,Drama,Mystery"
+tt0314204,Creature Unknown,Michael Burnett,2004,79,"Horror,Mystery,Thriller"
+tt0324046,Spitting Image: The Ronnie and Nancy Show,Graham C. Williams,1987,24,Comedy
+tt0352394,Hellborn,Philip J. Jones,2003,90,"Fantasy,Horror"
+tt0365686,Revolver,Guy Ritchie,2005,111,"Action,Crime,Drama"
+tt0384814,Ask the Dust,Robert Towne,2006,117,"Drama,Romance"
+tt0422491,The Intruder,Claire Denis,2004,130,Drama
+tt0427038,Carlito's Way: Rise to Power,Michael S. Bregman,2005,100,"Action,Crime,Drama"
+tt0444736,The Naked Brothers Band: The Movie,Polly Draper,2005,90,"Comedy,Family,Music"
+tt0466710,The Boy Whose Skin Fell Off,Patrick Collerton,2004,50,Documentary
+tt0473553,The Tooth Fairy,Chuck Bowman,2006,89,"Horror,Thriller"
+tt0475937,The Abandoned,Nacho Cerdá,2006,99,"Horror,Mystery,Thriller"
+tt0493424,Attack Force,Michael Keusch,2006,95,"Action,Sci-Fi,Thriller"
+tt0780595,Redline,Andy Cheng,2007,95,Action
+tt0783518,Flight of Fury,Michael Keusch,2007,98,"Action,Thriller"
+tt0871197,Right to Die,Rob Schmidt,2007,58,Horror
+tt0872204,The Idea,Owen Alik Shahadah,2006,10,Short

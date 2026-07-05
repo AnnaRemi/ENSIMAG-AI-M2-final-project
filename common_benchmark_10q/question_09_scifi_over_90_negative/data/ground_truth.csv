@@ -1,0 +1,13 @@
+movie_id,title,ground_truth,annotation_rationale,evidence_excerpt
+tt0045064,Radar Men from the Moon,1,Included: structured filters match and source sentiment is negative.,
+tt0065738,Frankenstein Must Be Destroyed,1,Included: structured filters match and source sentiment is negative.,
+tt0097874,Metamorphosis,1,Included: structured filters match and source sentiment is negative.,
+tt0098375,Spontaneous Combustion,1,Included: structured filters match and source sentiment is negative.,
+tt0120764,My Favorite Martian,1,Included: structured filters match and source sentiment is negative.,
+tt0295725,Time Changer,1,Included: structured filters match and source sentiment is negative.,
+tt0343818,"I, Robot",1,Included: structured filters match and source sentiment is negative.,
+tt0369226,Alone in the Dark,1,Included: structured filters match and source sentiment is negative.,
+tt0377713,Cube Zero,1,Included: structured filters match and source sentiment is negative.,
+tt0383353,Evil Aliens,1,Included: structured filters match and source sentiment is negative.,
+tt0417191,They Are Among Us,1,Included: structured filters match and source sentiment is negative.,
+tt0445161,4,1,Included: structured filters match and source sentiment is negative.,

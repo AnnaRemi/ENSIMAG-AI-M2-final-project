@@ -1,0 +1,38 @@
+{
+  "benchmark_id": "common_benchmark_10q_q08",
+  "difficulty": 4,
+  "difficulty_label": "hard",
+  "question": "Which Crime movies over 90 minutes have reviews expressing an overall positive opinion?",
+  "semantic_question": "Does this review express an overall positive opinion of the movie?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Crime%' AND runtime > 90 AND answer(review, 'Does this review express an overall positive opinion of the movie?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Crime"
+    },
+    {
+      "column": "runtime",
+      "op": "gt",
+      "value": "90"
+    }
+  ],
+  "semantic_task": "overall positive sentiment classification",
+  "annotation_policy": "IMDb source sentiment label; no evaluated LLM used",
+  "row_count": 60,
+  "structured_candidate_count": 24,
+  "ground_truth_movie_ids": [
+    "tt0035160",
+    "tt0048190",
+    "tt0049904",
+    "tt0052367",
+    "tt0086383",
+    "tt0098994",
+    "tt0099446",
+    "tt0105226",
+    "tt0112681",
+    "tt0116953",
+    "tt0292963",
+    "tt0457513"
+  ]
+}

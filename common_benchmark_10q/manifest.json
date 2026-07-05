@@ -1,0 +1,97 @@
+{
+  "benchmark_id": "common_benchmark_10q",
+  "source": "project SUQL/data/imdb_joined.csv",
+  "questions": [
+    {
+      "directory": "question_01_year_2001_negative",
+      "benchmark_id": "common_benchmark_10q_q01",
+      "difficulty": 1,
+      "question": "Which movies released in 2001 have reviews expressing an overall negative opinion?",
+      "row_count": 60,
+      "structured_candidate_count": 24,
+      "ground_truth_count": 12
+    },
+    {
+      "directory": "question_02_drama_under_100_positive",
+      "benchmark_id": "common_benchmark_10q_q02",
+      "difficulty": 2,
+      "question": "Which Drama movies under 100 minutes have reviews expressing an overall positive opinion?",
+      "row_count": 60,
+      "structured_candidate_count": 24,
+      "ground_truth_count": 12
+    },
+    {
+      "directory": "question_03_comedy_over_90_negative",
+      "benchmark_id": "common_benchmark_10q_q03",
+      "difficulty": 2,
+      "question": "Which Comedy movies over 90 minutes have reviews expressing an overall negative opinion?",
+      "row_count": 60,
+      "structured_candidate_count": 24,
+      "ground_truth_count": 12
+    },
+    {
+      "directory": "question_04_horror_under_100_positive",
+      "benchmark_id": "common_benchmark_10q_q04",
+      "difficulty": 3,
+      "question": "Which Horror movies under 100 minutes have reviews expressing an overall positive opinion?",
+      "row_count": 60,
+      "structured_candidate_count": 24,
+      "ground_truth_count": 12
+    },
+    {
+      "directory": "question_05_action_over_100_negative",
+      "benchmark_id": "common_benchmark_10q_q05",
+      "difficulty": 3,
+      "question": "Which Action movies over 100 minutes have reviews expressing an overall negative opinion?",
+      "row_count": 60,
+      "structured_candidate_count": 24,
+      "ground_truth_count": 12
+    },
+    {
+      "directory": "question_06_romance_under_100_positive",
+      "benchmark_id": "common_benchmark_10q_q06",
+      "difficulty": 3,
+      "question": "Which Romance movies under 100 minutes have reviews expressing an overall positive opinion?",
+      "row_count": 60,
+      "structured_candidate_count": 24,
+      "ground_truth_count": 12
+    },
+    {
+      "directory": "question_07_thriller_under_120_negative",
+      "benchmark_id": "common_benchmark_10q_q07",
+      "difficulty": 4,
+      "question": "Which Thriller movies under 120 minutes have reviews expressing an overall negative opinion?",
+      "row_count": 60,
+      "structured_candidate_count": 24,
+      "ground_truth_count": 12
+    },
+    {
+      "directory": "question_08_crime_over_90_positive",
+      "benchmark_id": "common_benchmark_10q_q08",
+      "difficulty": 4,
+      "question": "Which Crime movies over 90 minutes have reviews expressing an overall positive opinion?",
+      "row_count": 60,
+      "structured_candidate_count": 24,
+      "ground_truth_count": 12
+    },
+    {
+      "directory": "question_09_scifi_over_90_negative",
+      "benchmark_id": "common_benchmark_10q_q09",
+      "difficulty": 5,
+      "question": "Which Sci-Fi movies over 90 minutes have reviews expressing an overall negative opinion?",
+      "row_count": 60,
+      "structured_candidate_count": 24,
+      "ground_truth_count": 12
+    },
+    {
+      "directory": "question_10_adventure_under_100_positive",
+      "benchmark_id": "common_benchmark_10q_q10",
+      "difficulty": 5,
+      "question": "Which Adventure movies under 100 minutes have reviews expressing an overall positive opinion?",
+      "row_count": 60,
+      "structured_candidate_count": 24,
+      "ground_truth_count": 12
+    }
+  ],
+  "dataset_policy": "Each question contains 60 unique movie IDs with one review per movie. Movie IDs are disjoint across questions. Ground truth is the intersection of deterministic structured filters and the IMDb source sentiment split."
+}

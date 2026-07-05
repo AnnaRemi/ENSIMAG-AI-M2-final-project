@@ -1,0 +1,61 @@
+movie_id,source_row,title,year,runtime,genres,source_sentiment,structured_match,semantic_label,ground_truth,annotation_source,evidence_excerpt,annotation_rationale
+tt0001032,343,The Sealed Room,1909,11,"Drama,Short,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0037610,12795,Confidential Agent,1945,118,"Drama,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0068473,12944,Deliverance,1972,109,"Adventure,Drama,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0083113,345,Sphinx,1981,118,"Adventure,Mystery,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0087480,12899,Invitation to Hell,1984,96,"Horror,Sci-Fi,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0092360,12825,"Game, Set, and Match",1988,60,"Drama,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0098505,12893,Hell's Trap,1989,90,"Action,Horror,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0100156,257,Mirror Mirror,1990,104,"Horror,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0106753,240,Doppelganger,1993,104,"Horror,Romance,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0107302,12894,Kalifornia,1993,117,"Crime,Drama,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0121556,12966,Mirage,1990,85,"Action,Horror,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0125211,12729,I Woke Up Early the Day I Died,1998,90,"Comedy,Crime,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0125510,229,Splatter University,1984,78,"Horror,Mystery,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0170348,12959,Kill Shot,2000,92,"Comedy,Romance,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0295529,328,Power Play,2003,100,"Action,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0304584,325,The President's Man: A Line in the Sand,2002,90,"Action,Drama,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0315323,12935,Break a Leg,2005,98,"Comedy,Drama,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0329334,268,Bleed,2002,82,"Horror,Mystery,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0391198,12970,The Grudge,2004,91,"Horror,Mystery,Thriller",positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0450345,309,The Wicker Man,2006,102,"Horror,Mystery,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0486968,233,Double Cross,2006,88,"Drama,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0489318,330,The Perfect Witness,2007,100,"Crime,Horror,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0497323,245,Anamorph,2007,103,"Crime,Horror,Thriller",negative,True,True,1,IMDb 50K source sentiment split,,Included: structured filters match and source sentiment is negative.
+tt0760179,12869,Night of Terror,2006,90,Thriller,positive,True,False,0,IMDb 50K source sentiment split,,Excluded by semantic label: source sentiment is not negative.
+tt0024078,247,Grand Slam,1933,67,Comedy,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0036968,12740,Jammin' the Blues,1944,10,"Documentary,Music,Short",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0044876,12748,The Man in the White Suit,1951,85,"Comedy,Drama,Sci-Fi",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0051114,234,The True Story of Jesse James,1957,92,"Biography,Crime,Drama",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0061834,242,I Am Curious (Yellow),1967,121,"Drama,Romance",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0063094,12724,Hot Millions,1968,106,"Comedy,Crime",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0063665,222,One + One,1968,115,"Documentary,Drama,Music",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0064350,12742,Fraulein Doktor,1969,104,"Drama,History,Romance",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0072886,12722,Doc Savage: The Man of Bronze,1975,100,"Action,Adventure,Comedy",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0074331,250,Old Fashioned Murder,1976,72,"Crime,Drama,Mystery",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0080391,246,Attack of the Killer Tomatoes!,1978,83,"Adventure,Comedy,Horror",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0082778,248,The Munsters' Revenge,1981,96,"Comedy,Crime,Family",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0085029,12735,Hardcastle and McCormick,1983,60,"Action,Crime,Drama",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0087258,12732,Final Justice,1985,90,"Action,Crime,Drama",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0098261,12723,Scenes from the Class Struggle in Beverly Hills,1989,103,Comedy,positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0099856,226,The Invisible Maniac,1990,86,"Comedy,Horror,Sci-Fi",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0100680,12718,Stanley & Iris,1990,104,"Drama,Romance",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0101969,12741,Grand Canyon,1991,134,"Crime,Drama",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0105265,12727,A River Runs Through It,1992,123,Drama,positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0105316,12739,Sarafina!,1992,117,"Drama,Musical",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0114419,12725,She Fought Alone,1995,87,Drama,positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0114736,249,True Crime,1995,94,"Crime,Drama,Mystery",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0115543,232,The Angel of Pennsylvania Avenue,1996,92,Drama,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0116191,12738,Emma,1996,120,"Comedy,Drama,Romance",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0116684,239,Jane Eyre,1996,112,"Drama,Romance",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0120041,228,Runaway Car,1997,90,"Action,Adventure,Comedy",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0120121,12719,The Shooter,1997,91,"Drama,Western",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0160986,12743,Time at the Top,1999,96,"Family,Sci-Fi",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0161634,221,Guinea Pig: Devil's Experiment,1985,43,"Horror,Short",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0168786,12720,Antwone Fisher,2002,120,"Biography,Drama",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0201290,235,The Underground Comedy Movie,1999,88,Comedy,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0220631,12734,El mar,2000,107,"Drama,War",positive,False,False,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0317676,225,House of the Dead,2003,90,"Action,Adventure,Horror",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0395512,243,Darklight,2004,90,"Action,Drama,Fantasy",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0472126,251,Local Color,2006,107,Drama,negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.
+tt0808399,223,"New York, I Love You",2008,103,"Comedy,Drama,Romance",negative,False,True,0,IMDb 50K source sentiment split,,Excluded by structured filters.

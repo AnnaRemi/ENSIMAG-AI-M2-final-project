@@ -1,0 +1,13 @@
+movie_id,title,ground_truth,annotation_rationale,evidence_excerpt
+tt0027657,The Garden of Allah,1,Included: structured filters match and source sentiment is positive.,
+tt0037763,Hare Conditioned,1,Included: structured filters match and source sentiment is positive.,
+tt0049223,Forbidden Planet,1,Included: structured filters match and source sentiment is positive.,
+tt0062551,The Champions,1,Included: structured filters match and source sentiment is positive.,
+tt0075888,The Crater Lake Monster,1,Included: structured filters match and source sentiment is positive.,
+tt0115341,Sabrina the Teenage Witch,1,Included: structured filters match and source sentiment is positive.,
+tt0120430,Vanishing Point,1,Included: structured filters match and source sentiment is positive.,
+tt0125454,Paulie,1,Included: structured filters match and source sentiment is positive.,
+tt0361179,Father of the Pride,1,Included: structured filters match and source sentiment is positive.,
+tt0485601,The Secret of Kells,1,Included: structured filters match and source sentiment is positive.,
+tt0708415,All Our Yesterdays,1,Included: structured filters match and source sentiment is positive.,
+tt0708816,The Outrageous Okona,1,Included: structured filters match and source sentiment is positive.,

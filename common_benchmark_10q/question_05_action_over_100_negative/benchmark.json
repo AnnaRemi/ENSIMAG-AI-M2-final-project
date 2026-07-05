@@ -1,0 +1,38 @@
+{
+  "benchmark_id": "common_benchmark_10q_q05",
+  "difficulty": 3,
+  "difficulty_label": "medium_hard",
+  "question": "Which Action movies over 100 minutes have reviews expressing an overall negative opinion?",
+  "semantic_question": "Does this review express an overall negative opinion of the movie?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Action%' AND runtime > 100 AND answer(review, 'Does this review express an overall negative opinion of the movie?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Action"
+    },
+    {
+      "column": "runtime",
+      "op": "gt",
+      "value": "100"
+    }
+  ],
+  "semantic_task": "overall negative sentiment classification",
+  "annotation_policy": "IMDb source sentiment label; no evaluated LLM used",
+  "row_count": 60,
+  "structured_candidate_count": 24,
+  "ground_truth_movie_ids": [
+    "tt0088224",
+    "tt0106582",
+    "tt0109890",
+    "tt0112740",
+    "tt0200710",
+    "tt0202152",
+    "tt0277941",
+    "tt0332452",
+    "tt0348150",
+    "tt0377818",
+    "tt0443632",
+    "tt0473310"
+  ]
+}
