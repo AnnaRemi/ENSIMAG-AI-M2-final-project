@@ -34,23 +34,30 @@ ssh "$AKER_HOST" \
     '$AKER_ROOT/project Trummer/heterogen_v2_3' \
     '$AKER_ROOT/project Trummer/heterogen_v3'"
 
-rsync -av \
+RSYNC=(rsync -av --protect-args)
+
+"${RSYNC[@]}" \
   --exclude outputs/ --exclude logs/ --exclude jobs/ --exclude .mplconfig/ --exclude __pycache__/ \
   "$COMMON/" "$AKER_HOST:$AKER_ROOT/common_benchmark_10q/"
-rsync -av \
+"${RSYNC[@]}" \
   --exclude __pycache__/ \
   "$SUQL_BASELINE/" "$AKER_HOST:$AKER_ROOT/project SUQL/src_baseline/"
-rsync -av \
+"${RSYNC[@]}" \
   --exclude outputs/ --exclude __pycache__/ \
   "$TRUMMER_ROOT/heterogen_v2_2/" "$AKER_HOST:$AKER_ROOT/project Trummer/heterogen_v2_2/"
-rsync -av \
+"${RSYNC[@]}" \
   --exclude outputs/ --exclude __pycache__/ \
   "$TRUMMER_ROOT/heterogen_v2_3/" "$AKER_HOST:$AKER_ROOT/project Trummer/heterogen_v2_3/"
-rsync -av \
+"${RSYNC[@]}" \
   --exclude outputs/ --exclude __pycache__/ \
   "$TRUMMER_ROOT/heterogen_v3/" "$AKER_HOST:$AKER_ROOT/project Trummer/heterogen_v3/"
 
 ssh "$AKER_HOST" "chmod +x '$AKER_ROOT/common_benchmark_10q/scripts/'*.sh"
+ssh "$AKER_HOST" \
+  "test -f '$AKER_ROOT/project SUQL/src_baseline/suql_engine.py' \
+    && test -f '$AKER_ROOT/project Trummer/heterogen_v2_3/trummer_join/cascade.py' \
+    && test -f '$AKER_ROOT/project Trummer/heterogen_v3/trummer_join/cascade.py' \
+    && test -f '$AKER_ROOT/project Trummer/heterogen_v3/trummer_join/structured_filter.py'"
 
 echo "Sync complete."
 echo "Aker:"
