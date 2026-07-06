@@ -148,6 +148,37 @@ Source metrics:
 and
 [`comparison.csv`](common_benchmark_10q/outputs/gemma4_e2b_e4b_10q_11reps_20260705_184848/comparison.csv).
 
+### 10Q model-pair comparison
+
+The model-pair comparison artifacts are collected under
+[`common_benchmark_10q/outputs/models_comparison/`](common_benchmark_10q/outputs/models_comparison/).
+That directory copies the relevant plot sets from the saved 10Q output runs and
+adds a compact
+[`metrics_summary.csv`](common_benchmark_10q/outputs/models_comparison/metrics_summary.csv).
+
+Using recall as the main quality metric, the best saved aggregate result is the
+heterogeneous V2_3 batched exact-ID cascade with `gemma3:12b` as the cheap
+model and `gemma4:26b` as the expensive model. It reaches recall 0.953 over ten
+questions, with precision 0.328, macro F1 0.482, 10.38 mean LLM calls, and
+19.16 seconds mean wall time per question. This beats the best saved
+`gemma4:e2b -> gemma4:e4b` recall row, `SUQL_STAGE2`, which reaches recall
+0.759, and it also beats the standard SUQL baseline row from the full
+all-methods run, which reaches recall 0.621 using `gemma4:e4b`.
+
+For heterogeneous methods only, the conclusion is clearer: `gemma3:12b ->
+gemma4:26b` is the best saved cheap/expensive pair for recall. Its V2_3 run
+raises recall to 0.953, compared with the best `gemma4:e2b -> gemma4:e4b`
+heterogen recall of 0.494 from V3_2. The tradeoff is precision: recall-first
+V2_3 accepts many more candidates, so precision falls to 0.328. If precision
+and F1 are used as secondary guardrails, V3_2 with `gemma3:12b -> gemma4:26b`
+is the best balanced heterogen option: recall 0.816, precision 1.000, and macro
+F1 0.888.
+
+The caveat is scope: the strongest row is from a heterogen-only run, so it does
+not include a same-run SUQL baseline with `gemma4:26b`. Within the saved run
+that includes SUQL baseline and all three heterogen methods, SUQL baseline with
+`gemma4:e4b` remains the best recall row.
+
 `common_benchmark/` retains the earlier 16-row multi-model comparison. It is
 useful for model-sensitivity analysis, while `common_benchmark_v2/` is the
 preferred mixed-year comparison because the Trummer predicate must enforce the
