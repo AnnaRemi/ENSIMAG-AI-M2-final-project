@@ -102,38 +102,51 @@ Source metrics:
 
 ### SUQL baseline versus best heterogeneous variants
 
-The last local qwen3 comparison keeps SUQL and the two strongest heterogeneous
-plans: structured-pruning block join (V2_2) and structured-pruning cascade
-(V3). SUQL and every expensive semantic stage use `qwen3:1.7b`; the structured
-parser and cheap cascade stage use `qwen3:0.6b`. Each experiment is run 9 times
-and numeric metrics are averaged.
+The current larger comparison is the 10-question benchmark in
+`common_benchmark_10q/outputs/gemma4_e2b_e4b_10q_11reps_20260705_184848/`.
+It compares SUQL baseline against the retained heterogeneous cascade variants:
+V2_3, V3, and V3_2. The run uses `gemma4:e2b` as the cheap model and
+`gemma4:e4b` as the expensive model. Each question/method pair is run 11 times,
+and the table below reports macro averages across the ten question datasets.
 
-| Version | Wall time | Total LLM calls | Cheap calls | Expensive calls | Final rows | Precision | Recall | F1 |
+| Version | Mean wall time | Mean LLM calls | Mean cheap calls | Mean expensive calls | Mean final rows | Precision | Recall | F1 |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| SUQL baseline | 148.37 s | 25 | 0 | 25 | 3.44 | 1.000 | 0.265 | 0.416 |
-| Structured pruning block join | 8.33 s | 4 | 0 | 4 | 11.00 | 0.818 | 0.692 | 0.750 |
-| Structured pruning cascade | 14.28 s | 28 | 25 | 3 | 24.00 | 0.542 | 1.000 | 0.703 |
+| SUQL baseline | 24.97 s | 24.00 | 0.00 | 24.00 | 7.45 | 1.000 | 0.621 | 0.756 |
+| Batched exact-ID cascade V2_3 | 13.80 s | 10.71 | 8.00 | 2.71 | 16.18 | 0.356 | 0.487 | 0.403 |
+| Structured-pruned cascade V3 | 29.66 s | 30.00 | 24.00 | 6.00 | 2.66 | 0.693 | 0.214 | 0.322 |
+| Structured-pruned batched cascade V3_2 | 5.95 s | 4.69 | 3.00 | 1.69 | 6.03 | 0.990 | 0.494 | 0.607 |
 
-SUQL is very precise in this run: the rows it returns are correct. Its weakness
-is recall. It evaluates 25 reviews after the structured year filter but returns
-only about 3.4 final rows on average, so it misses most of the 13 ground-truth
-movies.
+SUQL is the strongest quality baseline on this ten-question run. Its precision
+is perfect and its macro F1 is 0.756, about 0.149 higher than the best
+heterogeneous variant. The cost is that SUQL uses 24 expensive calls per
+question and takes about 25 seconds on average.
 
-The structured-pruning block join is the best overall tradeoff. Deterministic
-year and ID pruning reduces the semantic work to 4 expensive block calls, which
-makes it much faster than SUQL while giving the highest F1. The structured
-cascade gets perfect recall by first screening candidates with the cheap model
-and sending only 3 calls to the expensive model, but it accepts more false
-positives, so its precision and F1 are lower than V2_2.
+V3_2 is now the best heterogeneous tradeoff. It keeps almost perfect precision
+while cutting mean wall time from 24.97 seconds to 5.95 seconds and reducing
+mean LLM calls from 24.00 to 4.69. That is about a 4.2x speedup and 5.1x fewer
+LLM calls than SUQL, but it gives up recall: 0.494 versus SUQL's 0.621. Per
+question, V3_2 is the best heterogeneous method on eight of the ten tasks and
+beats SUQL's F1 on three tasks; SUQL remains more robust overall because it
+misses fewer positives on the harder negative-review questions.
 
-![Precision, recall, and F1 for SUQL versus the best heterogeneous variants](presentations/suql_vs_best_heterogen_qwen3/suql_vs_best_metrics.png)
+V2_3 shows why exact-ID batching alone is not enough: it is faster than SUQL,
+but low precision pulls macro F1 down to 0.403. V3 applies structured pruning
+but still scores row-wise, so it is both slower than SUQL and has the weakest
+macro recall. The useful combination is V3_2: structured pruning first, then
+batched cheap-to-expensive routing over the pruned exact-ID candidates.
 
-![Wall time for SUQL versus the best heterogeneous variants](presentations/suql_vs_best_heterogen_qwen3/suql_vs_best_time.png)
+![Precision, recall, and F1 for SUQL and heterogeneous variants](common_benchmark_10q/outputs/gemma4_e2b_e4b_10q_11reps_20260705_184848/plots/01_quality_precision_recall_f1.png)
 
-![LLM calls for SUQL versus the best heterogeneous variants](presentations/suql_vs_best_heterogen_qwen3/suql_vs_best_calls.png)
+![Wall time and model-time split for SUQL and heterogeneous variants](common_benchmark_10q/outputs/gemma4_e2b_e4b_10q_11reps_20260705_184848/plots/02_time_cheap_expensive_percent.png)
+
+![LLM calls and cheap/expensive split for SUQL and heterogeneous variants](common_benchmark_10q/outputs/gemma4_e2b_e4b_10q_11reps_20260705_184848/plots/03_calls_cheap_expensive_percent.png)
+
+![Quality, time, and call tradeoff for SUQL and heterogeneous variants](common_benchmark_10q/outputs/gemma4_e2b_e4b_10q_11reps_20260705_184848/plots/04_quality_time_calls_tradeoff.png)
 
 Source metrics:
-[`suql_vs_best_heterogen_qwen3.csv`](presentations/suql_vs_best_heterogen_qwen3/suql_vs_best_heterogen_qwen3.csv).
+[`aggregate.csv`](common_benchmark_10q/outputs/gemma4_e2b_e4b_10q_11reps_20260705_184848/aggregate.csv)
+and
+[`comparison.csv`](common_benchmark_10q/outputs/gemma4_e2b_e4b_10q_11reps_20260705_184848/comparison.csv).
 
 `common_benchmark/` retains the earlier 16-row multi-model comparison. It is
 useful for model-sensitivity analysis, while `common_benchmark_v2/` is the
