@@ -12,19 +12,16 @@ from pathlib import Path
 
 import pandas as pd
 
-os.environ.setdefault("MPLCONFIGDIR", str(Path(__file__).resolve().parent / ".mplconfig"))
-
-import matplotlib
-
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import numpy as np
-
 
 STAGE_DIR = Path(__file__).resolve().parent
 ROOT = STAGE_DIR.parent
 DATA_DIR = ROOT / "data"
 BENCH_DIR = STAGE_DIR / "benchmarks"
+SCRIPTS_DIR = ROOT / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
+from plot_benchmarks import plot_per_question_metrics
 
 PROJECTS = {
     "baseline": ROOT / "src_baseline",
@@ -129,12 +126,22 @@ def run_project(
             "SUQL_THRESHOLDS_PATH": str(thresholds_path),
         }
     )
-    cmd = [python, "-u", "main.py", "--suql", query["suql"], "--output", str(output_csv)]
+    cmd = [
+        python,
+        "-u",
+        str(ROOT / "scripts" / "run_suql.py"),
+        "--engine-dir",
+        str(project_dir),
+        "--suql",
+        query["suql"],
+        "--output",
+        str(output_csv),
+    ]
 
     started = time.perf_counter()
     proc = subprocess.run(
         cmd,
-        cwd=project_dir,
+        cwd=ROOT,
         env=env,
         text=True,
         stdout=subprocess.PIPE,
@@ -175,117 +182,6 @@ def save_metrics(rows: list[dict], path: Path) -> None:
         writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
         writer.writeheader()
         writer.writerows(rows)
-
-
-def plot_comparison(df: pd.DataFrame, output_path: Path) -> None:
-    query_ids = [q["id"] for q in QUERIES]
-    labels = [f"Q{i + 1}" for i in range(len(query_ids))]
-    x = np.arange(len(query_ids))
-    fallback_columns = {
-        "engine_seconds": "wall_seconds",
-        "llm_prompts_issued": "llm_full_calls",
-        "structured_candidates": "result_rows",
-        "semantic_rows": "result_rows",
-        "join_rows": "result_rows",
-    }
-    for column, fallback in fallback_columns.items():
-        if column not in df.columns:
-            df[column] = df.get(fallback)
-
-    baseline = df[df["project"] == "baseline"].set_index("query_id").reindex(query_ids)
-    stage1 = df[df["project"] == "stage1"].set_index("query_id").reindex(query_ids)
-    for frame in (baseline, stage1):
-        for column in [
-            "wall_seconds",
-            "engine_seconds",
-            "llm_full_calls",
-            "llm_prompts_issued",
-            "llm_early_accept",
-            "llm_early_reject",
-            "structured_candidates",
-            "semantic_rows",
-            "join_rows",
-            "result_rows",
-        ]:
-            frame[column] = pd.to_numeric(frame[column], errors="coerce")
-
-    fig, axes = plt.subplots(4, 2, figsize=(18, 24))
-    axes_flat = axes.flatten()
-    fig.subplots_adjust(top=0.80, hspace=0.60, wspace=0.28)
-
-    question_lines = ["Question Index"]
-    question_lines.extend(f"Q{i + 1} - {query['question']}" for i, query in enumerate(QUERIES))
-    fig.text(
-        0.5,
-        0.985,
-        "\n".join(question_lines),
-        ha="center",
-        va="top",
-        fontsize=10,
-        fontfamily="monospace",
-        fontweight="bold",
-        linespacing=1.25,
-    )
-
-    def line_panel(ax, title: str, column: str, ylabel: str) -> None:
-        base_y = baseline[column]
-        stage_y = stage1[column]
-        blue = "#2b8cbe"
-        red = "#f04b5f"
-
-        ax.plot(x, base_y, marker="o", linewidth=2.5, markersize=6, color=blue, label="baseline")
-        ax.plot(x, stage_y, marker="o", linewidth=2.5, markersize=6, color=red, label="stage1")
-        ax.fill_between(x, base_y.fillna(0), color=blue, alpha=0.08)
-        ax.fill_between(x, stage_y.fillna(0), color=red, alpha=0.10)
-
-        for xi, value in zip(x, base_y):
-            if pd.notna(value):
-                ax.annotate(
-                    f"{value:.0f}",
-                    (xi, value),
-                    textcoords="offset points",
-                    xytext=(0, 8),
-                    ha="center",
-                    color=blue,
-                    fontsize=8,
-                    fontweight="bold",
-                )
-        for xi, value in zip(x, stage_y):
-            if pd.notna(value):
-                ax.annotate(
-                    f"{value:.0f}",
-                    (xi, value),
-                    textcoords="offset points",
-                    xytext=(0, -12),
-                    ha="center",
-                    color=red,
-                    fontsize=8,
-                    fontweight="bold",
-                )
-
-        ax.set_title(title, fontsize=12, fontweight="bold")
-        ax.set_xticks(x, labels)
-        ax.set_ylabel(ylabel)
-        ax.grid(True, alpha=0.25)
-        ax.spines["top"].set_visible(False)
-        ax.spines["right"].set_visible(False)
-        ax.legend(fontsize=8, loc="upper right")
-
-    panels = [
-        ("Wall-clock Latency", "wall_seconds", "seconds"),
-        ("Engine Time", "engine_seconds", "seconds"),
-        ("LLM Prompts Issued", "llm_prompts_issued", "count"),
-        ("Structured Candidates", "structured_candidates", "count"),
-        ("Semantic Rows Retrieved", "semantic_rows", "count"),
-        ("Join Rows", "join_rows", "count"),
-        ("Result Rows", "result_rows", "count"),
-    ]
-    for ax, (title, column, ylabel) in zip(axes_flat, panels):
-        line_panel(ax, title, column, ylabel)
-    axes_flat[-1].axis("off")
-
-    fig.savefig(output_path, dpi=180, bbox_inches="tight")
-    plt.close(fig)
 
 
 def main() -> None:
@@ -336,7 +232,12 @@ def main() -> None:
 
     metrics_path = run_dir / "metrics.csv"
     save_metrics(rows, metrics_path)
-    plot_comparison(pd.DataFrame(rows), run_dir / "comparison_plot.png")
+    plot_per_question_metrics(
+        metrics_csv=metrics_path,
+        output=run_dir / "comparison_plot.png",
+        implementations=["baseline", "stage1"],
+        title="Baseline vs Stage 1",
+    )
     print(f"\nMetrics saved to: {metrics_path}")
     print(f"Plot saved to: {run_dir / 'comparison_plot.png'}")
 

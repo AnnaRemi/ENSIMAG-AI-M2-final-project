@@ -30,6 +30,8 @@ def main() -> None:
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
     parser.add_argument("--cheap-model", default="ollama/gemma4:e2b")
     parser.add_argument("--expensive-model", default="ollama/gemma4:e4b")
+    parser.add_argument("--structured-parser-model")
+    parser.add_argument("--disable-llm-structured-parser", action="store_true")
     parser.add_argument("--cascade-target", type=float, default=0.9)
     parser.add_argument("--calibration-budget", type=int, default=20)
     parser.add_argument("--expensive-batch-size", type=int, default=8)
@@ -42,8 +44,7 @@ def main() -> None:
     sys.path.insert(0, str(TRUMMER_ROOT))
     from trummer_join.cascade import CascadeConfig, CascadeJoin, Candidate, metrics_dict
     from trummer_join.structured_filter import (
-        apply_structured_filters,
-        extract_structured_filters,
+        prune_movie_frame,
         semantic_predicate_from_question,
     )
 
@@ -55,8 +56,15 @@ def main() -> None:
 
     input_movies_frame = pd.DataFrame(input_movies)
     input_reviews_frame = pd.DataFrame(input_reviews)
-    structured_filters = extract_structured_filters(args.question, input_movies_frame.columns)
-    pruned_movies_frame = apply_structured_filters(input_movies_frame, structured_filters).reset_index(drop=True)
+    parser_model = args.structured_parser_model or args.cheap_model
+    pruned_movies_frame, pruning = prune_movie_frame(
+        input_movies_frame,
+        args.question,
+        api_base=args.api_base,
+        parser_model=parser_model,
+        request_timeout=args.request_timeout,
+        use_llm=not args.dry_run and not args.disable_llm_structured_parser,
+    )
     movie_ids = set(pruned_movies_frame["movie_id"].astype(str)) if "movie_id" in pruned_movies_frame else set()
     pruned_reviews_frame = pd.DataFrame(
         [review for review in input_reviews if str(review.get("tconst", "")) in movie_ids],
@@ -64,7 +72,11 @@ def main() -> None:
     ).reset_index(drop=True)
     movies = pruned_movies_frame.to_dict("records")
     reviews = pruned_reviews_frame.to_dict("records")
-    semantic_predicate = args.semantic_predicate or semantic_predicate_from_question(args.question)
+    semantic_predicate = (
+        args.semantic_predicate
+        or pruning.semantic_predicate
+        or semantic_predicate_from_question(args.question)
+    )
 
     config = CascadeConfig(
         api_base=args.api_base,
@@ -141,7 +153,8 @@ def main() -> None:
         "pruned_movies": len(movies),
         "pruned_reviews": len(reviews),
         "question": args.question,
-        "structured_filters": [item.as_dict() for item in structured_filters],
+        "structured_filters": [item.as_dict() for item in pruning.filters],
+        "structured_pruning": pruning.as_dict(),
         "structured_condition_location": "deterministic_prefilter",
         "join_condition_location": "deterministic_prefilter",
         "semantic_condition_location": "cascade",

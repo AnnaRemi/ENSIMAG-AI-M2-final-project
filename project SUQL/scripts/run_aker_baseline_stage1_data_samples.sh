@@ -68,7 +68,7 @@ if [[ ! -x .venv/bin/python ]]; then
 fi
 
 PYTHON_BIN="$PROJECT_ROOT/.venv/bin/python"
-"$PYTHON_BIN" -m pip install -r requirements.txt -r Stage_1/requirements.txt matplotlib
+"$PYTHON_BIN" -m pip install -r requirements.txt
 
 find_ollama() {
   if [[ -n "$OLLAMA_BIN" && -x "$OLLAMA_BIN" ]]; then
@@ -213,10 +213,14 @@ done
 
 echo
 echo "Aggregating scaling plot."
-"$PYTHON_BIN" scripts/aggregate_stage1_scaling_svg.py \
-  --sizes "${SIZES[@]}" \
-  --run-prefix "aker_baseline_stage1_data_sample" \
-  --output-dir "$PROJECT_ROOT/Stage_1/benchmarks/baseline_vs_stage1_data_samples_${RUN_STAMP}"
+"$PYTHON_BIN" scripts/plot_benchmarks.py scaling \
+  --benchmark-dir "$PROJECT_ROOT/Stage_1/benchmarks" \
+  --pattern "aker_baseline_stage1_data_sample_*/metrics.csv" \
+  --sample-regex "data_sample_([0-9]+)" \
+  --impls "baseline stage1" \
+  --output-dir "$PROJECT_ROOT/Stage_1/benchmarks/baseline_vs_stage1_data_samples_${RUN_STAMP}" \
+  --output-name "metrics_vs_sample_size.png" \
+  --title "Baseline vs Stage 1 Scaling"
 
 echo
 echo "All runs finished."
@@ -225,4 +229,4 @@ for size in "${SIZES[@]}"; do
   echo "  $PROJECT_ROOT/Stage_1/benchmarks/aker_baseline_stage1_data_sample_${size}_${RUN_STAMP}/metrics.csv"
 done
 echo "Scaling output:"
-echo "  $PROJECT_ROOT/Stage_1/benchmarks/baseline_vs_stage1_data_samples_${RUN_STAMP}/metrics_vs_sample_size.svg"
+echo "  $PROJECT_ROOT/Stage_1/benchmarks/baseline_vs_stage1_data_samples_${RUN_STAMP}/metrics_vs_sample_size.png"

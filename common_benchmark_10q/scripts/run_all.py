@@ -14,6 +14,7 @@ from repetitions import run_repeated
 
 METHOD_DIRS = {
     "suql": "suql_baseline",
+    "suql_stage2": "suql_stage2",
     "v2_3": "heterogen_v2_3",
     "v3": "heterogen_v3",
     "v3_2": "heterogen_v3_2",
@@ -58,8 +59,8 @@ def main() -> None:
         "--methods",
         nargs="+",
         choices=sorted(METHOD_DIRS),
-        default=list(METHOD_DIRS),
-        help="Methods to run. Defaults to SUQL, V2_3, V3, and V3_2.",
+        default=["suql", "v2_3", "v3", "v3_2"],
+        help="Methods to run. Defaults to SUQL baseline, V2_3, V3, and V3_2.",
     )
     parser.add_argument("--output-dir", required=True)
     args = parser.parse_args()

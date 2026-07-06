@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import json
-import math
 import os
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -29,6 +29,9 @@ DEFAULT_EXPENSIVE_MODEL = os.environ.get(
 DEFAULT_CHEAP_ACCEPT_FLOOR = float(os.environ.get("SUQL_CHEAP_ACCEPT_FLOOR", "4.0"))
 DEFAULT_CHEAP_MIN_DECISION_RATE = float(os.environ.get("SUQL_CHEAP_MIN_DECISION_RATE", "0.3"))
 DEFAULT_CHEAP_MIN_PROBES = int(os.environ.get("SUQL_CHEAP_MIN_PROBES", "5"))
+DEFAULT_CASCADE_TARGET = float(os.environ.get("SUQL_CASCADE_TARGET", "0.9"))
+DEFAULT_CALIBRATION_BUDGET = int(os.environ.get("SUQL_CALIBRATION_BUDGET", "20"))
+DEFAULT_MANUAL_CONFIDENCE_THRESHOLD = os.environ.get("SUQL_MANUAL_CONFIDENCE_THRESHOLD")
 
 
 def parse_disabled_questions(value: str | None) -> set[str]:
@@ -67,11 +70,17 @@ class CascadeStats:
     cache_misses: int = 0
     cheap_score_calls: int = 0
     cheap_score_failures: int = 0
+    cheap_seconds: float = 0.0
     cheap_early_accept: int = 0
     cheap_early_reject: int = 0
     cheap_skipped: int = 0
     cheap_disabled: int = 0
+    calibration_candidates: int = 0
+    calibration_expensive_calls: int = 0
+    calibration_expensive_accepts: int = 0
+    calibration_agreement: float = 0.0
     expensive_full_calls: int = 0
+    expensive_seconds: float = 0.0
     cheap_score_failure_reasons: dict[str, int] = field(default_factory=dict)
     model_usage_by_question: dict[str, dict[str, object]] = field(default_factory=dict)
 
@@ -85,12 +94,23 @@ class CascadeStats:
                 "cache_misses": 0,
                 "cheap_score_calls": 0,
                 "cheap_score_failures": 0,
+                "cheap_seconds": 0.0,
                 "cheap_early_accept": 0,
                 "cheap_early_reject": 0,
                 "cheap_skipped": 0,
                 "cheap_disabled": 0,
                 "no_model_early_reject": 0,
+                "calibration_candidates": 0,
+                "calibration_expensive_calls": 0,
+                "calibration_expensive_accepts": 0,
+                "calibration_agreement": 0.0,
+                "cascade_target": None,
+                "calibration_budget": None,
+                "learned_confidence_threshold": None,
+                "routing_confidence_threshold": None,
+                "manual_confidence_threshold": None,
                 "expensive_full_calls": 0,
+                "expensive_seconds": 0.0,
                 "cheap_accept_floor": None,
                 "cheap_min_decision_rate": None,
                 "cheap_min_probes": None,
@@ -118,34 +138,38 @@ class CascadeStats:
             "cache_misses": self.cache_misses,
             "cheap_score_calls": self.cheap_score_calls,
             "cheap_score_failures": self.cheap_score_failures,
+            "cheap_seconds": self.cheap_seconds,
             "cheap_early_accept": self.cheap_early_accept,
             "cheap_early_reject": self.cheap_early_reject,
             "cheap_skipped": self.cheap_skipped,
             "cheap_disabled": self.cheap_disabled,
+            "calibration_candidates": self.calibration_candidates,
+            "calibration_expensive_calls": self.calibration_expensive_calls,
+            "calibration_expensive_accepts": self.calibration_expensive_accepts,
+            "calibration_agreement": self.calibration_agreement,
             "expensive_full_calls": self.expensive_full_calls,
+            "expensive_seconds": self.expensive_seconds,
             "cheap_score_failure_reasons": self.cheap_score_failure_reasons,
             "model_usage_by_question": self.model_usage_by_question,
         }
 
 
-@dataclass(frozen=True)
-class CascadeThreshold:
-    cheap_accept_threshold: float
-    cheap_reject_threshold: float
-    labelled_examples: int = 0
-    early_accept_count: int = 0
-    early_reject_count: int = 0
-
-
 @dataclass
 class CascadeAnswerFilter:
-    thresholds_path: str | Path
+    thresholds_path: str | Path | None = None
     cheap_model: str = DEFAULT_CHEAP_MODEL
     expensive_model: str = DEFAULT_EXPENSIVE_MODEL
     api_base: str = DEFAULT_API_BASE
     cheap_accept_floor: float = DEFAULT_CHEAP_ACCEPT_FLOOR
     cheap_min_decision_rate: float = DEFAULT_CHEAP_MIN_DECISION_RATE
     cheap_min_probes: int = DEFAULT_CHEAP_MIN_PROBES
+    cascade_target: float = DEFAULT_CASCADE_TARGET
+    calibration_budget: int = DEFAULT_CALIBRATION_BUDGET
+    manual_confidence_threshold: float | None = (
+        float(DEFAULT_MANUAL_CONFIDENCE_THRESHOLD)
+        if DEFAULT_MANUAL_CONFIDENCE_THRESHOLD not in (None, "")
+        else None
+    )
     cheap_disabled_questions: set[str] | list[str] | tuple[str, ...] | None = None
     timeout: float = 120.0
     stats: CascadeStats = field(default_factory=CascadeStats)
@@ -157,6 +181,16 @@ class CascadeAnswerFilter:
         self.cheap_accept_floor = float(self.cheap_accept_floor)
         self.cheap_min_decision_rate = float(self.cheap_min_decision_rate)
         self.cheap_min_probes = int(self.cheap_min_probes)
+        self.cascade_target = float(self.cascade_target)
+        self.calibration_budget = int(self.calibration_budget)
+        if not 0.0 < self.cascade_target <= 1.0:
+            raise ValueError("cascade_target must be in (0, 1]")
+        if self.calibration_budget < 0:
+            raise ValueError("calibration_budget must be non-negative")
+        if self.manual_confidence_threshold is not None:
+            self.manual_confidence_threshold = float(self.manual_confidence_threshold)
+            if self.manual_confidence_threshold < 0:
+                raise ValueError("manual_confidence_threshold must be non-negative")
         self.cheap_disabled_questions = {
             str(question).strip()
             for question in (self.cheap_disabled_questions or set())
@@ -169,26 +203,7 @@ class CascadeAnswerFilter:
             api_base=self.api_base,
             timeout=self.timeout,
         )
-        self.thresholds = self._load_thresholds(Path(self.thresholds_path))
         self.cache: dict[str, str] = {}
-
-    @staticmethod
-    def _load_thresholds(path: Path) -> dict[str, CascadeThreshold]:
-        if not path.exists():
-            raise FileNotFoundError(f"Stage_2 thresholds file not found: {path}")
-        payload = json.loads(path.read_text(encoding="utf-8"))
-        loaded: dict[str, CascadeThreshold] = {}
-        for item in payload.get("thresholds", []):
-            loaded[str(item["question"])] = CascadeThreshold(
-                cheap_accept_threshold=float(item.get("cheap_accept_threshold", math.inf)),
-                cheap_reject_threshold=float(item.get("cheap_reject_threshold", -math.inf)),
-                labelled_examples=int(item.get("labelled_examples", 0) or 0),
-                early_accept_count=int(item.get("early_accept_count", 0) or 0),
-                early_reject_count=int(item.get("early_reject_count", 0) or 0),
-            )
-        if not loaded:
-            raise ValueError(f"No thresholds found in {path}")
-        return loaded
 
     @staticmethod
     def _cache_key(review_text: str, question: str) -> str:
@@ -204,110 +219,128 @@ class CascadeAnswerFilter:
         usage["cheap_disabled"] = int(usage["cheap_disabled"]) + 1
         usage["cheap_skip_reason"] = "disabled for this question"
 
-    def _cheap_decision_rate(self, usage: dict[str, object]) -> float:
-        calls = int(usage.get("cheap_score_calls", 0) or 0)
-        if calls == 0:
-            return 0.0
-        decisions = int(usage.get("cheap_early_accept", 0) or 0) + int(usage.get("cheap_early_reject", 0) or 0)
-        return decisions / calls
-
-    def _cheap_should_be_skipped(
-        self,
-        threshold: CascadeThreshold,
-        usage: dict[str, object],
-    ) -> bool:
-        if self.cheap_min_decision_rate <= 0 or self.cheap_min_probes <= 0:
-            return False
-
-        profile_decisions = threshold.early_accept_count + threshold.early_reject_count
-        if threshold.labelled_examples >= self.cheap_min_probes:
-            profile_rate = profile_decisions / max(threshold.labelled_examples, 1)
-            if profile_rate < self.cheap_min_decision_rate:
-                usage["cheap_skip_reason"] = (
-                    f"profile decision rate {profile_rate:.3f} below {self.cheap_min_decision_rate:.3f}"
-                )
-                return True
-
-        calls = int(usage.get("cheap_score_calls", 0) or 0)
-        if calls >= self.cheap_min_probes:
-            observed_rate = self._cheap_decision_rate(usage)
-            if observed_rate < self.cheap_min_decision_rate:
-                usage["cheap_skip_reason"] = (
-                    f"observed decision rate {observed_rate:.3f} below {self.cheap_min_decision_rate:.3f} "
-                    f"after {calls} probes"
-                )
-                return True
-        return False
-
     def answer(self, review_text: str, question: str) -> str:
+        return self.answer_batch([review_text], question)[0]
+
+    def answer_batch(self, review_texts: list[str], question: str) -> list[str]:
         usage = self.stats.usage_for(question, self.cheap_model, self.expensive_model)
         usage["cheap_accept_floor"] = self.cheap_accept_floor
         usage["cheap_min_decision_rate"] = self.cheap_min_decision_rate
         usage["cheap_min_probes"] = self.cheap_min_probes
+        usage["cascade_target"] = self.cascade_target
+        usage["calibration_budget"] = self.calibration_budget
+        usage["manual_confidence_threshold"] = self.manual_confidence_threshold
         usage["cheap_disabled_for_question"] = question in self.cheap_disabled_questions
-        key = self._cache_key(review_text, question)
-        if key in self.cache:
-            self.stats.cache_hits += 1
-            usage["cache_hits"] = int(usage["cache_hits"]) + 1
-            return self.cache[key]
+        results: list[str | None] = [None] * len(review_texts)
+        scored: list[tuple[int, str, float]] = []
 
-        self.stats.cache_misses += 1
-        usage["cache_misses"] = int(usage["cache_misses"]) + 1
-        if not review_text or len(review_text.strip()) < 10:
-            self.stats.cheap_early_reject += 1
-            usage["cheap_early_reject"] = int(usage["cheap_early_reject"]) + 1
-            usage["no_model_early_reject"] = int(usage["no_model_early_reject"]) + 1
-            self.cache[key] = "No"
-            return "No"
+        for index, raw_text in enumerate(review_texts):
+            review_text = "" if raw_text is None else str(raw_text)
+            key = self._cache_key(review_text, question)
+            if key in self.cache:
+                self.stats.cache_hits += 1
+                usage["cache_hits"] = int(usage["cache_hits"]) + 1
+                results[index] = self.cache[key]
+                continue
 
-        threshold = self.thresholds.get(question)
-        if threshold is None:
-            result = self.expensive_answer(review_text, question)
-            self.cache[key] = result
-            return result
+            self.stats.cache_misses += 1
+            usage["cache_misses"] = int(usage["cache_misses"]) + 1
+            if not review_text or len(review_text.strip()) < 10:
+                self.stats.cheap_early_reject += 1
+                usage["cheap_early_reject"] = int(usage["cheap_early_reject"]) + 1
+                usage["no_model_early_reject"] = int(usage["no_model_early_reject"]) + 1
+                self.cache[key] = "No"
+                results[index] = "No"
+                continue
 
-        if question in self.cheap_disabled_questions:
-            self._record_cheap_disabled(usage)
-            result = self.expensive_answer(review_text, question)
-            self.cache[key] = result
-            return result
+            if question in self.cheap_disabled_questions:
+                self._record_cheap_disabled(usage)
+                result = self.expensive_answer(review_text, question)
+                self.cache[key] = result
+                results[index] = result
+                continue
 
-        if self._cheap_should_be_skipped(threshold, usage):
-            self._record_cheap_skip(usage)
-            result = self.expensive_answer(review_text, question)
-            self.cache[key] = result
-            return result
+            self.stats.cheap_score_calls += 1
+            usage["cheap_score_calls"] = int(usage["cheap_score_calls"]) + 1
+            started = time.perf_counter()
+            try:
+                score = float(self.cheap_scorer.score(review_text, question))
+            except Exception as exc:
+                elapsed = time.perf_counter() - started
+                self.stats.cheap_seconds += elapsed
+                usage["cheap_seconds"] = float(usage["cheap_seconds"]) + elapsed
+                self.stats.cheap_score_failures += 1
+                usage["cheap_score_failures"] = int(usage["cheap_score_failures"]) + 1
+                self.stats.record_cheap_score_failure(question, self.cheap_model, self.expensive_model, exc)
+                result = self.expensive_answer(review_text, question)
+                self.cache[key] = result
+                results[index] = result
+                continue
+            elapsed = time.perf_counter() - started
+            self.stats.cheap_seconds += elapsed
+            usage["cheap_seconds"] = float(usage["cheap_seconds"]) + elapsed
 
-        self.stats.cheap_score_calls += 1
-        usage["cheap_score_calls"] = int(usage["cheap_score_calls"]) + 1
-        try:
-            score = self.cheap_scorer.score(review_text, question)
-        except Exception as exc:
-            self.stats.cheap_score_failures += 1
-            usage["cheap_score_failures"] = int(usage["cheap_score_failures"]) + 1
-            self.stats.record_cheap_score_failure(question, self.cheap_model, self.expensive_model, exc)
-            result = self.expensive_answer(review_text, question)
-            self.cache[key] = result
-            return result
+            scored.append((index, review_text, score))
 
-        effective_accept_threshold = max(threshold.cheap_accept_threshold, self.cheap_accept_floor)
-        usage["effective_accept_threshold"] = effective_accept_threshold
-        usage["cheap_reject_threshold"] = threshold.cheap_reject_threshold
+        if self.manual_confidence_threshold is None:
+            routing_threshold = self._learn_confidence_threshold(scored, question, usage)
+            learned_threshold = routing_threshold
+        else:
+            routing_threshold = self.manual_confidence_threshold
+            learned_threshold = None
+        usage["learned_confidence_threshold"] = learned_threshold
+        usage["routing_confidence_threshold"] = routing_threshold
 
-        if score >= effective_accept_threshold:
-            self.stats.cheap_early_accept += 1
-            usage["cheap_early_accept"] = int(usage["cheap_early_accept"]) + 1
-            self.cache[key] = "Yes"
-            return "Yes"
-        if score <= threshold.cheap_reject_threshold:
-            self.stats.cheap_early_reject += 1
-            usage["cheap_early_reject"] = int(usage["cheap_early_reject"]) + 1
-            self.cache[key] = "No"
-            return "No"
+        for index, review_text, score in scored:
+            if results[index] is not None:
+                continue
+            key = self._cache_key(review_text, question)
+            if _is_confident(score, routing_threshold) and score >= 0:
+                self.stats.cheap_early_accept += 1
+                usage["cheap_early_accept"] = int(usage["cheap_early_accept"]) + 1
+                self.cache[key] = "Yes"
+                results[index] = "Yes"
+            elif _is_confident(score, routing_threshold):
+                self.stats.cheap_early_reject += 1
+                usage["cheap_early_reject"] = int(usage["cheap_early_reject"]) + 1
+                self.cache[key] = "No"
+                results[index] = "No"
+            else:
+                result = self.expensive_answer(review_text, question)
+                self.cache[key] = result
+                results[index] = result
 
-        result = self.expensive_answer(review_text, question)
-        self.cache[key] = result
-        return result
+        return [str(result or "No") for result in results]
+
+    def _learn_confidence_threshold(
+        self,
+        scored: list[tuple[int, str, float]],
+        question: str,
+        usage: dict[str, object],
+    ) -> float | None:
+        calibration_items = _calibration_sample(scored, self.calibration_budget)
+        if not calibration_items:
+            usage["calibration_agreement"] = 0.0
+            self.stats.calibration_agreement = 0.0
+            return None
+
+        records: list[tuple[float, bool, bool]] = []
+        self.stats.calibration_candidates += len(calibration_items)
+        usage["calibration_candidates"] = int(usage["calibration_candidates"]) + len(calibration_items)
+        for _index, review_text, score in calibration_items:
+            self.stats.calibration_expensive_calls += 1
+            usage["calibration_expensive_calls"] = int(usage["calibration_expensive_calls"]) + 1
+            oracle = self.expensive_answer(review_text, question)
+            oracle_accepts = _normalised_yes_no(oracle) is True
+            if oracle_accepts:
+                self.stats.calibration_expensive_accepts += 1
+                usage["calibration_expensive_accepts"] = int(usage["calibration_expensive_accepts"]) + 1
+            records.append((abs(score), score >= 0, oracle_accepts))
+
+        threshold, agreement = _learn_threshold(records, self.cascade_target)
+        self.stats.calibration_agreement = agreement
+        usage["calibration_agreement"] = agreement
+        return threshold
 
     def expensive_answer(self, review_text: str, question: str) -> str:
         usage = self.stats.usage_for(question, self.cheap_model, self.expensive_model)
@@ -323,13 +356,81 @@ class CascadeAnswerFilter:
             "stream": False,
             "options": {"temperature": 0, "num_predict": 20},
         }
-        response = httpx.post(f"{self.api_base}/api/chat", json=payload, timeout=self.timeout)
-        response.raise_for_status()
+        started = time.perf_counter()
+        try:
+            response = httpx.post(f"{self.api_base}/api/chat", json=payload, timeout=self.timeout)
+            response.raise_for_status()
+        finally:
+            elapsed = time.perf_counter() - started
+            self.stats.expensive_seconds += elapsed
+            usage["expensive_seconds"] = float(usage["expensive_seconds"]) + elapsed
         result = extract_text(response.json()).strip()
         low = result.lower().strip().rstrip(".")
         if low in {"yes", "no"}:
             return low.capitalize()
         return result
+
+
+def _calibration_sample(
+    scored: list[tuple[int, str, float]],
+    budget: int,
+) -> list[tuple[int, str, float]]:
+    if budget <= 0:
+        return []
+    eligible = [(index, review_text, score, abs(score)) for index, review_text, score in scored]
+    if len(eligible) <= budget:
+        return [(index, review_text, score) for index, review_text, score, _confidence in eligible]
+    ranked = sorted(eligible, key=lambda item: (-item[3], item[0]))
+    if budget == 1:
+        index, review_text, score, _confidence = ranked[0]
+        return [(index, review_text, score)]
+
+    selected: list[tuple[int, str, float]] = []
+    selected_indexes: set[int] = set()
+    for sample_index in range(budget):
+        rank = round(sample_index * (len(ranked) - 1) / (budget - 1))
+        index, review_text, score, _confidence = ranked[rank]
+        if index in selected_indexes:
+            continue
+        selected.append((index, review_text, score))
+        selected_indexes.add(index)
+    return selected
+
+
+def _learn_threshold(
+    records: list[tuple[float, bool, bool]],
+    target: float,
+) -> tuple[float | None, float]:
+    best_agreement = 0.0
+    for threshold in sorted({confidence for confidence, _proxy_label, _oracle_label in records}):
+        selected = [
+            (proxy_label, oracle_label)
+            for confidence, proxy_label, oracle_label in records
+            if confidence >= threshold
+        ]
+        if not selected:
+            continue
+        agreement = sum(
+            int(proxy_label == oracle_label)
+            for proxy_label, oracle_label in selected
+        ) / len(selected)
+        best_agreement = max(best_agreement, agreement)
+        if agreement >= target:
+            return threshold, agreement
+    return None, best_agreement
+
+
+def _is_confident(score: float, threshold: float | None) -> bool:
+    return threshold is not None and abs(score) >= threshold
+
+
+def _normalised_yes_no(value: str) -> bool | None:
+    low = value.strip().lower().rstrip(".")
+    if low == "yes":
+        return True
+    if low == "no":
+        return False
+    return None
 
 
 def extract_text(payload: dict) -> str:

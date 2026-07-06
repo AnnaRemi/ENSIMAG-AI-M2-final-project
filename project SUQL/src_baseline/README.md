@@ -65,11 +65,11 @@ Natural Language Question
 ```
 suql_movies/
 ├── suql_engine.py      # Core engine: NL→SUQL parser, answer(), summary(), executor
-├── main.py             # CLI entry point + example questions
-├── suql_movies.ipynb   # Jupyter notebook (same logic, with explanations)
-├── data/
-│   └── imdb_joined.csv # IMDb dataset (25 000 rows)
-└── outputs/            # CSV results written here
+├── ../scripts/run_suql.py
+│                       # Shared CLI entry point + example questions
+├── ../data/
+│   └── imdb_joined.csv # IMDb dataset
+└── outputs/            # CSV results written here by default
 ```
 
 ---
@@ -79,7 +79,7 @@ suql_movies/
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r ../requirements.txt
 ```
 
 The project uses LiteLLM with an Ollama-compatible server. By default it connects
@@ -101,13 +101,14 @@ export SUQL_DATA_PATH="../data/imdb_joined.csv"
 
 ```bash
 # Run all built-in example questions
-python main.py
+python ../scripts/run_suql.py --engine-dir .
 
 # Ask a single NL question
-python main.py "What horror movies from the 80s do reviewers find genuinely scary?"
+python ../scripts/run_suql.py --engine-dir . \
+  "What horror movies from the 80s do reviewers find genuinely scary?"
 
 # Run a raw SUQL query (skips the NL parser)
-python main.py --suql "SELECT movie_id, title, year, genres, summary(review) AS review_summary
+python ../scripts/run_suql.py --engine-dir . --suql "SELECT movie_id, title, year, genres, summary(review) AS review_summary
 FROM movies
 WHERE genres LIKE '%Sci-Fi%'
   AND year >= 2000
@@ -115,7 +116,7 @@ WHERE genres LIKE '%Sci-Fi%'
 LIMIT 5;"
 
 # Suppress progress output
-python main.py --quiet "best comedies of the 2000s"
+python ../scripts/run_suql.py --engine-dir . --quiet "best comedies of the 2000s"
 ```
 
 ### Aker / LIG GPU
@@ -126,16 +127,9 @@ shell on the same allocated host:
 ```bash
 export SUQL_API_BASE="http://127.0.0.1:11434"
 export SUQL_MODEL="ollama/gemma4:e4b"
-python main.py "What horror movies from the 80s do reviewers find genuinely scary?"
+python ../scripts/run_suql.py --engine-dir . \
+  "What horror movies from the 80s do reviewers find genuinely scary?"
 ```
-
-### Jupyter Notebook
-
-```bash
-jupyter notebook suql_movies.ipynb
-```
-
-The notebook walks through every step with explanations and lets you run custom questions interactively.
 
 ### Python API
 

@@ -87,7 +87,7 @@ Aker login node:
 ```bash
 cd /home/daisy/remizova/common_benchmark_v2_workspace
 PULL_MODELS=1 WALLTIME=12:00:00 \
-  bash common_benchmark_v2/scripts/submit_aker_common_benchmark.sh
+  bash common_benchmark_v2/scripts/runner.sh submit-aker
 ```
 
 Local Mac, after completion:

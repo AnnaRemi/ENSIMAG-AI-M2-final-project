@@ -1,0 +1,27 @@
+movie_id,title,year,runtime,director,genres,match_source
+tt0063094,Hot Millions,1968,106,Eric Till,"Comedy,Crime",expensive_accept
+tt0064247,Don't Drink the Water,1969,100,Howard Morris,Comedy,expensive_accept
+tt0065198,The Wedding Party,1969,92,"Brian De Palma, Wilford Leach, Cynthia Munroe",Comedy,expensive_accept
+tt0070752,Superchick,1973,94,Ed Forsyth,"Action,Comedy",expensive_accept
+tt0077275,The Brink's Job,1978,104,William Friedkin,"Comedy,Crime,Drama",expensive_accept
+tt0077372,Corvette Summer,1978,105,Matthew Robbins,"Adventure,Comedy",expensive_accept
+tt0081751,Wholly Moses!,1980,103,Gary Weis,"Comedy,Fantasy",expensive_accept
+tt0088242,Teachers,1984,107,Arthur Hiller,"Comedy,Drama",expensive_accept
+tt0093565,Moonstruck,1987,102,Norman Jewison,"Comedy,Drama,Romance",expensive_accept
+tt0095088,Elvira: Mistress of the Dark,1988,96,James Signorelli,"Comedy,Horror",expensive_accept
+tt0095654,Moon Over Parador,1988,103,Paul Mazursky,"Comedy,Romance",expensive_accept
+tt0097211,Disorganized Crime,1989,98,Jim Kouf,"Action,Comedy,Crime",expensive_accept
+tt0098155,Pedicab Driver,1989,95,Sammo Kam-Bo Hung,"Action,Comedy,Drama",expensive_accept
+tt0099422,Dick Tracy,1990,105,Warren Beatty,"Action,Comedy,Crime",expensive_accept
+tt0099656,Ghosts Can't Do It,1989,95,John Derek,"Comedy,Crime,Fantasy",expensive_accept
+tt0101368,Severed Ties,1991,92,Damon Santostefano,"Comedy,Horror,Sci-Fi",expensive_accept
+tt0101635,Curly Sue,1991,101,John Hughes,"Comedy,Drama,Family",expensive_accept
+tt0104567,Johnny Suede,1991,97,Tom DiCillo,"Comedy,Drama,Music",expensive_accept
+tt0106671,Darkness in Tallinn,1993,99,Ilkka Järvi-Laturi,"Comedy,Crime,Thriller",expensive_accept
+tt0109287,Blank Check,1994,93,Rupert Wainwright,"Comedy,Crime,Family",expensive_accept
+tt0116953,Mad Dog Time,1996,93,Larry Bishop,"Comedy,Crime,Drama",expensive_accept
+tt0117589,Secrets & Lies,1996,136,Mike Leigh,"Comedy,Drama",expensive_accept
+tt0119303,Home Alone 3,1997,102,Raja Gosnell,"Action,Comedy,Crime",expensive_accept
+tt0132347,Mystery Men,1999,121,Kinka Usher,"Action,Comedy,Fantasy",expensive_accept
+tt0145660,Austin Powers: The Spy Who Shagged Me,1999,95,Jay Roach,"Action,Adventure,Comedy",expensive_accept
+tt0192766,A Wake in Providence,1999,92,Rosario Roveto Jr.,Comedy,expensive_accept

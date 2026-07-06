@@ -38,7 +38,7 @@ This produces 2,500 labeled candidate pairs.
 cd "/Users/annremizova/Desktop/lab m2/project Trummer/baseline"
 python3 -m venv .venv
 . .venv/bin/activate
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r ../requirements.txt
 python3 prepare_data.py
 ```
 

@@ -13,19 +13,16 @@ from pathlib import Path
 
 import pandas as pd
 
-os.environ.setdefault("MPLCONFIGDIR", str(Path(__file__).resolve().parent / ".mplconfig"))
-
-import matplotlib
-
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import numpy as np
-
 
 STAGE_DIR = Path(__file__).resolve().parent
 ROOT = STAGE_DIR.parent
 DATA_DIR = ROOT / "data"
 BENCH_DIR = STAGE_DIR / "benchmarks"
+SCRIPTS_DIR = ROOT / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
+from plot_benchmarks import plot_per_question_metrics
 
 PROJECTS = {
     "baseline": ROOT / "src_baseline",
@@ -37,6 +34,9 @@ DEFAULT_CHEAP_MODEL = os.environ.get("SUQL_CHEAP_MODEL", "ollama/gemma2:2b")
 DEFAULT_CHEAP_ACCEPT_FLOOR = float(os.environ.get("SUQL_CHEAP_ACCEPT_FLOOR", "4.0"))
 DEFAULT_CHEAP_MIN_DECISION_RATE = float(os.environ.get("SUQL_CHEAP_MIN_DECISION_RATE", "0.3"))
 DEFAULT_CHEAP_MIN_PROBES = int(os.environ.get("SUQL_CHEAP_MIN_PROBES", "5"))
+DEFAULT_CASCADE_TARGET = float(os.environ.get("SUQL_CASCADE_TARGET", "0.9"))
+DEFAULT_CALIBRATION_BUDGET = int(os.environ.get("SUQL_CALIBRATION_BUDGET", "20"))
+DEFAULT_MANUAL_CONFIDENCE_THRESHOLD = os.environ.get("SUQL_MANUAL_CONFIDENCE_THRESHOLD")
 
 
 def litellm_model_name(model: str) -> str:
@@ -62,9 +62,10 @@ def model_usage_summary(sidecar: dict) -> str:
             "fail={cheap_score_failures} accept={cheap_early_accept} "
             "reject={cheap_early_reject} skipped={cheap_skipped} disabled={cheap_disabled} "
             "| expensive={expensive_model} "
-            "full={expensive_full_calls} | accept_floor={accept_floor} "
-            "| effective_accept={effective_accept} | min_rate={min_rate} "
-            "| min_probes={min_probes} | skip_reason={skip_reason} "
+            "full={expensive_full_calls} | learned_threshold={learned_threshold} "
+            "| routing_threshold={routing_threshold} | cascade_target={cascade_target} "
+            "| calibration={calibration_candidates}/{calibration_expensive_calls} "
+            "agreement={calibration_agreement} | skip_reason={skip_reason} "
             "| failure_reasons={failure_reasons}".format(
                 question=str(question).replace("\n", " "),
                 cheap_model=usage.get("cheap_model", ""),
@@ -76,10 +77,12 @@ def model_usage_summary(sidecar: dict) -> str:
                 cheap_disabled=usage.get("cheap_disabled", 0),
                 expensive_model=usage.get("expensive_model", ""),
                 expensive_full_calls=usage.get("expensive_full_calls", 0),
-                accept_floor=usage.get("cheap_accept_floor", ""),
-                effective_accept=usage.get("effective_accept_threshold", ""),
-                min_rate=usage.get("cheap_min_decision_rate", ""),
-                min_probes=usage.get("cheap_min_probes", ""),
+                learned_threshold=usage.get("learned_confidence_threshold", ""),
+                routing_threshold=usage.get("routing_confidence_threshold", ""),
+                cascade_target=usage.get("cascade_target", ""),
+                calibration_candidates=usage.get("calibration_candidates", 0),
+                calibration_expensive_calls=usage.get("calibration_expensive_calls", 0),
+                calibration_agreement=usage.get("calibration_agreement", 0),
                 skip_reason=usage.get("cheap_skip_reason", ""),
                 failure_reasons=json.dumps(usage.get("cheap_score_failure_reasons", {}), sort_keys=True),
             )
@@ -165,6 +168,9 @@ def run_project(
     cheap_accept_floor: float,
     cheap_min_decision_rate: float,
     cheap_min_probes: int,
+    cascade_target: float,
+    calibration_budget: int,
+    manual_confidence_threshold: float | None,
     cheap_disabled_questions: list[str],
 ) -> dict:
     project_dir = PROJECTS[project]
@@ -189,18 +195,34 @@ def run_project(
             "SUQL_CHEAP_ACCEPT_FLOOR": str(float(cheap_accept_floor)),
             "SUQL_CHEAP_MIN_DECISION_RATE": str(float(cheap_min_decision_rate)),
             "SUQL_CHEAP_MIN_PROBES": str(int(cheap_min_probes)),
+            "SUQL_CASCADE_TARGET": str(float(cascade_target)),
+            "SUQL_CALIBRATION_BUDGET": str(int(calibration_budget)),
             "SUQL_CHEAP_DISABLED_QUESTIONS": json.dumps(cheap_disabled_questions),
             "SUQL_DATA_PATH": str(data_path),
             "SUQL_METRICS_PATH": str(sidecar_path),
             "SUQL_THRESHOLDS_PATH": str(thresholds_path),
         }
     )
-    cmd = [python, "-u", "main.py", "--suql", query["suql"], "--output", str(output_csv)]
+    if manual_confidence_threshold is not None:
+        env["SUQL_MANUAL_CONFIDENCE_THRESHOLD"] = str(float(manual_confidence_threshold))
+    else:
+        env.pop("SUQL_MANUAL_CONFIDENCE_THRESHOLD", None)
+    cmd = [
+        python,
+        "-u",
+        str(ROOT / "scripts" / "run_suql.py"),
+        "--engine-dir",
+        str(project_dir),
+        "--suql",
+        query["suql"],
+        "--output",
+        str(output_csv),
+    ]
 
     started = time.perf_counter()
     proc = subprocess.run(
         cmd,
-        cwd=project_dir,
+        cwd=ROOT,
         env=env,
         text=True,
         stdout=subprocess.PIPE,
@@ -233,6 +255,12 @@ def run_project(
             "cheap_min_decision_rate", cheap_min_decision_rate if project == "stage2" else ""
         ),
         "cheap_min_probes": sidecar.get("cheap_min_probes", cheap_min_probes if project == "stage2" else ""),
+        "cascade_target": sidecar.get("cascade_target", cascade_target if project == "stage2" else ""),
+        "calibration_budget": sidecar.get("calibration_budget", calibration_budget if project == "stage2" else ""),
+        "manual_confidence_threshold": sidecar.get(
+            "manual_confidence_threshold",
+            manual_confidence_threshold if project == "stage2" else "",
+        ),
         "cheap_disabled_questions": json.dumps(sidecar.get("cheap_disabled_questions", []), sort_keys=True),
         "cheap_score_failure_reasons": json.dumps(sidecar.get("cheap_score_failure_reasons", {}), sort_keys=True),
         "model_usage_summary": model_usage_summary(sidecar),
@@ -247,6 +275,10 @@ def run_project(
         "cheap_early_reject": sidecar.get("cheap_early_reject", sidecar.get("llm_early_reject", 0)),
         "cheap_skipped": sidecar.get("cheap_skipped", 0),
         "cheap_disabled": sidecar.get("cheap_disabled", 0),
+        "calibration_candidates": sidecar.get("calibration_candidates", 0),
+        "calibration_expensive_calls": sidecar.get("calibration_expensive_calls", 0),
+        "calibration_expensive_accepts": sidecar.get("calibration_expensive_accepts", 0),
+        "calibration_agreement": sidecar.get("calibration_agreement", 0.0),
         "output_csv": str(output_csv.relative_to(ROOT)),
         "log_path": str(log_path.relative_to(ROOT)),
         "metrics_sidecar": str(sidecar_path.relative_to(ROOT)),
@@ -260,117 +292,6 @@ def save_metrics(rows: list[dict], path: Path) -> None:
         writer.writerows(rows)
 
 
-def plot_comparison(df: pd.DataFrame, output_path: Path) -> None:
-    query_ids = [q["id"] for q in QUERIES]
-    labels = [f"Q{i + 1}" for i in range(len(query_ids))]
-    x = np.arange(len(query_ids))
-    fallback_columns = {
-        "engine_seconds": "wall_seconds",
-        "llm_prompts_issued": "llm_full_calls",
-        "structured_candidates": "result_rows",
-        "semantic_rows": "result_rows",
-        "join_rows": "result_rows",
-    }
-    for column, fallback in fallback_columns.items():
-        if column not in df.columns:
-            df[column] = df.get(fallback)
-
-    baseline = df[df["project"] == "baseline"].set_index("query_id").reindex(query_ids)
-    stage2 = df[df["project"] == "stage2"].set_index("query_id").reindex(query_ids)
-    for frame in (baseline, stage2):
-        for column in [
-            "wall_seconds",
-            "engine_seconds",
-            "llm_full_calls",
-            "llm_prompts_issued",
-            "llm_early_accept",
-            "llm_early_reject",
-            "structured_candidates",
-            "semantic_rows",
-            "join_rows",
-            "result_rows",
-        ]:
-            frame[column] = pd.to_numeric(frame[column], errors="coerce")
-
-    fig, axes = plt.subplots(4, 2, figsize=(18, 24))
-    axes_flat = axes.flatten()
-    fig.subplots_adjust(top=0.80, hspace=0.60, wspace=0.28)
-
-    question_lines = ["Question Index"]
-    question_lines.extend(f"Q{i + 1} - {query['question']}" for i, query in enumerate(QUERIES))
-    fig.text(
-        0.5,
-        0.985,
-        "\n".join(question_lines),
-        ha="center",
-        va="top",
-        fontsize=10,
-        fontfamily="monospace",
-        fontweight="bold",
-        linespacing=1.25,
-    )
-
-    def line_panel(ax, title: str, column: str, ylabel: str) -> None:
-        base_y = baseline[column]
-        stage_y = stage2[column]
-        blue = "#2b8cbe"
-        red = "#f04b5f"
-
-        ax.plot(x, base_y, marker="o", linewidth=2.5, markersize=6, color=blue, label="baseline")
-        ax.plot(x, stage_y, marker="o", linewidth=2.5, markersize=6, color=red, label="stage2")
-        ax.fill_between(x, base_y.fillna(0), color=blue, alpha=0.08)
-        ax.fill_between(x, stage_y.fillna(0), color=red, alpha=0.10)
-
-        for xi, value in zip(x, base_y):
-            if pd.notna(value):
-                ax.annotate(
-                    f"{value:.0f}",
-                    (xi, value),
-                    textcoords="offset points",
-                    xytext=(0, 8),
-                    ha="center",
-                    color=blue,
-                    fontsize=8,
-                    fontweight="bold",
-                )
-        for xi, value in zip(x, stage_y):
-            if pd.notna(value):
-                ax.annotate(
-                    f"{value:.0f}",
-                    (xi, value),
-                    textcoords="offset points",
-                    xytext=(0, -12),
-                    ha="center",
-                    color=red,
-                    fontsize=8,
-                    fontweight="bold",
-                )
-
-        ax.set_title(title, fontsize=12, fontweight="bold")
-        ax.set_xticks(x, labels)
-        ax.set_ylabel(ylabel)
-        ax.grid(True, alpha=0.25)
-        ax.spines["top"].set_visible(False)
-        ax.spines["right"].set_visible(False)
-        ax.legend(fontsize=8, loc="upper right")
-
-    panels = [
-        ("Wall-clock Latency", "wall_seconds", "seconds"),
-        ("Engine Time", "engine_seconds", "seconds"),
-        ("LLM Prompts Issued", "llm_prompts_issued", "count"),
-        ("Structured Candidates", "structured_candidates", "count"),
-        ("Semantic Rows Retrieved", "semantic_rows", "count"),
-        ("Join Rows", "join_rows", "count"),
-        ("Result Rows", "result_rows", "count"),
-    ]
-    for ax, (title, column, ylabel) in zip(axes_flat, panels):
-        line_panel(ax, title, column, ylabel)
-    axes_flat[-1].axis("off")
-
-    fig.savefig(output_path, dpi=180, bbox_inches="tight")
-    plt.close(fig)
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="Benchmark baseline vs Stage_2 cheap-to-expensive cascade runtime.")
     parser.add_argument("--sample-size", type=int, default=100)
@@ -381,6 +302,17 @@ def main() -> None:
     parser.add_argument("--cheap-accept-floor", type=float, default=DEFAULT_CHEAP_ACCEPT_FLOOR)
     parser.add_argument("--cheap-min-decision-rate", type=float, default=DEFAULT_CHEAP_MIN_DECISION_RATE)
     parser.add_argument("--cheap-min-probes", type=int, default=DEFAULT_CHEAP_MIN_PROBES)
+    parser.add_argument("--cascade-target", type=float, default=DEFAULT_CASCADE_TARGET)
+    parser.add_argument("--calibration-budget", type=int, default=DEFAULT_CALIBRATION_BUDGET)
+    parser.add_argument(
+        "--manual-confidence-threshold",
+        type=float,
+        default=(
+            float(DEFAULT_MANUAL_CONFIDENCE_THRESHOLD)
+            if DEFAULT_MANUAL_CONFIDENCE_THRESHOLD not in (None, "")
+            else None
+        ),
+    )
     parser.add_argument(
         "--cheap-disabled-query-ids",
         nargs="*",
@@ -431,6 +363,9 @@ def main() -> None:
                 cheap_accept_floor=args.cheap_accept_floor,
                 cheap_min_decision_rate=args.cheap_min_decision_rate,
                 cheap_min_probes=args.cheap_min_probes,
+                cascade_target=args.cascade_target,
+                calibration_budget=args.calibration_budget,
+                manual_confidence_threshold=args.manual_confidence_threshold,
                 cheap_disabled_questions=cheap_disabled_questions,
             )
             rows.append(row)
@@ -442,7 +377,12 @@ def main() -> None:
 
     metrics_path = run_dir / "metrics.csv"
     save_metrics(rows, metrics_path)
-    plot_comparison(pd.DataFrame(rows), run_dir / "comparison_plot.png")
+    plot_per_question_metrics(
+        metrics_csv=metrics_path,
+        output=run_dir / "comparison_plot.png",
+        implementations=["baseline", "stage2"],
+        title="Baseline vs Stage 2",
+    )
     print(f"\nMetrics saved to: {metrics_path}")
     print(f"Plot saved to: {run_dir / 'comparison_plot.png'}")
 

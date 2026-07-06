@@ -135,7 +135,7 @@ cd /home/daisy/remizova/common_benchmark_workspace
 MODELS="gemma4:e4b" \
 PULL_MODELS=1 \
 WALLTIME=04:00:00 \
-bash common_benchmark/scripts/submit_aker_common_benchmark.sh
+bash common_benchmark/scripts/runner.sh submit-aker
 ```
 
 `MODELS` is a whitespace-separated list of Ollama model tags. Each model is
@@ -225,7 +225,6 @@ Trummer for `gemma4:e4b`:
 ```bash
 MODELS="gemma4:e4b" \
 PULL_MODELS=0 \
-SKIP_SUQL=1 \
 TRUMMER_REQUEST_TIMEOUT=3600 \
-bash common_benchmark/scripts/submit_aker_common_benchmark.sh
+bash common_benchmark/scripts/runner.sh submit-aker --methods trummer
 ```

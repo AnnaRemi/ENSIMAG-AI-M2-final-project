@@ -1,0 +1,7 @@
+question,difficulty,method,implementation,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds,final_answer_rows,ground_truth_rows,true_positives,false_positives,false_negatives,precision,recall,f1,learned_confidence_threshold,routing_confidence_threshold,calibration_agreement,pruned_movies,pruned_reviews
+question_1_easy,1,Batch cascade V2_3,trummer_heterogen_v2_3_batched_cascade,11.790837250067852,5,3,2,1.4228472490794957,10.365641832933761,24,12,12,12,0,0.5,1.0,0.6666666666666666,,,0.0,24,24
+question_1_easy,1,Pruned cascade V3,trummer_heterogen_v3_pruned_cascade,18.13066254206933,30,24,6,6.382551671937108,11.744340707780793,24,12,12,12,0,0.5,1.0,0.6666666666666666,,,0.4,24,24
+question_2_medium,2,Batch cascade V2_3,trummer_heterogen_v2_3_batched_cascade,17.893873249995522,5,3,2,6.518632457940839,11.372978831990622,6,10,2,4,8,0.3333333333333333,0.2,0.25,,,0.0,20,20
+question_2_medium,2,Pruned cascade V3,trummer_heterogen_v3_pruned_cascade,24.86781587509904,26,20,6,8.846748627140187,16.008592167985626,12,10,6,6,4,0.5,0.6,0.5454545454545454,,,0.65,20,20
+question_3_hard,3,Batch cascade V2_3,trummer_heterogen_v2_3_batched_cascade,19.24562604096718,6,4,2,6.94275804318022,12.298718333942816,26,10,10,16,0,0.38461538461538464,1.0,0.5555555555555556,,,0.0,26,26
+question_3_hard,3,Pruned cascade V3,trummer_heterogen_v3_pruned_cascade,21.73344545904547,29,26,3,10.027648787247017,11.699471375904977,26,10,10,16,0,0.38461538461538464,1.0,0.5555555555555556,2.0,,0.95,26,26

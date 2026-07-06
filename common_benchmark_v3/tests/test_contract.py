@@ -32,14 +32,14 @@ class BenchmarkContractTests(unittest.TestCase):
         )
         self.assertIn("suql_query", spec)
 
-    def test_all_heterogen_aker_workflow_files_exist(self) -> None:
+    def test_all_heterogen_runner_files_exist(self) -> None:
         scripts = ROOT / "scripts"
         required = {
             "run_all_heterogen.py",
             "evaluate_all_heterogen.py",
             "sync_all_heterogen_to_aker.sh",
-            "submit_aker_all_heterogen.sh",
-            "run_aker_all_heterogen.sh",
+            "runner.sh",
+            "_aker_worker.sh",
             "pull_all_heterogen_from_aker.sh",
         }
         self.assertTrue(

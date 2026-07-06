@@ -19,6 +19,7 @@ LABELS = {
     "trummer_heterogen_v2_2_structured_pruned": "V2_2",
     "trummer_heterogen_v2_3_batched_cascade": "V2_3",
     "trummer_heterogen_v3_pruned_cascade": "V3",
+    "trummer_heterogen_v3_2_pruned_batched_cascade": "V3_2",
 }
 
 
@@ -45,7 +46,7 @@ def main() -> None:
                     "question": question_dir,
                     "difficulty": spec["difficulty"],
                     "implementation": run["implementation"],
-                    "method": LABELS[run["implementation"]],
+                    "method": LABELS.get(run["implementation"], run["implementation"]),
                     "wall_seconds": run["wall_seconds"],
                     "llm_calls": run["llm_calls"],
                     "cheap_calls": run.get("cheap_calls", 0),
@@ -63,8 +64,8 @@ def main() -> None:
                 }
             )
     frame = pd.DataFrame(rows).sort_values(["difficulty", "method"])
-    if len(frame) != 12:
-        raise SystemExit(f"Expected 12 runs, found {len(frame)}")
+    if frame.empty:
+        raise SystemExit(f"No run_metrics.json files found under {outputs_dir}")
     frame.to_csv(outputs_dir / "comparison.csv", index=False)
     aggregate = (
         frame.groupby(["implementation", "method"], as_index=False)
@@ -101,7 +102,11 @@ def main() -> None:
 
 
 def plot(frame: pd.DataFrame, aggregate: pd.DataFrame, path: Path) -> None:
-    methods = ["SUQL", "V2_2", "V2_3", "V3"]
+    methods = [
+        method
+        for method in ["SUQL", "V2_2", "V2_3", "V3", "V3_2"]
+        if method in set(frame["method"])
+    ]
     questions = ["question_1_easy", "question_2_medium", "question_3_hard"]
     question_labels = ["Easy", "Medium", "Hard"]
     colors = {
@@ -109,13 +114,18 @@ def plot(frame: pd.DataFrame, aggregate: pd.DataFrame, path: Path) -> None:
         "V2_2": "#E07A1F",
         "V2_3": "#8E5EA2",
         "V3": "#3A9D5D",
+        "V3_2": "#4C9F70",
     }
     fig, axes = plt.subplots(2, 2, figsize=(13, 9))
     x = np.arange(len(questions))
     width = 0.19
     center = (len(methods) - 1) / 2
     for index, method in enumerate(methods):
-        subset = frame[frame["method"].eq(method)].set_index("question").loc[questions]
+        subset = (
+            frame[frame["method"].eq(method)]
+            .set_index("question")
+            .reindex(questions)
+        )
         axes[0, 0].bar(
             x + (index - center) * width,
             subset["f1"],
@@ -146,7 +156,7 @@ def plot(frame: pd.DataFrame, aggregate: pd.DataFrame, path: Path) -> None:
         ax.set_xticks(x, question_labels)
         ax.grid(axis="y", alpha=0.25)
 
-    ordered = aggregate.set_index("method").loc[methods]
+    ordered = aggregate.set_index("method").reindex(methods)
     agg_x = np.arange(len(methods))
     axes[1, 1].bar(
         agg_x - width / 2,

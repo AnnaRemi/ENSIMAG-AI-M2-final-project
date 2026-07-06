@@ -29,14 +29,14 @@ LABELS = {
     "trummer_heterogen_v3_pruned_cascade": "V3",
 }
 FOCUS_IMPLEMENTATIONS = [
-    "trummer_heterogen_v1",
-    "trummer_heterogen_v2_cascade",
+    "trummer_heterogen_v2_2_structured_pruned",
     "trummer_heterogen_v2_3_batched_cascade",
+    "trummer_heterogen_v3_pruned_cascade",
 ]
 FOCUS_LABELS = {
-    "trummer_heterogen_v1": "Block join",
-    "trummer_heterogen_v2_cascade": "Row-wise cascade",
-    "trummer_heterogen_v2_3_batched_cascade": "Batch-wise cascade",
+    "trummer_heterogen_v2_2_structured_pruned": "Structured Prunning\n& Block join\n(v2_2)",
+    "trummer_heterogen_v2_3_batched_cascade": "Batch-wise cascading\n(v2_3)",
+    "trummer_heterogen_v3_pruned_cascade": "Structured Prunning\n& Cascading\n(v3)",
 }
 COLORS = ["#2878B5", "#C44E52", "#55A868", "#E07A1F", "#8E5EA2", "#4C72B0"]
 QUALITY_COLORS = {
@@ -283,7 +283,7 @@ def focus_frame(frame: pd.DataFrame, allow_missing: bool) -> pd.DataFrame:
         )
     present = [item for item in FOCUS_IMPLEMENTATIONS if item in indexed.index]
     if not present:
-        raise SystemExit("No V1, V2, or V2_3 metrics found for plotting")
+        raise SystemExit("No V2_2, V2_3, or V3 metrics found for plotting")
     focus = indexed.loc[present].copy()
     focus["plot_label"] = [FOCUS_LABELS[item] for item in present]
     return focus
@@ -300,7 +300,7 @@ def plot_focus_metrics(frame: pd.DataFrame, path: Path) -> None:
     plot_labels = frame["plot_label"].tolist()
     x = np.arange(len(frame))
     width = 0.23
-    fig, ax = plt.subplots(figsize=(9, 5.5))
+    fig, ax = plt.subplots(figsize=(11, 6.2))
     for offset, metric in enumerate(metrics):
         values = frame[metric].astype(float).to_numpy()
         bars = ax.bar(
@@ -314,7 +314,7 @@ def plot_focus_metrics(frame: pd.DataFrame, path: Path) -> None:
     ax.set_xticks(x, plot_labels)
     ax.set_ylim(0, 1.08)
     ax.set_ylabel("Score")
-    ax.set_title("Precision, recall, and F1")
+    ax.set_title("Precision, recall, and F1: V2_2 vs V2_3 vs V3")
     ax.legend(ncol=3, loc="upper center")
     ax.grid(axis="y", alpha=0.25)
     finish(fig, path)
@@ -330,7 +330,7 @@ def plot_focus_time(frame: pd.DataFrame, path: Path) -> None:
         cheap_seconds,
         expensive_seconds,
     )
-    fig, ax = plt.subplots(figsize=(9, 5.5))
+    fig, ax = plt.subplots(figsize=(11, 6.2))
     cheap_bars = ax.bar(
         plot_labels,
         cheap_part,
@@ -358,7 +358,7 @@ def plot_focus_time(frame: pd.DataFrame, path: Path) -> None:
         ax.text(index, total + top_pad, f"{total:.2f}s", ha="center", fontweight="bold")
     ax.set_ylim(0, max(wall) * 1.16 if len(wall) and max(wall) > 0 else 1)
     ax.set_ylabel("Wall time (seconds)")
-    ax.set_title("Wall time split by cheap and expensive model-call time")
+    ax.set_title("Wall time split by cheap and expensive model-call time: V2_2 vs V2_3 vs V3")
     ax.legend()
     ax.grid(axis="y", alpha=0.25)
     finish(fig, path)
@@ -412,7 +412,7 @@ def plot_focus_calls(frame: pd.DataFrame, path: Path) -> None:
     plot_labels = frame["plot_label"].tolist()
     cheap = frame["cheap_calls"].astype(float).to_numpy()
     expensive = frame["expensive_calls"].astype(float).to_numpy()
-    fig, ax = plt.subplots(figsize=(9, 5.5))
+    fig, ax = plt.subplots(figsize=(11, 6.2))
     cheap_bars = ax.bar(
         plot_labels,
         cheap,
@@ -434,7 +434,7 @@ def plot_focus_calls(frame: pd.DataFrame, path: Path) -> None:
         ax.text(index, total + top_pad, f"total {format_count(total)}", ha="center")
     ax.set_ylim(0, max(totals) * 1.16 if len(totals) and max(totals) > 0 else 1)
     ax.set_ylabel("LLM calls")
-    ax.set_title("LLM calls split by cheap and expensive model calls")
+    ax.set_title("LLM calls split by cheap and expensive model calls: V2_2 vs V2_3 vs V3")
     ax.legend()
     ax.grid(axis="y", alpha=0.25)
     finish(fig, path)

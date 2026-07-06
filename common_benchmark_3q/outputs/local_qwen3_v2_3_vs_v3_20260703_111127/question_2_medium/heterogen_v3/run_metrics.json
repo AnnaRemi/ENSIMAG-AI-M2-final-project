@@ -1,0 +1,79 @@
+{
+  "implementation": "trummer_heterogen_v3_pruned_cascade",
+  "mode": "llm",
+  "model": "ollama/qwen3:0.6b->ollama/qwen3:1.7b",
+  "cheap_model": "ollama/qwen3:0.6b",
+  "expensive_model": "ollama/qwen3:1.7b",
+  "input_movies": 0,
+  "input_reviews": 0,
+  "candidate_pairs": 0,
+  "cheap_calls": 0,
+  "cheap_failures": 0,
+  "cheap_early_accepts": 0,
+  "cheap_early_rejects": 0,
+  "calibration_candidates": 0,
+  "calibration_expensive_calls": 0,
+  "calibration_expensive_accepts": 0,
+  "calibration_agreement": 0.0,
+  "learned_confidence_threshold": null,
+  "expensive_candidates": 0,
+  "expensive_calls": 0,
+  "fallback_expensive_calls": 0,
+  "expensive_failures": 0,
+  "expensive_accepts": 0,
+  "cheap_seconds": 0.0,
+  "expensive_seconds": 0.0,
+  "cheap_time_percent": 0.0,
+  "expensive_time_percent": 0.0,
+  "elapsed_seconds": 1.6542035154998302e-05,
+  "cpu_seconds": 0.0008719999999999839,
+  "engine_seconds": 4.545797128230333e-05,
+  "wall_seconds": 4.545797128230333e-05,
+  "llm_calls": 0,
+  "block_join_calls": 0,
+  "final_answer_rows": 0,
+  "found_movie_ids": [],
+  "original_movies": 60,
+  "original_reviews": 60,
+  "pruned_movies": 0,
+  "pruned_reviews": 0,
+  "structured_filters": [
+    {
+      "column": "runtime",
+      "op": "lt",
+      "value": "100",
+      "source": "under 100 minutes"
+    },
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Drama",
+      "source": "drama"
+    }
+  ],
+  "structured_pruning": {
+    "mode": "suql_sqlite",
+    "filters": [
+      {
+        "column": "runtime",
+        "op": "lt",
+        "value": "100",
+        "source": "under 100 minutes"
+      },
+      {
+        "column": "genres",
+        "op": "contains",
+        "value": "Drama",
+        "source": "drama"
+      }
+    ],
+    "suql_query": "SELECT movie_id, title, year, runtime, director, genres\nFROM movies\nWHERE genres LIKE '%Drama%' \n  AND genres LIKE '%Acting%' \n  AND answer(review, 'Does the review explicitly praise the acting or performances?') = 'Yes';",
+    "structural_sql": "SELECT movie_id, title, year, runtime, director, genres\nFROM movies\nWHERE genres LIKE '%Drama%' \n  AND genres LIKE '%Acting%';",
+    "parser_model": "ollama/qwen3:0.6b",
+    "parser_error": "",
+    "semantic_predicate": "Does the review explicitly praise the acting or performances?"
+  },
+  "max_expensive_calls": 4,
+  "question_dir": "question_2_medium",
+  "question": "Which Drama movies under 100 minutes have reviews that explicitly praise the acting or performances?"
+}

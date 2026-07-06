@@ -76,7 +76,7 @@ Aker login node — submit the GPU job:
 cd /home/daisy/remizova/common_benchmark_v3_workspace
 PULL_MODELS=1 \
 WALLTIME=08:00:00 \
-bash common_benchmark_v3/scripts/submit_aker_all_heterogen.sh
+bash common_benchmark_v3/scripts/runner.sh submit-aker
 ```
 
 The submission prints an `OUTPUT_NAME` such as
@@ -101,18 +101,14 @@ OUTPUT_NAME=all_heterogen_20260625_153000 \
 
 ### Partial rerun
 
-Reuse the original `OUTPUT_NAME` and skip every successful implementation. For
-example, rerun only V2_3:
+Reuse the original `OUTPUT_NAME` and choose only the implementation that should
+run again. For example, rerun only V2_3:
 
 ```bash
 cd /home/daisy/remizova/common_benchmark_v3_workspace
 OUTPUT_NAME=all_heterogen_20260625_153000 \
-SKIP_V1=1 \
-SKIP_V2=1 \
-SKIP_V2_2=1 \
-SKIP_V3=1 \
 PULL_MODELS=0 \
-bash common_benchmark_v3/scripts/submit_aker_all_heterogen.sh
+bash common_benchmark_v3/scripts/runner.sh submit-aker --methods v2_3
 ```
 
 ### Generated metrics and plots
@@ -242,10 +238,10 @@ Aker login node:
 ```bash
 cd /home/daisy/remizova/common_benchmark_v3_workspace
 CHEAP_MODEL=gemma4:e2b \
-EXPENSIVE_MODELS="gemma4:e4b" \
+EXPENSIVE_MODEL="gemma4:e4b" \
 PULL_MODELS=1 \
 WALLTIME=08:00:00 \
-bash common_benchmark_v3/scripts/submit_aker_common_benchmark.sh
+bash common_benchmark_v3/scripts/runner.sh submit-aker
 ```
 
 Progress on Aker:

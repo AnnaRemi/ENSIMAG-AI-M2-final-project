@@ -20,15 +20,16 @@ class StructuredCascadeTests(unittest.TestCase):
             {"tconst": "tt3", "review": "great", "text": "great"},
         ]
 
-        pruned_movies, pruned_reviews, filters = prune_inputs(
+        pruned_movies, pruned_reviews, pruning = prune_inputs(
             movies,
             reviews,
             "Find 2001 year drama movies with positive reviews",
             fallback_year=None,
+            use_llm=False,
         )
         candidates = exact_id_candidates(pruned_movies, pruned_reviews)
 
-        self.assertEqual([item.as_dict() for item in filters], [
+        self.assertEqual([item.as_dict() for item in pruning.filters], [
             {"column": "year", "op": "eq", "value": "2001", "source": "2001"},
             {"column": "genres", "op": "contains", "value": "Drama", "source": "drama"},
         ])

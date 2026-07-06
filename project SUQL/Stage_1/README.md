@@ -49,16 +49,10 @@ reject_threshold = -abs(accept_threshold)
 
 ## Dependencies
 
-Only these packages are used by the calibration/runtime code:
+Install the project dependencies from the root requirements file:
 
 ```bash
-pip install httpx numpy scipy pandas
-```
-
-The benchmark plot additionally requires:
-
-```bash
-pip install matplotlib
+pip install -r requirements.txt
 ```
 
 ## Environment
@@ -182,5 +176,17 @@ Stage_1/benchmarks/baseline_vs_stage1_data_samples_<timestamp>/
 The main plot is:
 
 ```text
-metrics_vs_sample_size.svg
+metrics_vs_sample_size.png
+```
+
+The same plot can be regenerated or customized with:
+
+```bash
+python scripts/plot_benchmarks.py scaling \
+  --benchmark-dir Stage_1/benchmarks \
+  --pattern "aker_baseline_stage1_data_sample_*/metrics.csv" \
+  --sample-regex "data_sample_([0-9]+)" \
+  --impls "baseline stage1" \
+  --metrics "wall_seconds engine_seconds llm_prompts_issued result_rows" \
+  --output-dir Stage_1/benchmarks/baseline_vs_stage1_data_samples_custom
 ```

@@ -59,4 +59,4 @@ rsync -av \
   "$AKER_HOST:$AKER_ROOT/project_Trummer/heterogen_v2/trummer_join/"
 
 echo "Sync complete."
-echo "Aker: cd '$AKER_ROOT' && bash common_benchmark_v3/scripts/submit_aker_common_benchmark.sh"
+echo "Aker: cd '$AKER_ROOT' && PULL_MODELS=1 bash common_benchmark_v3/scripts/runner.sh submit-aker"

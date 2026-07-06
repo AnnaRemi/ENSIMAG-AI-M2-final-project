@@ -1,0 +1,38 @@
+movie_id,title,year,runtime,director,genres,match_source
+tt0188453,Birthday Girl,2001,93,Jez Butterworth,"Comedy,Crime,Thriller",expensive_accept
+tt0230011,Atlantis: The Lost Empire,2001,95,"Gary Trousdale, Kirk Wise","Action,Adventure,Animation",expensive_accept
+tt0242798,Proximity,2001,100,Scott Ziehl,"Action,Crime,Mystery",expensive_accept
+tt0242998,Valentine,2001,96,Jamie Blanks,"Horror,Mystery,Thriller",expensive_accept
+tt0245407,Crush,2001,108,John McKay,"Comedy,Drama,Romance",expensive_accept
+tt0248928,The River,2001,104,Jarmo Lampela,"Drama,Romance",expensive_accept
+tt0253335,No Turning Back,2001,98,"Julia Montejo, Jesus Nebot","Crime,Drama,Thriller",expensive_accept
+tt0253840,The Triumph of Love,2001,112,Clare Peploe,"Comedy,Romance",expensive_accept
+tt0255798,The Animal,2001,84,Luke Greenfield,"Comedy,Sci-Fi",expensive_accept
+tt0256692,Chori Chori Chupke Chupke,2001,165,"Abbas Alibhai Burmawalla, Mastan Alibhai Burmawalla","Comedy,Drama,Musical",expensive_accept
+tt0259054,Ordinary Sinner,2001,91,John Henry Davis,"Drama,Romance",expensive_accept
+tt0259711,Vanilla Sky,2001,136,Cameron Crowe,"Fantasy,Mystery,Romance",expensive_accept
+tt0262418,Farligt förflutet,2001,80,Oscar Petersson,"Action,Crime,Drama",expensive_accept
+tt0264616,Frailty,2001,100,Bill Paxton,"Crime,Drama,Thriller",expensive_accept
+tt0270419,The Human Body,2001,40,Peter Georgi,"Documentary,Short",expensive_accept
+tt0272069,Demonicus,2001,72,Jay Woelfel,Horror,expensive_accept
+tt0286098,Zu Warriors,2001,104,Hark Tsui,"Action,Fantasy",expensive_accept
+tt0290661,Dog Days,2001,121,Ulrich Seidl,Drama,expensive_accept
+tt0300533,Survivor Series,2001,156,Kevin Dunn,"Action,Sport",expensive_accept
+tt0303397,Soft for Digging,2001,74,J.T. Petty,"Drama,Horror,Thriller",expensive_accept
+tt0307385,Rivers and Tides,2001,90,Thomas Riedelsheimer,Documentary,expensive_accept
+tt0325597,The Captives,2001,71,Eric Stanze,"Drama,Horror,Thriller",expensive_accept
+tt0385586,Cat Soup,2001,34,Tatsuo Satō,"Animation,Comedy,Fantasy",expensive_accept
+tt0502165,12:00 a.m.-1:00 a.m.,2001,60,Stephen Hopkins,"Action,Crime,Drama",expensive_accept
+tt0000010,Leaving the Factory,1895,1,Louis Lumière,"Documentary,Short",expensive_accept
+tt0042752,Trio,1950,91,"Ken Annakin, Harold French","Drama,Romance",expensive_accept
+tt0071266,Caged Heat,1974,80,Jonathan Demme,"Action,Comedy,Drama",expensive_accept
+tt0076191,The Incredible Melting Man,1977,86,William Sachs,"Horror,Sci-Fi",expensive_accept
+tt0076683,The Sentinel,1977,92,Michael Winner,Horror,expensive_accept
+tt0079813,Rock 'n' Roll High School,1979,93,"Allan Arkush, Joe Dante","Comedy,Music",expensive_accept
+tt0080520,Cheech and Chong's Next Movie,1980,99,Tommy Chong,"Comedy,Crime",expensive_accept
+tt0084021,Grease 2,1982,115,Patricia Birch,"Comedy,Music,Musical",expensive_accept
+tt0462346,How to Eat Fried Worms,2006,84,Bob Dolman,"Comedy,Family",expensive_accept
+tt0479500,Nancy Drew,2007,99,Andrew Fleming,"Comedy,Crime,Family",expensive_accept
+tt0806203,Carriers,2009,84,"David Pastor, Àlex Pastor","Adventure,Drama,Horror",expensive_accept
+tt0810945,Live!,2007,96,Bill Guttentag,Drama,expensive_accept
+tt0815241,Religulous,2008,101,Larry Charles,"Comedy,Documentary,War",expensive_accept

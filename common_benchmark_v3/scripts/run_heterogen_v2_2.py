@@ -27,6 +27,8 @@ def main() -> None:
     parser.add_argument("--semantic-predicate", default=None)
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
     parser.add_argument("--model", default="ollama/gemma4:e4b")
+    parser.add_argument("--structured-parser-model", default="ollama/gemma4:e2b")
+    parser.add_argument("--disable-llm-structured-parser", action="store_true")
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--request-timeout", type=float, default=3600)
     parser.add_argument("--token-threshold", type=int, default=4096)
@@ -44,15 +46,20 @@ def main() -> None:
     from trummer_join.client import ChatClient
     from trummer_join.operators import block_join
     from trummer_join.structured_filter import (
-        apply_structured_filters,
-        extract_structured_filters,
+        prune_movie_frame,
         semantic_predicate_from_question,
     )
 
     input_movies_frame = pd.DataFrame(input_movies)
     input_reviews_frame = pd.DataFrame(input_reviews)
-    structured_filters = extract_structured_filters(args.question, input_movies_frame.columns)
-    movies = apply_structured_filters(input_movies_frame, structured_filters).reset_index(drop=True)
+    movies, pruning = prune_movie_frame(
+        input_movies_frame,
+        args.question,
+        api_base=args.api_base,
+        parser_model=args.structured_parser_model,
+        request_timeout=args.request_timeout,
+        use_llm=not args.dry_run and not args.disable_llm_structured_parser,
+    )
     movie_ids = set(movies["movie_id"].astype(str)) if "movie_id" in movies else set()
     reviews = pd.DataFrame(
         [
@@ -62,7 +69,11 @@ def main() -> None:
         ],
         columns=input_reviews_frame.columns,
     ).reset_index(drop=True)
-    semantic_predicate = args.semantic_predicate or semantic_predicate_from_question(args.question)
+    semantic_predicate = (
+        args.semantic_predicate
+        or pruning.semantic_predicate
+        or semantic_predicate_from_question(args.question)
+    )
 
     started_cpu = cpu_seconds()
     started_wall = time.perf_counter()
@@ -131,7 +142,8 @@ def main() -> None:
         "pruned_movies": len(movies),
         "pruned_reviews": len(reviews),
         "question": args.question,
-        "structured_filters": [item.as_dict() for item in structured_filters],
+        "structured_filters": [item.as_dict() for item in pruning.filters],
+        "structured_pruning": pruning.as_dict(),
         "year_condition_location": "deterministic_prefilter",
         "join_condition_location": "deterministic_prefilter",
         "semantic_condition_location": "trummer_block_join",

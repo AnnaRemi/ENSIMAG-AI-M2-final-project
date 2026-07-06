@@ -91,6 +91,54 @@ cascading after the same structured pruning step.
 The SUQL/v1 comparison isolates structured-first filtering versus evaluating
 the complete predicate inside the semantic join.
 
+## Shared Setup
+
+Install shared dependencies from the project root:
+
+```bash
+cd "/Users/annremizova/Desktop/lab m2/project Trummer"
+python3 -m pip install -r requirements.txt
+```
+
+The per-version runners remain in their implementation directories because they
+encode different execution plans. Shared plotting is centralized in
+`scripts/plot_metrics.py`.
+
+## Plotting
+
+Generate a bar plot from every discovered Trummer output:
+
+```bash
+python3 scripts/plot_metrics.py \
+  --metrics elapsed_seconds cheap_calls expensive_calls final_answer_rows \
+  --output plots/trummer_metrics.png
+```
+
+Filter implementations and choose metrics:
+
+```bash
+python3 scripts/plot_metrics.py \
+  --impl heterogen_v2 heterogen_v3 heterogen_v3_2 \
+  --metrics elapsed_seconds cheap_seconds expensive_seconds \
+  --output plots/cascade_time.png
+```
+
+Create a tradeoff scatter plot:
+
+```bash
+python3 scripts/plot_metrics.py \
+  --plot scatter \
+  --impl heterogen_v2 heterogen_v3 heterogen_v3_2 \
+  --x elapsed_seconds \
+  --y final_answer_rows \
+  --size expensive_calls \
+  --output plots/cascade_tradeoff.png
+```
+
+Use `--list-metrics` to print all numeric metrics discovered in the selected
+outputs. The loader supports `run_metrics.json`, baseline `*_metrics.json`, and
+block-join `use_case3_join_stats.csv` files.
+
 Upstream implementation: <https://github.com/itrummer/llmjoins>
 
 All implementations retain the upstream MIT license where applicable.

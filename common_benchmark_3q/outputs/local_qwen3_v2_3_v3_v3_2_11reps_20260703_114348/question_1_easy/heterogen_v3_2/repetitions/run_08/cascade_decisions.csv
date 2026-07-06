@@ -1,0 +1,25 @@
+candidate_id,movie_id,tconst,score,route,error
+1,tt0188453,tt0188453,-2.0,expensive,
+2,tt0230011,tt0230011,,expensive,cheap batch omitted candidate
+3,tt0242798,tt0242798,,expensive,cheap batch omitted candidate
+4,tt0242998,tt0242998,,expensive,cheap batch omitted candidate
+5,tt0245407,tt0245407,,expensive,cheap batch omitted candidate
+6,tt0248928,tt0248928,,expensive,cheap batch omitted candidate
+7,tt0253335,tt0253335,,expensive,cheap batch omitted candidate
+8,tt0253840,tt0253840,,expensive,cheap batch omitted candidate
+9,tt0255798,tt0255798,,expensive,cheap batch omitted candidate
+10,tt0256692,tt0256692,-2.0,expensive,
+11,tt0259054,tt0259054,,expensive,cheap batch omitted candidate
+12,tt0259711,tt0259711,,expensive,cheap batch omitted candidate
+13,tt0262418,tt0262418,,expensive,cheap batch omitted candidate
+14,tt0264616,tt0264616,,expensive,cheap batch omitted candidate
+15,tt0270419,tt0270419,,expensive,cheap batch omitted candidate
+16,tt0272069,tt0272069,,expensive,cheap batch omitted candidate
+17,tt0286098,tt0286098,,expensive,cheap batch omitted candidate
+18,tt0290661,tt0290661,-2.0,expensive,
+19,tt0300533,tt0300533,,expensive,cheap batch omitted candidate
+20,tt0303397,tt0303397,,expensive,cheap batch omitted candidate
+21,tt0307385,tt0307385,,expensive,cheap batch omitted candidate
+22,tt0325597,tt0325597,,expensive,cheap batch omitted candidate
+23,tt0385586,tt0385586,,expensive,cheap batch omitted candidate
+24,tt0502165,tt0502165,,expensive,cheap batch omitted candidate

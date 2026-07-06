@@ -1,0 +1,7 @@
+movie_id,title,year,runtime,director,genres,match_source
+tt0345119,On Thin Ice,2003,86,David Attwood,Drama,expensive_accept
+tt0367245,Wuthering Heights,2003,90,Suri Krishnamma,"Drama,Musical,Romance",expensive_accept
+tt0410162,The King Maker,2005,92,Lek Kitaparaporn,"Adventure,Drama",expensive_accept
+tt0436608,Mr. Harvey Lights a Candle,2005,85,Susanna White,Drama,expensive_accept
+tt0460838,Judges,2006,90,Stephen Patrick Walker,"Action,Adventure,Drama",expensive_accept
+tt0465643,Time of Her Life,2005,93,Steven M. Smith,"Drama,Fantasy",expensive_accept

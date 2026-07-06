@@ -63,6 +63,14 @@ EXPENSIVE_MODEL = _litellm_model_name(os.environ.get("SUQL_EXPENSIVE_MODEL", MOD
 CHEAP_ACCEPT_FLOOR = float(os.environ.get("SUQL_CHEAP_ACCEPT_FLOOR", "4.0"))
 CHEAP_MIN_DECISION_RATE = float(os.environ.get("SUQL_CHEAP_MIN_DECISION_RATE", "0.3"))
 CHEAP_MIN_PROBES = int(os.environ.get("SUQL_CHEAP_MIN_PROBES", "5"))
+CASCADE_TARGET = float(os.environ.get("SUQL_CASCADE_TARGET", "0.9"))
+CALIBRATION_BUDGET = int(os.environ.get("SUQL_CALIBRATION_BUDGET", "20"))
+_manual_confidence_raw = os.environ.get("SUQL_MANUAL_CONFIDENCE_THRESHOLD")
+MANUAL_CONFIDENCE_THRESHOLD = (
+    float(_manual_confidence_raw)
+    if _manual_confidence_raw not in (None, "")
+    else None
+)
 CHEAP_DISABLED_QUESTIONS = parse_disabled_questions(os.environ.get("SUQL_CHEAP_DISABLED_QUESTIONS"))
 
 
@@ -153,6 +161,7 @@ LIMIT 5;
 # ---------------------------------------------------------------------------
 
 _llm_prompt_count: ContextVar[int | None] = ContextVar("llm_prompt_count", default=None)
+_llm_seconds: ContextVar[float | None] = ContextVar("llm_seconds", default=None)
 _last_query_counts: dict[str, int] = {}
 
 
@@ -169,6 +178,7 @@ def _query_metrics_scope(verbose: bool):
     start_time = None
     if outermost:
         token = _llm_prompt_count.set(0)
+        _llm_seconds.set(0.0)
         start_time = time.perf_counter()
 
     try:
@@ -182,6 +192,7 @@ def _query_metrics_scope(verbose: bool):
                 print(f"  Query execution time: {elapsed_seconds:.2f} seconds")
                 print(f"  LLM prompts sent: {prompts_sent}")
             _llm_prompt_count.reset(token)
+            _llm_seconds.set(None)
 
 
 def _llm_call(system: str, user: str, max_tokens: int = 1024) -> str:
@@ -197,6 +208,7 @@ def _llm_call(system: str, user: str, max_tokens: int = 1024) -> str:
     if current_prompt_count is not None:
         _llm_prompt_count.set(current_prompt_count + 1)
 
+    started = time.perf_counter()
     response = completion(
         model=MODEL,
         messages=[
@@ -207,6 +219,9 @@ def _llm_call(system: str, user: str, max_tokens: int = 1024) -> str:
         api_base=API_BASE,
         timeout=3600,
     )
+    current_seconds = _llm_seconds.get()
+    if current_seconds is not None:
+        _llm_seconds.set(current_seconds + time.perf_counter() - started)
     return response.choices[0].message.content.strip()
 
 
@@ -315,6 +330,9 @@ def _get_stage2_answer_filter() -> CascadeAnswerFilter:
             cheap_accept_floor=CHEAP_ACCEPT_FLOOR,
             cheap_min_decision_rate=CHEAP_MIN_DECISION_RATE,
             cheap_min_probes=CHEAP_MIN_PROBES,
+            cascade_target=CASCADE_TARGET,
+            calibration_budget=CALIBRATION_BUDGET,
+            manual_confidence_threshold=MANUAL_CONFIDENCE_THRESHOLD,
             cheap_disabled_questions=CHEAP_DISABLED_QUESTIONS,
         )
     return _stage2_answer_filter
@@ -326,6 +344,10 @@ def answer_fn(review_text: str, question: str) -> str:
     Returns 'Yes', 'No', or a short answer string extracted from review_text.
     """
     return _get_stage2_answer_filter().answer(review_text, question)
+
+
+def answer_batch(review_texts: list[str], question: str) -> list[str]:
+    return _get_stage2_answer_filter().answer_batch(review_texts, question)
 
 
 def summary_fn(review_text: str) -> str:
@@ -346,6 +368,9 @@ def _write_metrics_sidecar(engine_seconds: float, result_rows: int) -> None:
         return
     stats = _get_stage2_answer_filter().stats.to_json_dict() if _stage2_answer_filter is not None else {}
     model_usage_by_question = stats.get("model_usage_by_question", {})
+    llm_seconds = float(_llm_seconds.get() or 0.0)
+    cheap_seconds = float(stats.get("cheap_seconds", 0.0))
+    expensive_seconds = float(stats.get("expensive_seconds", 0.0)) + llm_seconds
     payload = {
         "engine_seconds": float(engine_seconds),
         "cheap_model": CHEAP_MODEL,
@@ -353,6 +378,9 @@ def _write_metrics_sidecar(engine_seconds: float, result_rows: int) -> None:
         "cheap_accept_floor": CHEAP_ACCEPT_FLOOR,
         "cheap_min_decision_rate": CHEAP_MIN_DECISION_RATE,
         "cheap_min_probes": CHEAP_MIN_PROBES,
+        "cascade_target": CASCADE_TARGET,
+        "calibration_budget": CALIBRATION_BUDGET,
+        "manual_confidence_threshold": MANUAL_CONFIDENCE_THRESHOLD,
         "cheap_disabled_questions": sorted(CHEAP_DISABLED_QUESTIONS),
         "model_usage_by_question": model_usage_by_question,
         "llm_full_calls": int(stats.get("expensive_full_calls", 0) + (_llm_prompt_count.get() or 0)),
@@ -371,12 +399,18 @@ def _write_metrics_sidecar(engine_seconds: float, result_rows: int) -> None:
         "cache_misses": int(stats.get("cache_misses", 0)),
         "cheap_score_calls": int(stats.get("cheap_score_calls", 0)),
         "cheap_score_failures": int(stats.get("cheap_score_failures", 0)),
+        "cheap_seconds": cheap_seconds,
         "cheap_score_failure_reasons": stats.get("cheap_score_failure_reasons", {}),
         "expensive_full_calls": int(stats.get("expensive_full_calls", 0)),
+        "expensive_seconds": expensive_seconds,
         "cheap_early_accept": int(stats.get("cheap_early_accept", 0)),
         "cheap_early_reject": int(stats.get("cheap_early_reject", 0)),
         "cheap_skipped": int(stats.get("cheap_skipped", 0)),
         "cheap_disabled": int(stats.get("cheap_disabled", 0)),
+        "calibration_candidates": int(stats.get("calibration_candidates", 0)),
+        "calibration_expensive_calls": int(stats.get("calibration_expensive_calls", 0)),
+        "calibration_expensive_accepts": int(stats.get("calibration_expensive_accepts", 0)),
+        "calibration_agreement": float(stats.get("calibration_agreement", 0.0)),
     }
     os.makedirs(os.path.dirname(metrics_path), exist_ok=True)
     with open(metrics_path, "w", encoding="utf-8") as f:
@@ -669,9 +703,9 @@ def _execute_suql_impl(
 
             active_indexes = list(candidate_df[keep_mask].index)
             total_active = len(active_indexes)
-            for position, idx in enumerate(active_indexes, start=1):
-                text = str(candidate_df.at[idx, col])
-                result = answer_fn(text, question)
+            texts = [str(candidate_df.at[idx, col]) for idx in active_indexes]
+            results = answer_batch(texts, question)
+            for position, (idx, result) in enumerate(zip(active_indexes, results), start=1):
                 if result.strip().lower() != expected.strip().lower():
                     keep_mask.at[idx] = False
                 if verbose and (position % 25 == 0 or position == total_active):

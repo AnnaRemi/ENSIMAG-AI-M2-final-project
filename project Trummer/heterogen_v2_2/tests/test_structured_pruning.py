@@ -8,8 +8,10 @@ import pandas as pd
 
 from trummer_join.data import load_movies_and_reviews
 from trummer_join.structured_filter import (
+    apply_suql_structural_pruning,
     apply_structured_filters,
     extract_structured_filters,
+    prune_movie_frame,
     semantic_predicate_from_question,
 )
 
@@ -68,6 +70,85 @@ class StructuredPruningTests(unittest.TestCase):
         ])
         self.assertEqual(filtered["movie_id"].tolist(), ["tt1"])
         self.assertIn("positive", semantic_predicate_from_question("2001 drama movies with positive reviews"))
+
+    def test_suql_structural_pruning_filters_director_and_genre(self) -> None:
+        frame = pd.DataFrame(
+            [
+                {
+                    "movie_id": "tt1",
+                    "title": "A",
+                    "year": 2001,
+                    "runtime": 100,
+                    "director": "Christopher Nolan",
+                    "genres": "Comedy,Drama",
+                },
+                {
+                    "movie_id": "tt2",
+                    "title": "B",
+                    "year": 2001,
+                    "runtime": 100,
+                    "director": "Christopher Nolan",
+                    "genres": "Drama",
+                },
+                {
+                    "movie_id": "tt3",
+                    "title": "C",
+                    "year": 2001,
+                    "runtime": 100,
+                    "director": "Other",
+                    "genres": "Comedy",
+                },
+            ]
+        )
+        suql = """
+        SELECT movie_id, title, year, runtime, director, genres
+        FROM movies
+        WHERE director LIKE '%Christopher Nolan%'
+          AND genres LIKE '%Comedy%'
+          AND answer(review, 'Does the review say the movie is funny?') = 'Yes';
+        """
+
+        pruned, structural_sql = apply_suql_structural_pruning(frame, suql)
+
+        self.assertEqual(pruned["movie_id"].tolist(), ["tt1"])
+        self.assertIn("director LIKE", structural_sql)
+        self.assertNotIn("answer(", structural_sql)
+
+    def test_prune_movie_frame_accepts_injected_suql(self) -> None:
+        frame = pd.DataFrame(
+            [
+                {
+                    "movie_id": "tt1",
+                    "title": "A",
+                    "year": 2001,
+                    "runtime": 100,
+                    "director": "Christopher Nolan",
+                    "genres": "Comedy",
+                },
+                {
+                    "movie_id": "tt2",
+                    "title": "B",
+                    "year": 2001,
+                    "runtime": 100,
+                    "director": "Christopher Nolan",
+                    "genres": "Drama",
+                },
+            ]
+        )
+
+        pruned, pruning = prune_movie_frame(
+            frame,
+            "movies directed by christopher nolan which are funny",
+            use_llm=False,
+            suql_query=(
+                "SELECT movie_id, title, year, runtime, director, genres "
+                "FROM movies WHERE director LIKE '%Christopher Nolan%' "
+                "AND genres LIKE '%Comedy%';"
+            ),
+        )
+
+        self.assertEqual(pruned["movie_id"].tolist(), ["tt1"])
+        self.assertEqual(pruning.mode, "suql_sqlite")
 
 
 if __name__ == "__main__":

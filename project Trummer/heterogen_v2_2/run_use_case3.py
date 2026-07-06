@@ -29,6 +29,8 @@ def main() -> None:
     parser.add_argument("--api-base", default="http://localhost:11434", help="Ollama or OpenAI-compatible API base.")
     parser.add_argument("--api-key", default=None, help="OpenAI-compatible API key. Defaults to OPENAI_API_KEY.")
     parser.add_argument("--model", default="ollama/gemma4:e4b", help="Chat model name.")
+    parser.add_argument("--structured-parser-model", default="ollama/gemma4:e2b", help="Cheap model for SUQL-style structured parsing.")
+    parser.add_argument("--disable-llm-structured-parser", action="store_true")
     parser.add_argument("--operator", choices=["block", "adaptive"], default="adaptive")
     parser.add_argument("--selectivity", type=float, default=0.001, help="Initial selectivity estimate.")
     parser.add_argument("--token-threshold", type=int, default=4000, help="Per-request token budget.")
@@ -47,19 +49,31 @@ def main() -> None:
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    movies, reviews = load_movies_and_reviews(
+    loaded = load_movies_and_reviews(
         data_dir=args.data_dir,
         year=args.year,
         question=args.question,
         max_movies=args.max_movies,
         max_reviews=args.max_reviews,
         prefilter_reviews_by_movie_id=not args.no_review_prefilter,
+        api_base=args.api_base,
+        parser_model=args.structured_parser_model,
+        request_timeout=3600,
+        use_llm_structured_parser=not args.dry_run and not args.disable_llm_structured_parser,
+        return_pruning=True,
     )
-    predicate = args.predicate or semantic_predicate_from_question(args.question)
+    movies, reviews, pruning = loaded
+    predicate = (
+        args.predicate
+        or (pruning.semantic_predicate if pruning is not None else "")
+        or semantic_predicate_from_question(args.question)
+    )
     print(f"Loaded {len(movies)} movie rows for year={args.year}")
     print(f"Loaded {len(reviews)} review chunks after deterministic movie_id pruning")
     print(f"Question: {args.question}")
     print(f"Predicate: {predicate}")
+    if pruning is not None:
+        print(f"Structured pruning: {pruning.as_dict()}")
 
     movies.to_csv(output_dir / "use_case3_movie_candidates.csv", index=False)
 

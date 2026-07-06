@@ -10,7 +10,6 @@ from typing import Iterable
 import httpx
 import numpy as np
 import pandas as pd
-from scipy.stats import beta
 
 
 DEFAULT_MODEL = os.environ.get("SUQL_MODEL", "ollama/phi4-mini")
@@ -315,6 +314,8 @@ def parse_label(value: object) -> int:
 
 def beta_lower_bound(successes: int, failures: int, credible_level: float) -> float:
     """Lower credible bound for Beta(1+successes, 1+failures)."""
+    from scipy.stats import beta
+
     tail_probability = 1.0 - credible_level
     return float(beta.ppf(tail_probability, 1 + successes, 1 + failures))
 

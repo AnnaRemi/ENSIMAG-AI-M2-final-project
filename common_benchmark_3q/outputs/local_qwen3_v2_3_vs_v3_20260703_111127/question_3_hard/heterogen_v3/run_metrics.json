@@ -1,0 +1,79 @@
+{
+  "implementation": "trummer_heterogen_v3_pruned_cascade",
+  "mode": "llm",
+  "model": "ollama/qwen3:0.6b->ollama/qwen3:1.7b",
+  "cheap_model": "ollama/qwen3:0.6b",
+  "expensive_model": "ollama/qwen3:1.7b",
+  "input_movies": 0,
+  "input_reviews": 0,
+  "candidate_pairs": 0,
+  "cheap_calls": 0,
+  "cheap_failures": 0,
+  "cheap_early_accepts": 0,
+  "cheap_early_rejects": 0,
+  "calibration_candidates": 0,
+  "calibration_expensive_calls": 0,
+  "calibration_expensive_accepts": 0,
+  "calibration_agreement": 0.0,
+  "learned_confidence_threshold": null,
+  "expensive_candidates": 0,
+  "expensive_calls": 0,
+  "fallback_expensive_calls": 0,
+  "expensive_failures": 0,
+  "expensive_accepts": 0,
+  "cheap_seconds": 0.0,
+  "expensive_seconds": 0.0,
+  "cheap_time_percent": 0.0,
+  "expensive_time_percent": 0.0,
+  "elapsed_seconds": 2.945796586573124e-05,
+  "cpu_seconds": 0.0011999999999999789,
+  "engine_seconds": 8.087500464171171e-05,
+  "wall_seconds": 8.087500464171171e-05,
+  "llm_calls": 0,
+  "block_join_calls": 0,
+  "final_answer_rows": 0,
+  "found_movie_ids": [],
+  "original_movies": 60,
+  "original_reviews": 60,
+  "pruned_movies": 0,
+  "pruned_reviews": 0,
+  "structured_filters": [
+    {
+      "column": "runtime",
+      "op": "gt",
+      "value": "90",
+      "source": "over 90 minutes"
+    },
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Comedy",
+      "source": "comedy"
+    }
+  ],
+  "structured_pruning": {
+    "mode": "suql_sqlite",
+    "filters": [
+      {
+        "column": "runtime",
+        "op": "gt",
+        "value": "90",
+        "source": "over 90 minutes"
+      },
+      {
+        "column": "genres",
+        "op": "contains",
+        "value": "Comedy",
+        "source": "comedy"
+      }
+    ],
+    "suql_query": "SELECT movie_id, title, year, runtime, director, genres\nFROM movies\nWHERE director LIKE '%Comedy%'\n  AND genres LIKE '%Acting%'\n  AND genres LIKE '%Direction%'\n  AND genres LIKE '%Soundtrack%'\n  AND genres LIKE '%Visuals%'\n  AND genres LIKE '%Effects%'\n  AND year > 90\n  AND answer(review, 'Does the review express an overall negative, critical, or strongly unfavorable opinion of the movie?') = 'Yes';",
+    "structural_sql": "SELECT movie_id, title, year, runtime, director, genres\nFROM movies\nWHERE director LIKE '%Comedy%'\n  AND genres LIKE '%Acting%'\n  AND genres LIKE '%Direction%'\n  AND genres LIKE '%Soundtrack%'\n  AND genres LIKE '%Visuals%'\n  AND genres LIKE '%Effects%'\n  AND year > 90;",
+    "parser_model": "ollama/qwen3:0.6b",
+    "parser_error": "",
+    "semantic_predicate": "Does the review express an overall negative, critical, or strongly unfavorable opinion of the movie?"
+  },
+  "max_expensive_calls": 4,
+  "question_dir": "question_3_hard",
+  "question": "Which Comedy movies over 90 minutes have reviews that are overall unfavorable but still explicitly praise at least one specific aspect such as acting, direction, soundtrack, visuals, or effects?"
+}

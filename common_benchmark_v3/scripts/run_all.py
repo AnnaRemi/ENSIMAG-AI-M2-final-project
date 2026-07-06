@@ -25,6 +25,8 @@ def main() -> None:
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
     parser.add_argument("--cheap-model", default="ollama/gemma4:e2b")
     parser.add_argument("--expensive-model", default="ollama/gemma4:e4b")
+    parser.add_argument("--structured-parser-model")
+    parser.add_argument("--disable-llm-structured-parser", action="store_true")
     parser.add_argument("--cascade-target", type=float, default=0.9)
     parser.add_argument("--calibration-budget", type=int, default=20)
     parser.add_argument("--cheap-batch-size", type=int, default=8)
@@ -48,6 +50,7 @@ def main() -> None:
     parser.add_argument("--skip-v3", action="store_true")
     parser.add_argument("--skip-v2", action="store_true")
     args = parser.parse_args()
+    structured_parser_model = args.structured_parser_model or args.cheap_model
     python_path = Path(args.python)
     if not python_path.is_absolute():
         python_path = Path.cwd() / python_path
@@ -62,6 +65,15 @@ def main() -> None:
     benchmark = json.loads((ROOT / "benchmark.json").read_text())
     truth = {str(movie_id) for movie_id in benchmark["ground_truth_movie_ids"]}
     common = ["--api-base", args.api_base]
+    structured_parser_common = [
+        "--structured-parser-model",
+        structured_parser_model,
+        *(
+            ["--disable-llm-structured-parser"]
+            if args.disable_llm_structured_parser
+            else []
+        ),
+    ]
     commands = []
     if not args.skip_suql:
         commands.append([
@@ -79,6 +91,7 @@ def main() -> None:
     if not args.skip_v2_2:
         commands.append([
             args.python, str(ROOT / "scripts" / "run_heterogen_v2_2.py"), *common,
+            *structured_parser_common,
             "--model", args.expensive_model,
             "--request-timeout", str(args.request_timeout),
             "--output-dir", str(experiment / "trummer_heterogen_v2_2_structured_pruned"),
@@ -86,6 +99,7 @@ def main() -> None:
     if not args.skip_v3:
         commands.append([
             args.python, str(ROOT / "scripts" / "run_heterogen_v3.py"), *common,
+            *structured_parser_common,
             "--cheap-model", args.cheap_model,
             "--expensive-model", args.expensive_model,
             "--cascade-target", str(args.cascade_target),

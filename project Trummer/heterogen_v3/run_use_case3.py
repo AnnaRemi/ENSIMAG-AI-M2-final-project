@@ -11,8 +11,9 @@ import pandas as pd
 
 from trummer_join.cascade import CascadeConfig, CascadeJoin, Candidate, metrics_dict
 from trummer_join.structured_filter import (
-    apply_structured_filters,
-    extract_structured_filters,
+    StructuredFilter,
+    StructuredPruningResult,
+    prune_movie_frame,
     semantic_predicate_from_question,
 )
 
@@ -33,6 +34,8 @@ def main() -> None:
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
     parser.add_argument("--cheap-model", default="gemma4:e2b")
     parser.add_argument("--expensive-model", default="gemma4:e4b")
+    parser.add_argument("--structured-parser-model")
+    parser.add_argument("--disable-llm-structured-parser", action="store_true")
     parser.add_argument("--cascade-target", type=float, default=0.9)
     parser.add_argument("--calibration-budget", type=int, default=20)
     parser.add_argument("--expensive-batch-size", type=int, default=8)
@@ -54,8 +57,12 @@ def main() -> None:
         input_reviews,
         args.question,
         args.year,
+        api_base=args.api_base,
+        parser_model=args.structured_parser_model or args.cheap_model,
+        request_timeout=args.request_timeout,
+        use_llm=not args.dry_run and not args.disable_llm_structured_parser,
     )
-    predicate = args.predicate or semantic_predicate_from_question(args.question)
+    predicate = args.predicate or structured_filters.semantic_predicate or semantic_predicate_from_question(args.question)
     print(
         f"Loaded movies={len(input_movies)}, reviews={len(input_reviews)}; "
         f"after structured pruning movies={len(movies)}, reviews={len(reviews)}",
@@ -91,7 +98,8 @@ def main() -> None:
         "mode": "dry_run" if args.dry_run else "llm",
         "predicate": predicate,
         "question": args.question,
-        "structured_filters": [item.as_dict() for item in structured_filters],
+        "structured_filters": [item.as_dict() for item in structured_filters.filters],
+        "structured_pruning": structured_filters.as_dict(),
         "config": asdict(config),
         **metrics_dict(metrics),
         "original_movies": len(input_movies),
@@ -126,17 +134,32 @@ def prune_inputs(
     reviews: list[dict[str, str]],
     question: str,
     fallback_year: int | None,
-) -> tuple[list[dict[str, str]], list[dict[str, str]], list]:
+    *,
+    api_base: str = "http://127.0.0.1:11434",
+    parser_model: str | None = None,
+    request_timeout: float = 120.0,
+    use_llm: bool = True,
+) -> tuple[list[dict[str, str]], list[dict[str, str]], StructuredPruningResult]:
     movie_frame = pd.DataFrame(movies)
     review_frame = pd.DataFrame(reviews)
-    structured_filters = extract_structured_filters(question, movie_frame.columns)
-    if not structured_filters and fallback_year is not None and "year" in movie_frame.columns:
-        from trummer_join.structured_filter import StructuredFilter
-
-        structured_filters = [
-            StructuredFilter("year", "eq", str(fallback_year), str(fallback_year))
-        ]
-    pruned_movies = apply_structured_filters(movie_frame, structured_filters).reset_index(drop=True)
+    pruned_movies, pruning = prune_movie_frame(
+        movie_frame,
+        question,
+        api_base=api_base,
+        parser_model=parser_model,
+        request_timeout=request_timeout,
+        use_llm=use_llm,
+    )
+    if not pruning.filters and fallback_year is not None and "year" in movie_frame.columns:
+        fallback_filter = StructuredFilter("year", "eq", str(fallback_year), str(fallback_year))
+        pruned_movies = movie_frame[
+            pd.to_numeric(movie_frame["year"], errors="coerce") == fallback_year
+        ].reset_index(drop=True)
+        pruning = StructuredPruningResult(
+            mode="fallback_year",
+            filters=[fallback_filter],
+            semantic_predicate=semantic_predicate_from_question(question),
+        )
     movie_ids = set(pruned_movies["movie_id"].astype(str)) if "movie_id" in pruned_movies else set()
     pruned_reviews = pd.DataFrame(
         [review for review in reviews if str(review.get("tconst", "")) in movie_ids],
@@ -145,7 +168,7 @@ def prune_inputs(
     return (
         pruned_movies.to_dict("records"),
         pruned_reviews.to_dict("records"),
-        structured_filters,
+        pruning,
     )
 
 

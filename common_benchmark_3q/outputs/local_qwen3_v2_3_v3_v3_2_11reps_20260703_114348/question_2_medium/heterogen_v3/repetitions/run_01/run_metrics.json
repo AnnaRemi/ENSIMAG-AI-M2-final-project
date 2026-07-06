@@ -1,0 +1,92 @@
+{
+  "implementation": "trummer_heterogen_v3_pruned_cascade",
+  "mode": "llm",
+  "model": "ollama/qwen3:0.6b->ollama/qwen3:1.7b",
+  "cheap_model": "ollama/qwen3:0.6b",
+  "expensive_model": "ollama/qwen3:1.7b",
+  "input_movies": 20,
+  "input_reviews": 20,
+  "candidate_pairs": 20,
+  "cheap_calls": 20,
+  "cheap_failures": 0,
+  "cheap_early_accepts": 0,
+  "cheap_early_rejects": 0,
+  "calibration_candidates": 20,
+  "calibration_expensive_calls": 3,
+  "calibration_expensive_accepts": 12,
+  "calibration_agreement": 0.65,
+  "learned_confidence_threshold": null,
+  "expensive_candidates": 20,
+  "expensive_calls": 6,
+  "fallback_expensive_calls": 3,
+  "expensive_failures": 0,
+  "expensive_accepts": 12,
+  "cheap_seconds": 9.111425207229331,
+  "expensive_seconds": 18.335944124730304,
+  "cheap_time_percent": 33.19598718927141,
+  "expensive_time_percent": 66.8040128107286,
+  "elapsed_seconds": 27.452185875037685,
+  "cpu_seconds": 0.08491399999999999,
+  "engine_seconds": 27.45259633299429,
+  "wall_seconds": 27.45259633299429,
+  "llm_calls": 26,
+  "block_join_calls": 6,
+  "final_answer_rows": 12,
+  "found_movie_ids": [
+    "tt0037932",
+    "tt0043132",
+    "tt0044166",
+    "tt0053142",
+    "tt0078159",
+    "tt0087685",
+    "tt0099260",
+    "tt0105226",
+    "tt0410162",
+    "tt0436608",
+    "tt0460838",
+    "tt0465643"
+  ],
+  "original_movies": 60,
+  "original_reviews": 60,
+  "pruned_movies": 20,
+  "pruned_reviews": 20,
+  "structured_filters": [
+    {
+      "column": "runtime",
+      "op": "lt",
+      "value": "100",
+      "source": "under 100 minutes"
+    },
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Drama",
+      "source": "drama"
+    }
+  ],
+  "structured_pruning": {
+    "mode": "regex",
+    "filters": [
+      {
+        "column": "runtime",
+        "op": "lt",
+        "value": "100",
+        "source": "under 100 minutes"
+      },
+      {
+        "column": "genres",
+        "op": "contains",
+        "value": "Drama",
+        "source": "drama"
+      }
+    ],
+    "suql_query": "",
+    "structural_sql": "",
+    "parser_model": "",
+    "parser_error": "",
+    "semantic_predicate": "the review expresses an overall positive or favorable opinion of the movie"
+  },
+  "max_expensive_calls": 4,
+  "question_dir": "question_2_medium",
+  "question": "Which Drama movies under 100 minutes have reviews that explicitly praise the acting or performances?"
+}

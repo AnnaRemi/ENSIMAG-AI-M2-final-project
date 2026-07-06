@@ -1,0 +1,18 @@
+question,method,threshold_label,learned_confidence_threshold,routing_confidence_threshold,manual_confidence_threshold,cascade_target,structured_filters
+question_1_easy,V2_3,"target=0.90
+(no learned t)",,,,0.9,[]
+question_1_easy,V3,"target=0.90
+(no learned t)",,,,0.9,"[{""column"": ""year"", ""op"": ""eq"", ""value"": ""2001"", ""source"": ""2001""}]"
+question_1_easy,V3_2,"target=0.90
+(no learned t)",,,,0.9,"[{""column"": ""year"", ""op"": ""eq"", ""value"": ""2001"", ""source"": ""2001""}]"
+question_2_medium,V2_3,"target=0.90
+(no learned t)",,,,0.9,[]
+question_2_medium,V3,"target=0.90
+(no learned t)",,,,0.9,"[{""column"": ""runtime"", ""op"": ""lt"", ""value"": ""100"", ""source"": ""under 100 minutes""}, {""column"": ""genres"", ""op"": ""contains"", ""value"": ""Drama"", ""source"": ""drama""}]"
+question_2_medium,V3_2,"target=0.90
+(no learned t)",,,,0.9,"[{""column"": ""runtime"", ""op"": ""lt"", ""value"": ""100"", ""source"": ""under 100 minutes""}, {""column"": ""genres"", ""op"": ""contains"", ""value"": ""Drama"", ""source"": ""drama""}]"
+question_3_hard,V2_3,"target=0.90
+(no learned t)",,,,0.9,[]
+question_3_hard,V3,learned t=2.00,2.0,,,0.9,"[{""column"": ""runtime"", ""op"": ""gt"", ""value"": ""90"", ""source"": ""over 90 minutes""}, {""column"": ""genres"", ""op"": ""contains"", ""value"": ""Comedy"", ""source"": ""comedy""}]"
+question_3_hard,V3_2,"target=0.90
+(no learned t)",,,,0.9,"[{""column"": ""runtime"", ""op"": ""gt"", ""value"": ""90"", ""source"": ""over 90 minutes""}, {""column"": ""genres"", ""op"": ""contains"", ""value"": ""Comedy"", ""source"": ""comedy""}]"

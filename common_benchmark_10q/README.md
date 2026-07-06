@@ -7,6 +7,12 @@ Ten-question benchmark comparing:
 - `heterogen_v3`
 - `heterogen_v3_2`
 
+The benchmark keeps each implementation under its source project. In
+particular, V3.2 lives in `project Trummer/heterogen_v3_2` and combines V3
+structured pruning with the V2.3 batched cascade; the benchmark runner imports
+that implementation instead of defining V3.2-specific logic inside the
+benchmark.
+
 Each question has 60 rows and a non-empty ground-truth set. Ground truth is the
 intersection of deterministic structured filters and the IMDb source sentiment
 split. Each question/method run defaults to 11 repetitions; numeric metrics and
@@ -37,11 +43,14 @@ The run writes:
 - `comparison.csv`
 - `aggregate.csv`
 - `summary.md`
-- `metrics_precision_recall_f1.png`
-- `quality_by_question.png`
-- `question_quality_plots/q*_quality.png`
-- `time_bar_plot.png`
-- `calls_bar_plot.png`
+- `plots/01_quality_precision_recall_f1.png`
+- `plots/02_time_cheap_expensive_percent.png`
+- `plots/03_calls_cheap_expensive_percent.png`
+- `plots/04_quality_time_calls_tradeoff.png`
+- `question_*/plots/01_quality_precision_recall_f1.png`
+- `question_*/plots/02_time_cheap_expensive_percent.png`
+- `question_*/plots/03_calls_cheap_expensive_percent.png`
+- `question_*/plots/04_quality_time_calls_tradeoff.png`
 
 ## Aker Run
 
@@ -55,7 +64,7 @@ Aker login node:
 
 ```bash
 cd /home/daisy/remizova/common_benchmark_10q_workspace
-PULL_MODELS=1 bash common_benchmark_10q/scripts/submit_aker_common_benchmark_10q.sh
+PULL_MODELS=1 bash common_benchmark_10q/scripts/runner.sh submit-aker
 ```
 
 The OAR worker requests one GPU and refuses to continue unless an NVIDIA GPU is

@@ -26,11 +26,12 @@ rsync -avR \
   Stage_1/benchmark_stage1.py \
   Stage_1/README.md \
   Stage_1/thresholds.json \
-  Stage_1/requirements.txt \
+  requirements.txt \
   src_baseline/ \
   src_baseline_stage1/ \
   scripts/run_aker_baseline_stage1_data_samples.sh \
-  scripts/aggregate_stage1_scaling_svg.py \
+  scripts/plot_benchmarks.py \
+  scripts/run_suql.py \
   "$AKER_HOST:$AKER_PROJECT_ROOT/"
 
 for size in "${SIZES[@]}"; do

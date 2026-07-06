@@ -10,7 +10,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from scipy.stats import beta
 
 STAGE_1_PROFILER = Path(__file__).resolve().parents[1] / "Stage_1" / "profiler.py"
 _spec = importlib.util.spec_from_file_location("stage1_profiler_for_stage2", STAGE_1_PROFILER)
@@ -51,6 +50,8 @@ class CascadeThreshold:
 
 
 def beta_lower_bound(successes: int, failures: int, credible_level: float) -> float:
+    from scipy.stats import beta
+
     return float(beta.ppf(1.0 - credible_level, 1 + successes, 1 + failures))
 
 

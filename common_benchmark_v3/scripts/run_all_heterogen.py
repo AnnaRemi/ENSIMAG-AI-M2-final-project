@@ -25,6 +25,8 @@ def main() -> None:
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
     parser.add_argument("--cheap-model", default="ollama/gemma4:e2b")
     parser.add_argument("--expensive-model", default="ollama/gemma4:e4b")
+    parser.add_argument("--structured-parser-model")
+    parser.add_argument("--disable-llm-structured-parser", action="store_true")
     parser.add_argument("--cascade-target", type=float, default=0.9)
     parser.add_argument("--calibration-budget", type=int, default=20)
     parser.add_argument("--v2-manual-confidence-threshold", type=float)
@@ -52,6 +54,7 @@ def main() -> None:
     parser.add_argument("--skip-v2-3", action="store_true")
     parser.add_argument("--skip-v3", action="store_true")
     args = parser.parse_args()
+    structured_parser_model = args.structured_parser_model or args.cheap_model
 
     python_path = Path(args.python)
     if not python_path.is_absolute():
@@ -80,6 +83,8 @@ def main() -> None:
         ],
         "cheap_model": args.cheap_model,
         "expensive_model": args.expensive_model,
+        "structured_parser_model": structured_parser_model,
+        "disable_llm_structured_parser": args.disable_llm_structured_parser,
         "cascade_target": args.cascade_target,
         "calibration_budget": args.calibration_budget,
         "v2_manual_confidence_threshold": args.v2_manual_confidence_threshold,
@@ -119,6 +124,15 @@ def main() -> None:
         str(args.max_movie_block_size),
         "--max-review-block-size",
         str(args.max_review_block_size),
+    ]
+    structured_parser_common = [
+        "--structured-parser-model",
+        structured_parser_model,
+        *(
+            ["--disable-llm-structured-parser"]
+            if args.disable_llm_structured_parser
+            else []
+        ),
     ]
     cascade_common = [
         "--cheap-model",
@@ -171,6 +185,7 @@ def main() -> None:
             python,
             str(ROOT / "scripts" / "run_heterogen_v2_2.py"),
             *common,
+            *structured_parser_common,
             *block_common,
             "--model",
             args.expensive_model,
@@ -199,6 +214,7 @@ def main() -> None:
             python,
             str(ROOT / "scripts" / "run_heterogen_v3.py"),
             *common,
+            *structured_parser_common,
             *cascade_common,
             "--expensive-batch-size",
             str(args.expensive_batch_size),

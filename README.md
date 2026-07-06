@@ -24,7 +24,7 @@ The retained work has three focuses:
 | Trummer heterogeneous v2_2 | `project Trummer/heterogen_v2_2/` | Prune year and exact movie/review IDs deterministically, then run Trummer block prompts for sentiment matching. |
 | Trummer heterogeneous v2_3 | `project Trummer/heterogen_v2_3/` | Score exact-ID candidates in cheap batches and coalesce uncertain candidates into larger expensive batches. |
 | Trummer heterogeneous v3 | `project Trummer/heterogen_v3/` | Combine structured pruning with the cheap-to-expensive cascade. |
-| Trummer heterogeneous v3_2 | implemented by `common_benchmark_3q/scripts/run_method.py` and `common_benchmark_10q/scripts/run_method.py` using `heterogen_v3` pruning plus `heterogen_v2_3` batching | Apply structured pruning first, then run the batched cheap-to-expensive cascade on the pruned exact-ID candidates. |
+| Trummer heterogeneous v3_2 | `project Trummer/heterogen_v3_2/` | Apply structured pruning first, then run the batched cheap-to-expensive cascade on the pruned exact-ID candidates. |
 
 Stage 1 and Stage 2 are experimental physical operators inspired by calibrated
 cascades and Stretto-style operator selection. They are not complete
@@ -162,10 +162,19 @@ metrics, wall time, and cheap/expensive call counts. Each question/method pair
 defaults to 11 repetitions, and the final `run_metrics.json`, comparison CSV,
 aggregate CSV, summary, and plots use the mean across those repetitions.
 
+V3_2 now lives as a standalone Trummer implementation under
+`project Trummer/heterogen_v3_2/`. The common benchmark runners import it from
+there instead of embedding V3_2-specific logic in the benchmark directory.
+
 The Aker runner for this suite defaults to `gemma4:e2b` as the cheap model and
 `gemma4:e4b` as the expensive model. It requests one GPU through OAR and refuses
 to run unless the GPU is visible and Ollama appears in `nvidia-smi` for both
 models.
+
+Additional method-level documentation is available in
+[`docs/implemented_methods.md`](docs/implemented_methods.md), with a compiled
+textbook-style PDF at
+[`docs/implemented_methods_textbook.pdf`](docs/implemented_methods_textbook.pdf).
 
 ## Experiment Suites
 
@@ -238,13 +247,15 @@ Retained Stage 2 experiments are under `project SUQL/Stage_2/benchmarks/`.
 │   ├── heterogen_v2/             # pair-level exact-ID cascade semantic join
 │   ├── heterogen_v2_2/           # structured-pruned bounded block semantic join
 │   ├── heterogen_v2_3/           # batched exact-ID cascade semantic join
-│   └── heterogen_v3/             # structured-pruned cascade semantic join
+│   ├── heterogen_v3/             # structured-pruned cascade semantic join
+│   └── heterogen_v3_2/           # structured-pruned batched cascade semantic join
 ├── common_benchmark/             # legacy SUQL baseline vs v1 model sweep
 ├── common_benchmark_v2/          # mixed-year SUQL baseline vs fixed-output v1
 ├── common_benchmark_v3/          # one-question heterogen implementation comparison
 ├── common_benchmark_thresholds/   # cascade-threshold sweep
 ├── common_benchmark_3q/           # three-question difficulty benchmark
 ├── common_benchmark_10q/          # ten-question SUQL/V2_3/V3/V3_2 benchmark
+├── docs/                         # implemented-method notes and compiled PDF
 ├── presentations/                # final project and paper-review slides
 └── papers/                       # local reading material, not tracked
 ```
@@ -291,7 +302,7 @@ Run the baseline:
 
 ```bash
 cd "project SUQL/src_baseline"
-python main.py \
+python ../scripts/run_suql.py --engine-dir . \
   "Which horror movies under 110 minutes have reviews mentioning suspense or tension?"
 ```
 
@@ -381,10 +392,10 @@ Run the ten-question suite locally:
 python3 common_benchmark_10q/scripts/build_datasets.py
 python3 -m unittest discover -s common_benchmark_10q/tests -v
 
-python3 common_benchmark_10q/scripts/run_all.py \
+bash common_benchmark_10q/scripts/runner.sh local \
   --api-base "$SUQL_API_BASE" \
-  --cheap-model ollama/gemma4:e2b \
-  --expensive-model ollama/gemma4:e4b \
+  --cheap-model gemma4:e2b \
+  --expensive-model gemma4:e4b \
   --repetitions 11 \
   --output-dir outputs/local_gemma4_e2b_e4b_10q_11reps
 ```
@@ -397,7 +408,7 @@ bash common_benchmark_10q/scripts/sync_common_benchmark_10q_to_aker.sh
 
 # Aker login node
 cd /home/daisy/remizova/common_benchmark_10q_workspace
-PULL_MODELS=1 bash common_benchmark_10q/scripts/submit_aker_common_benchmark_10q.sh
+PULL_MODELS=1 bash common_benchmark_10q/scripts/runner.sh submit-aker
 ```
 
 The Aker worker defaults to `REQUIRE_GPU=1`. It stops before the benchmark if

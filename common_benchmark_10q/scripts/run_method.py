@@ -63,6 +63,65 @@ def run_suql(args: argparse.Namespace, spec: dict, output_dir: Path) -> dict:
     }
 
 
+def run_suql_stage2(args: argparse.Namespace, spec: dict, output_dir: Path) -> dict:
+    engine_dir = LAB_ROOT / "project SUQL" / "src_baseline_stage2"
+    metrics_path = output_dir / "engine_metrics.json"
+    os.environ["SUQL_DATA_PATH"] = str(
+        question_dir(args.question_dir) / "data" / "imdb_joined.csv"
+    )
+    os.environ["SUQL_API_BASE"] = args.api_base
+    os.environ["SUQL_MODEL"] = args.expensive_model
+    os.environ["SUQL_EXPENSIVE_MODEL"] = args.expensive_model
+    os.environ["SUQL_CHEAP_MODEL"] = args.cheap_model
+    os.environ["SUQL_CASCADE_TARGET"] = str(args.cascade_target)
+    os.environ["SUQL_CALIBRATION_BUDGET"] = str(args.calibration_budget)
+    if args.manual_confidence_threshold is None:
+        os.environ.pop("SUQL_MANUAL_CONFIDENCE_THRESHOLD", None)
+    else:
+        os.environ["SUQL_MANUAL_CONFIDENCE_THRESHOLD"] = str(args.manual_confidence_threshold)
+    os.environ["SUQL_METRICS_PATH"] = str(metrics_path)
+    sys.path.insert(0, str(engine_dir))
+    import suql_engine
+
+    suql_engine._answer_cache.clear()
+    started_cpu = cpu_seconds()
+    started_wall = time.perf_counter()
+    results = suql_engine.ask_with_suql(
+        spec["suql_query"],
+        output_csv=str(output_dir / "found_rows.csv"),
+        verbose=True,
+    )
+    elapsed = time.perf_counter() - started_wall
+    engine_metrics = json.loads(metrics_path.read_text())
+    cheap_calls = int(engine_metrics.get("cheap_score_calls", 0))
+    expensive_calls = int(engine_metrics.get("llm_full_calls", 0))
+    return {
+        "implementation": "suql_stage2_bargain_cascade",
+        "mode": "llm",
+        "model": f"{args.cheap_model}->{args.expensive_model}",
+        "cheap_model": args.cheap_model,
+        "expensive_model": args.expensive_model,
+        "cpu_seconds": cpu_seconds() - started_cpu,
+        "engine_seconds": float(engine_metrics["engine_seconds"]),
+        "wall_seconds": elapsed,
+        "llm_calls": cheap_calls + expensive_calls,
+        "block_join_calls": 0,
+        "cheap_calls": cheap_calls,
+        "expensive_calls": expensive_calls,
+        "cheap_seconds": float(engine_metrics.get("cheap_seconds", 0.0)),
+        "expensive_seconds": float(engine_metrics.get("expensive_seconds", 0.0)),
+        "cheap_early_accepts": int(engine_metrics.get("cheap_early_accept", 0)),
+        "cheap_early_rejects": int(engine_metrics.get("cheap_early_reject", 0)),
+        "calibration_candidates": int(engine_metrics.get("calibration_candidates", 0)),
+        "calibration_expensive_calls": int(engine_metrics.get("calibration_expensive_calls", 0)),
+        "calibration_expensive_accepts": int(engine_metrics.get("calibration_expensive_accepts", 0)),
+        "calibration_agreement": float(engine_metrics.get("calibration_agreement", 0.0)),
+        "final_answer_rows": int(len(results)),
+        "found_movie_ids": sorted(results["movie_id"].astype(str).unique()),
+        "structured_candidates": int(engine_metrics["structured_candidates"]),
+    }
+
+
 def prune_inputs(args: argparse.Namespace, spec: dict):
     v3_root = LAB_ROOT / "project Trummer" / "heterogen_v3"
     sys.path.insert(0, str(v3_root))
@@ -356,16 +415,35 @@ def run_v2_3(args: argparse.Namespace, spec: dict, output_dir: Path) -> dict:
 
 
 def run_v3_2(args: argparse.Namespace, spec: dict, output_dir: Path) -> dict:
-    input_movies, input_reviews, movies_frame, reviews_frame, pruning = (
-        prune_inputs(args, spec)
-    )
     for name in list(sys.modules):
         if name == "trummer_join" or name.startswith("trummer_join."):
             del sys.modules[name]
-    v2_3_root = LAB_ROOT / "project Trummer" / "heterogen_v2_3"
-    sys.path.insert(0, str(v2_3_root))
+    v3_2_root = LAB_ROOT / "project Trummer" / "heterogen_v3_2"
+    sys.path.insert(0, str(v3_2_root))
     from trummer_join.cascade import CascadeConfig, CascadeJoin, metrics_dict
+    from trummer_join.structured_filter import prune_movie_frame
 
+    input_movies = load_movies(args.question_dir)
+    input_reviews = load_reviews(args.question_dir)
+    input_movies_frame = pd.DataFrame(input_movies)
+    input_reviews_frame = pd.DataFrame(input_reviews)
+    movies_frame, pruning = prune_movie_frame(
+        input_movies_frame,
+        spec["question"],
+        api_base=args.api_base,
+        parser_model=args.structured_parser_model or args.cheap_model,
+        request_timeout=args.request_timeout,
+        use_llm=not args.disable_llm_structured_parser,
+    )
+    movie_ids = set(movies_frame["movie_id"].astype(str))
+    reviews_frame = pd.DataFrame(
+        [
+            row
+            for row in input_reviews
+            if str(row.get("tconst", "")) in movie_ids
+        ],
+        columns=input_reviews_frame.columns,
+    ).reset_index(drop=True)
     movies = movies_frame.to_dict("records")
     reviews = reviews_frame.to_dict("records")
     config = CascadeConfig(
@@ -445,7 +523,7 @@ def main() -> None:
     parser.add_argument(
         "--method",
         required=True,
-        choices=["suql", "v2_2", "v2_3", "v3", "v3_2"],
+        choices=["suql", "suql_stage2", "v2_2", "v2_3", "v3", "v3_2"],
     )
     parser.add_argument("--question-dir", required=True)
     parser.add_argument("--api-base", default="http://127.0.0.1:11434")
@@ -475,6 +553,8 @@ def main() -> None:
     spec = benchmark(args.question_dir)
     if args.method == "suql":
         payload = run_suql(args, spec, output_dir)
+    elif args.method == "suql_stage2":
+        payload = run_suql_stage2(args, spec, output_dir)
     elif args.method == "v2_2":
         payload = run_v2_2(args, spec, output_dir)
     elif args.method == "v2_3":

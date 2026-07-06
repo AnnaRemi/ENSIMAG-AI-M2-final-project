@@ -1,0 +1,12 @@
+repetition,implementation,mode,model,wall_seconds,engine_seconds,cpu_seconds,llm_calls,cheap_calls,expensive_calls,final_answer_rows,true_positives,false_positives,false_negatives,precision,recall,f1
+1,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,12.516985666006804,12.516985666006804,0.03012699999999996,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25
+2,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,11.479841458960436,11.479841458960436,0.04384499999999997,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25
+3,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,11.71567549998872,11.71567549998872,0.03289500000000001,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25
+4,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,13.075986416894011,13.075986416894011,0.031779999999999975,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25
+5,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,13.789796917000785,13.789796917000785,0.031872999999999985,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25
+6,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,13.9467732089106,13.9467732089106,0.03080199999999994,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25
+7,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,13.241249457933009,13.241249457933009,0.03478399999999998,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25
+8,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,13.608600624953397,13.608600624953397,0.03102499999999997,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25
+9,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,13.161482082912698,13.161482082912698,0.032246,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25
+10,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,12.921509957988746,12.921509957988746,0.03017999999999993,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25
+11,trummer_heterogen_v3_2_pruned_batched_cascade,llm,ollama/qwen3:0.6b->ollama/qwen3:1.7b,13.269512499915436,13.269512499915436,0.027341999999999977,5,3,2,6,2.0,4.0,8.0,0.3333333333333333,0.2,0.25

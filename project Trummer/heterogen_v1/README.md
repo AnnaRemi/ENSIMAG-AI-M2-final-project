@@ -30,7 +30,7 @@ parsed-pair counts are retained in the join statistics for diagnosis.
 cd "/Users/annremizova/Desktop/lab m2/project Trummer/Heterogen_v1"
 python3 -m venv .venv
 . .venv/bin/activate
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r ../requirements.txt
 ```
 
 Run with Ollama:
@@ -82,4 +82,5 @@ Runs are written under `outputs/aker_trummer_<timestamp>/` and contain:
 - `use_case3_final_movies.csv`
 - sibling `aker_trummer_<timestamp>.console.log`
 
-Downloaded historical runs and OAR/Ollama logs are kept in `outputs/` and `logs/`.
+Downloaded historical runs are kept in `outputs/`; OAR/Ollama logs are runtime
+artifacts and are not tracked.

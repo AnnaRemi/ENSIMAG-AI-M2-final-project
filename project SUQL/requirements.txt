@@ -1,2 +1,6 @@
-pandas
+httpx
 litellm
+matplotlib
+numpy
+pandas
+scipy

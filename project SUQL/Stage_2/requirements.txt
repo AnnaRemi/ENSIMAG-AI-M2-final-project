@@ -1,5 +1,0 @@
-httpx
-numpy
-scipy
-pandas
-matplotlib
