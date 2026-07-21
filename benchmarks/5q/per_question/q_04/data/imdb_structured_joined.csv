@@ -1,0 +1,101 @@
+movie_id,title,director,year,runtime,genres
+tt0027889,The Lion Man,John P. McCarthy,1936,67,Adventure
+tt0028345,Tarzan Escapes,"Richard Thorpe, John Farrow, James C. McKay, George B. Seitz, William A. Wellman",1936,89,"Action,Adventure,Family"
+tt0043980,Rooty Toot Toot,John Hubley,1951,7,"Animation,Comedy,Musical"
+tt0052902,The Horse Soldiers,John Ford,1959,120,"Adventure,Drama,Romance"
+tt0062159,The Projected Man,"Ian Curteis, John Croydon",1966,77,"Horror,Sci-Fi"
+tt0066714,The Six Wives of Henry VIII,"Naomi Capon, John Glenister",1970,540,"Biography,Drama,History"
+tt0068708,Home for the Holidays,John Llewellyn Moxey,1972,73,"Drama,Horror,Mystery"
+tt0070991,Good Times,"Gerren Keith, Herbert Kenwith, Bob LaHendro, Donald McKayle, John Rich, Perry Rosemond",1974,30,Comedy
+tt0072417,A Woman Under the Influence,John Cassavetes,1974,155,"Drama,Romance"
+tt0073018,French Connection II,John Frankenheimer,1975,119,"Action,Crime,Drama"
+tt0074967,Nightmare in Badham County,John Llewellyn Moxey,1976,102,"Drama,Horror,Thriller"
+tt0075990,End of the World,John Hayes,1977,86,"Horror,Mystery,Sci-Fi"
+tt0078480,Watership Down,"Martin Rosen, John Hubley",1978,92,"Adventure,Animation,Drama"
+tt0079672,Opening Night,John Cassavetes,1977,144,Drama
+tt0080140,Wise Blood,John Huston,1979,106,"Comedy,Drama"
+tt0081233,Stage Fright,John D. Lamond,1980,82,"Horror,Thriller"
+tt0083170,Tarzan the Ape Man,John Derek,1981,115,"Adventure,Drama"
+tt0086665,"Auf Wiedersehen, Pet","Roger Bamford, Paul Seed, Baz Taylor, Anthony Garner, David Innes Edwards, Maurice Phillips, Sandy Johnson",1983,60,"Comedy,Drama"
+tt0086817,Transformers,"Andy Kim, Bob Kirk, Al Kouzel, Terry Lennon, Bob Matz, Norm McCabe, Margaret Nichols, Karen Peterson, Tom Ray, Robert Shellhorn, Bob Treat, Ray Lee, John Walker, John Gibbs, Jaeho Hong, Peter Wallach",1984,30,"Action,Adventure,Animation"
+tt0092359,Full House,"Joel Zwick, John Tracy, Bill Foster, Jeff Franklin, Tom Rickard, Peter Baldwin, Richard Correll, John Bowab, Lee Shallat Chemel, Howard Storm, James O'Keefe, Jack Shea, Don Barnhart, Tom Trbovich, Don Van Atta, Russ Petranto, Steve Zuckerman, Bill Petty",1987,22,"Comedy,Drama"
+tt0092815,Daddy,John Herzfeld,1987,100,Drama
+tt0100691,Stella,John Erman,1990,109,"Drama,Romance"
+tt0101635,Curly Sue,John Hughes,1991,101,"Comedy,Drama,Family"
+tt0106064,Mighty Morphin Power Rangers,"Terence H. Winkless, Robert Hughes, John Stewart, Shuki Levy, Robert Radler, Worth Keeter, Jonathan Tzachor, Jerry P. Jacobs, Armand Garabidian, David Blyth, Adrian Carr, Jeffrey Reiner, John Blizek, Marco Garibaldi, Douglas Sloan, Vickie Bronaugh, Isaac Florentine, Larry Litton, Paul Schrier, Strathford Hamilton",1993,30,"Action,Adventure,Family"
+tt0109335,Breathing Lessons,John Erman,1994,93,Drama
+tt0110763,The Pagemaster,"Pixote Hunt, Joe Johnston",1994,75,"Adventure,Animation,Comedy"
+tt0113849,A Month by the Lake,John Irvin,1995,92,"Comedy,Drama,Romance"
+tt0120706,The General,John Boorman,1998,124,"Biography,Crime,Drama"
+tt0127503,Death House,John Saxon,1988,90,"Action,Horror,Sci-Fi"
+tt0127901,Starstruck,John Enbom,1998,90,Drama
+tt0141842,The Sopranos,"Timothy Van Patten, John Patterson, Allen Coulter, Alan Taylor, Henry Bronchtein, Jack Bender, Steve Buscemi, Daniel Attias, David Chase, Nick Gomez, Matthew Penn, Lorraine Senna, Andy Wolk, Martin Bruestle, Lee Tamahori, James Hayman, Peter Bogdanovich, Mike Figgis, Rodrigo García, Danny Leiner, David Nutter, Steve Shill, Phil Abraham, Terence Winter",1999,55,"Crime,Drama"
+tt0295578,Running Out of Time 2,"Wing-Cheong Law, Johnnie To",2001,95,"Crime,Mystery"
+tt0329934,Sue Thomas: F.B.Eye,"Larry A. McLean, Holly Dale, David Warry-Smith, Bruce Pittman, Stephan Fanfara, J. Miles Dale, Dave Alan Johnson, Alan Goluboff, John Bell, Eleanore Lindo, Ken Hanes",2002,60,"Crime,Drama,Mystery"
+tt0390468,Septem8er Tapes,Christian Johnston,2004,95,"Drama,Thriller,War"
+tt0396096,Pit Fighter,Jesse V. Johnson,2005,83,Action
+tt0398408,3 Non-Blondes,John F.D. Northover,2003,30,Comedy
+tt0398417,The Batman,"Brandon Vietti, Seung Eun Kim, Christopher Berkeley, Anthony Chun, Sam Liu, Vinton Heuck, Matt Youngberg, John Fang",2004,22,"Action,Adventure,Animation"
+tt0759482,Justice,"David McNally, Paul McCrane, Kevin Bray, Danny Cannon, Dermott Downs, Karen Gaviola, Anthony Hemingway, Jeffrey G. Hunt, Deran Sarafian, John Peters",2006,43,"Crime,Drama,Thriller"
+tt0785532,Pro-Life,John Carpenter,2006,57,Horror
+tt0837786,Bunny Chow: Know Thyself,John Barker,2006,92,Comedy
+tt0028313,The Story of Louis Pasteur,William Dieterle,1936,86,"Biography,Drama,History"
+tt0033105,Strange Cargo,Frank Borzage,1940,113,"Adventure,Drama,Romance"
+tt0038514,The Face of Marble,William Beaudine,1946,72,"Horror,Sci-Fi"
+tt0049616,Pharaoh's Curse,Lee Sholem,1957,66,Horror
+tt0064645,Mayerling,Terence Young,1968,140,"Drama,History,Romance"
+tt0065905,Scream of the Demon Lover,José Luis Merino,1970,98,Horror
+tt0066845,Will to Die,Carl Monson,1971,82,"Horror,Mystery,Thriller"
+tt0072419,Wonder Woman,Vincent McEveety,1974,73,"Action,Adventure,Crime"
+tt0075781,The Brain Machine,Joy N. Houck Jr.,1972,85,"Sci-Fi,Thriller"
+tt0078176,Romeo & Juliet,Alvin Rakoff,1978,168,Drama
+tt0083113,Sphinx,Franklin J. Schaffner,1981,118,"Adventure,Mystery,Thriller"
+tt0086250,Scarface,Brian De Palma,1983,170,"Crime,Drama"
+tt0087258,Final Justice,Greydon Clark,1985,90,"Action,Crime,Drama"
+tt0088224,Tank,Marvin J. Chomsky,1984,113,"Action,Comedy,Drama"
+tt0091763,Platoon,Oliver Stone,1986,120,"Drama,War"
+tt0096117,Slaughterhouse Rock,Dimitri Logothetis,1987,85,"Comedy,Horror"
+tt0097529,Houseboat Horror,"Kendal Flanagan, Ollie Martin",1989,85,Horror
+tt0102340,Love Crimes,Lizzie Borden,1992,90,"Romance,Thriller"
+tt0102690,Popcorn,"Mark Herrier, Alan Ormsby",1991,91,"Comedy,Horror"
+tt0106582,Cliffhanger,Renny Harlin,1993,113,"Action,Adventure,Thriller"
+tt0108350,Night Terrors,Tobe Hooper,1993,98,Horror
+tt0112740,Crimson Tide,Tony Scott,1995,116,"Action,Drama,Thriller"
+tt0117445,Raven,Russell Solberg,1996,97,Action
+tt0117608,Sgt. Bilko,Jonathan Lynn,1996,94,Comedy
+tt0120247,Surface to Air,Rodney McDonald,1998,93,"Action,War"
+tt0120626,April Captains,Maria de Medeiros,2000,123,"Drama,History,War"
+tt0120764,My Favorite Martian,Donald Petrie,1999,94,"Comedy,Family,Sci-Fi"
+tt0130229,Rupert's Land,Jonathan Tammuz,1998,93,Drama
+tt0139388,It Had to Be You,Steven Feder,2000,96,"Comedy,Romance"
+tt0145679,Blood on Her Hands,Steven Robman,1998,95,"Crime,Drama"
+tt0180274,Unhinged,Don Gronquist,1982,79,Horror
+tt0253335,No Turning Back,"Julia Montejo, Jesus Nebot",2001,98,"Crime,Drama,Thriller"
+tt0262418,Farligt förflutet,Oscar Petersson,2001,80,"Action,Crime,Drama"
+tt0275067,Wendigo,Larry Fessenden,2001,91,"Horror,Mystery,Thriller"
+tt0288243,Taboo,Max Makowski,2002,80,"Drama,Horror,Mystery"
+tt0295529,Power Play,Joseph Zito,2003,100,"Action,Thriller"
+tt0300533,Survivor Series,Kevin Dunn,2001,156,"Action,Sport"
+tt0301924,Ten Tiny Love Stories,Rodrigo García,2002,96,Drama
+tt0316188,Raising Victor Vargas,Peter Sollett,2002,88,"Drama,Romance"
+tt0338088,Hallow's End,Jon Keeyes,2003,90,Horror
+tt0342882,The PianoTuner of EarthQuakes,"Stephen Quay, Timothy Quay, Weiser Quay",2004,99,"Animation,Drama,Family"
+tt0346800,Cowards Bend the Knee,Guy Maddin,2003,64,"Drama,Romance"
+tt0383353,Evil Aliens,Jake West,2005,93,"Comedy,Horror,Sci-Fi"
+tt0388595,Extreme Makeover: Home Edition,"Glenn GT Taylor, Patrick Higgins, Juan Cruz Bucich, Colin Donahue, Scott Farquharson, Jennifer Lane, David Dryden, Jack Cannon",2003,60,"Comedy,Drama,Family"
+tt0399877,What the #$*! Do We (K)now!?,"William Arntz, Betsy Chasse, Mark Vicente",2004,109,"Comedy,Documentary,Drama"
+tt0400497,Herbie: Fully Loaded,Angela Robinson,2005,101,"Adventure,Comedy,Family"
+tt0402247,Hating Alison Ashley,Geoff Bennett,2005,100,Comedy
+tt0428081,Haunted Boat,Olga Levens,2005,97,"Drama,Horror,Mystery"
+tt0432028,The Ring Thing,Marc Schippert,2004,80,"Adventure,Comedy"
+tt0472047,B.T.K. Killer,Ulli Lommel,2005,82,"Biography,Crime,Drama"
+tt0476918,Loonatics Unleashed,"Dan Fausett, Kenny Thompkins, Curt Walstead, Andrew Austin, Clint Taylor",2005,30,"Action,Adventure,Animation"
+tt0758781,Seed,Uwe Boll,2006,90,Horror
+tt0759604,Out of Sight,Daniel Syrkin,2006,88,"Drama,Mystery"
+tt0804551,Walking Tall: Lone Justice,Tripp Reed,2007,95,"Action,Crime,Drama"
+tt0819765,Dog Bite Dog,Soi Cheang,2006,109,"Action,Crime,Drama"
+tt0832903,Manufactured Landscapes,Jennifer Baichwal,2006,86,Documentary
+tt0865907,Into the Blue 2: The Reef,Stephen Herek,2009,92,"Action,Adventure,Thriller"
+tt0893406,Loaded,Alan Pao,2008,98,"Action,Crime,Drama"
+tt0970935,Frownland,Ronald Bronstein,2007,106,"Comedy,Drama"
+tt0986354,Frank and Cindy,G.J. Echternkamp,2007,73,"Biography,Documentary,Drama"

@@ -37,6 +37,20 @@ project SUQL/Stage_2/benchmarks/data_sample_*/
 OAR.*
 **/logs/
 **/aker_logs/
+**/monitoring/
+**/jobs/
+
+# Benchmark runs keep only summary tables and plots in version control
+benchmarks/*/outputs/**
+!benchmarks/*/outputs/*/
+!benchmarks/*/outputs/*/aggregate.csv
+!benchmarks/*/outputs/*/comparison.csv
+!benchmarks/*/outputs/*/plots/
+!benchmarks/*/outputs/*/plots/*.png
+!benchmarks/*/outputs/*/per_question/
+!benchmarks/*/outputs/*/per_question/*/
+!benchmarks/*/outputs/*/per_question/*/plots/
+!benchmarks/*/outputs/*/per_question/*/plots/*.png
 
 # Local model/server state
 .ollama/

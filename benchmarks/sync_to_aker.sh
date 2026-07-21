@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LAB_ROOT="$(cd "$HERE/.." && pwd)"
+AKER_HOST="${AKER_HOST:-remizova@aker.imag.fr}"
+AKER_ROOT="${AKER_ROOT:-/home/daisy/remizova/lab_m2_benchmarks}"
+
+IMPLEMENTATIONS=(
+  "project SUQL/baseline"
+  "project SUQL/v1"
+  "project Trummer/baseline"
+  "project Trummer/v1"
+)
+for relative in "${IMPLEMENTATIONS[@]}"; do
+  [[ -d "$LAB_ROOT/$relative" ]] || { echo "ERROR: missing $LAB_ROOT/$relative" >&2; exit 1; }
+done
+
+ssh "$AKER_HOST" "mkdir -p '$AKER_ROOT/benchmarks' '$AKER_ROOT/project SUQL' '$AKER_ROOT/project Trummer'"
+# Remove implementation directories retired by the canonical four-method layout.
+ssh "$AKER_HOST" "rm -rf \
+  '$AKER_ROOT/project SUQL/Stage_1' \
+  '$AKER_ROOT/project SUQL/Stage_2' \
+  '$AKER_ROOT/project SUQL/src_baseline' \
+  '$AKER_ROOT/project SUQL/src_baseline_stage1' \
+  '$AKER_ROOT/project SUQL/src_baseline_stage2' \
+  '$AKER_ROOT/project Trummer/heterogen_v1' \
+  '$AKER_ROOT/project Trummer/heterogen_v2' \
+  '$AKER_ROOT/project Trummer/heterogen_v2_2' \
+  '$AKER_ROOT/project Trummer/heterogen_v2_3' \
+  '$AKER_ROOT/project Trummer/heterogen_v3' \
+  '$AKER_ROOT/project Trummer/heterogen_v3_2'"
+remote_path() { printf "%s:%q" "$AKER_HOST" "$1"; }
+rsync -av --delete --exclude outputs/ --exclude logs/ --exclude jobs/ \
+  --exclude .mplconfig/ --exclude __pycache__/ \
+  "$HERE/" "$(remote_path "$AKER_ROOT/benchmarks/")"
+for relative in "${IMPLEMENTATIONS[@]}"; do
+  ssh "$AKER_HOST" "mkdir -p '$AKER_ROOT/$relative'"
+  rsync -av --delete --exclude outputs/ --exclude benchmarks/ --exclude model_sweeps/ \
+    --exclude .mplconfig/ --exclude __pycache__/ \
+    "$LAB_ROOT/$relative/" "$(remote_path "$AKER_ROOT/$relative/")"
+done
+ssh "$AKER_HOST" "chmod +x '$AKER_ROOT/benchmarks/shared/scripts/_aker_worker.sh'"
+echo "Synced canonical benchmarks and all benchmark-compatible implementations to $AKER_HOST:$AKER_ROOT"

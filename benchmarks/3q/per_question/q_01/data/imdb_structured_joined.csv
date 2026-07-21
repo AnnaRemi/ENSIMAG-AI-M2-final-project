@@ -1,0 +1,101 @@
+movie_id,title,director,year,runtime,genres
+tt0169621,Wild Iris,Daniel Petrie,2001,93,Drama
+tt0188453,Birthday Girl,Jez Butterworth,2001,93,"Comedy,Crime,Thriller"
+tt0193537,Summer Rain,Jonathan Glendening,2001,92,"Comedy,Romance"
+tt0207051,The Journey to Kafiristan,"Donatello Dubini, Fosco Dubini",2001,101,Drama
+tt0216196,Angel of Death,Pepe Danquart,2001,91,"Drama,Thriller"
+tt0221809,Ayurveda: Art of Being,Pan Nalin,2001,102,Documentary
+tt0229003,New Port South,Kyle Cooper,2001,95,Drama
+tt0234041,Roberto Succo,Cédric Kahn,2001,124,"Biography,Crime,Drama"
+tt0242193,Bully,Larry Clark,2001,108,"Biography,Crime,Drama"
+tt0243655,Wet Hot American Summer,David Wain,2001,97,"Comedy,Romance"
+tt0245115,The Fluffer,"Richard Glatzer, Wash Westmoreland",2001,95,"Comedy,Drama,Romance"
+tt0249624,Gabriel & Me,Udayan Prasad,2001,84,Drama
+tt0250310,Corky Romano,Rob Pritts,2001,86,"Comedy,Crime"
+tt0250491,Late Night Shopping,Saul Metzstein,2001,91,Comedy
+tt0250739,Sister Mary Explains It All,Marshall Brickman,2001,77,"Comedy,Drama"
+tt0253040,Diary of a Sex Addict,Joseph Brutsman,2001,93,Drama
+tt0255730,The Feast of All Saints,Peter Medak,2001,213,"Drama,Romance"
+tt0256692,Chori Chori Chupke Chupke,"Abbas Alibhai Burmawalla, Mastan Alibhai Burmawalla",2001,165,"Comedy,Drama,Musical"
+tt0257106,Scary Movie 2,Keenen Ivory Wayans,2001,83,"Comedy,Horror"
+tt0257231,Torrente 2: Mission in Marbella,Santiago Segura,2001,99,"Action,Comedy,Crime"
+tt0267440,Do You Wanna Know a Secret?,Ty Bradford,2001,90,"Horror,Mystery,Thriller"
+tt0268288,Eva & Adam: Four Birthdays and a Fiasco,Catti Edfeldt,2001,100,"Family,Romance"
+tt0269376,Island Prey,William Riead,2001,93,"Drama,Romance,Thriller"
+tt0272950,The Zombie Chronicles,Brad Sykes,2001,71,Horror
+tt0273253,Haiku Tunnel,"Jacob Kornbluth, Josh Kornbluth",2001,88,Comedy
+tt0273607,Festival in Cannes,Henry Jaglom,2001,100,Comedy
+tt0274321,Air Rage,Fred Olen Ray,2001,99,"Action,Adventure"
+tt0275410,Horrorvision,Danny Draven,2001,72,"Horror,Sci-Fi,Thriller"
+tt0283974,Return to Cabin by the Lake,Po-Chih Leong,2001,89,"Comedy,Horror,Thriller"
+tt0284137,Gadar: Ek Prem Katha,Anil Sharma,2001,170,"Action,Drama,Romance"
+tt0284717,The Crusaders,Dominique Othenin-Girard,2001,194,"Adventure,Drama"
+tt0286610,Broken Bow,James L. Conway,2001,44,"Action,Adventure,Drama"
+tt0286975,Slashers,Maurice Devereaux,2001,99,"Comedy,Horror"
+tt0290661,Dog Days,Ulrich Seidl,2001,121,Drama
+tt0299594,Brief Crossing,Catherine Breillat,2001,84,"Comedy,Drama,Romance"
+tt0301163,Dead Creatures,Andrew Parkinson,2001,95,"Drama,Horror,Thriller"
+tt0306568,Blood of the Samurai,Aaron Yamasato,2001,75,"Action,Adventure,Comedy"
+tt0379186,Blood of the Werewolf,"Joe Bagnardi, Bruce G. Hallenbeck, Kevin J. Lindenmuth",2001,82,Horror
+tt0385586,Cat Soup,Tatsuo Satō,2001,34,"Animation,Comedy,Fantasy"
+tt0446557,A Funny Thing Happened on the Way to the Moon,Bart Sibrel,2001,47,"Fantasy,History"
+tt0023753,Alice in Wonderland,"Norman Z. McLeod, Hugh Harman, Rudolf Ising",1933,76,"Adventure,Family,Fantasy"
+tt0033771,Jesse James at Bay,Joseph Kane,1941,56,"Drama,Western"
+tt0037382,To Have and Have Not,Howard Hawks,1944,100,"Adventure,Comedy,Drama"
+tt0039111,The Yearling,Clarence Brown,1946,128,"Drama,Family,Western"
+tt0050135,April Love,Henry Levin,1957,97,"Comedy,Drama,Musical"
+tt0051418,The Blob,"Irvin S. Yeaworth Jr., Russell S. Doughten Jr.",1958,86,"Horror,Sci-Fi"
+tt0052646,The Brain That Wouldn't Die,Joseph Green,1962,82,"Horror,Sci-Fi"
+tt0062873,The Young Girls of Rochefort,Jacques Demy,1967,125,"Comedy,Drama,Musical"
+tt0065622,The Decameron,Pier Paolo Pasolini,1971,111,"Comedy,Drama,History"
+tt0065738,Frankenstein Must Be Destroyed,Terence Fisher,1969,101,"Drama,Horror,Sci-Fi"
+tt0066256,Pufnstuf,Hollingsworth Morse,1970,98,"Adventure,Comedy,Family"
+tt0067870,A Town Called Hell,"Robert Parrish, Irving Lerner",1971,95,"Action,Drama,Western"
+tt0068154,Trinity Is Still My Name,Enzo Barboni,1971,117,"Comedy,Western"
+tt0068339,Carry on Matron,Gerald Thomas,1972,87,"Comedy,Crime"
+tt0070359,The Mother and the Whore,Jean Eustache,1973,210,"Drama,Romance"
+tt0072354,Vampyres,José Ramón Larraz,1974,87,"Drama,Fantasy,Horror"
+tt0075614,The Psychic,Lucio Fulci,1977,90,"Drama,Horror,Mystery"
+tt0076131,The Curious Case of the Campus Corpse,Douglas Curtis,1977,90,"Comedy,Drama,Horror"
+tt0077275,The Brink's Job,William Friedkin,1978,104,"Comedy,Crime,Drama"
+tt0079156,The Great Alligator,Sergio Martino,1979,89,Horror
+tt0082799,Movie Madness,"Bob Giraldi, Henry Jaglom",1982,89,Comedy
+tt0084464,Pandemonium,Alfred Sole,1982,82,"Comedy,Horror,Mystery"
+tt0086379,Stroker Ace,Hal Needham,1983,96,"Action,Comedy,Romance"
+tt0092545,Amazing Grace and Chuck,Mike Newell,1987,114,"Drama,Sport"
+tt0095189,The Further Adventures of Tennessee Buck,David Keith,1988,88,"Action,Adventure,Comedy"
+tt0095895,Powaqqatsi,Godfrey Reggio,1988,99,"Documentary,Music"
+tt0097635,Jesus of Montreal,Denys Arcand,1989,120,"Drama,Romance"
+tt0098412,Sundown: The Vampire in Retreat,Anthony Hickox,1989,104,"Comedy,Horror,Western"
+tt0103336,Zombie '90: Extreme Pestilence,Andreas Schnaas,1991,75,"Horror,Sci-Fi"
+tt0104997,South Beach,"Fred Williamson, Alain Zaloum",1993,93,"Action,Crime,Drama"
+tt0107302,Kalifornia,Dominic Sena,1993,117,"Crime,Drama,Thriller"
+tt0109890,The Getaway,Roger Donaldson,1994,115,"Action,Adventure,Crime"
+tt0112374,Annie: A Royal Adventure!,Ian Toynton,1995,92,"Comedy,Family"
+tt0116136,DragonHeart,Rob Cohen,1996,103,"Action,Adventure,Fantasy"
+tt0119653,Men,Zoe Clarke-Williams,1997,92,Drama
+tt0125430,The Naughty Stewardesses,Al Adamson,1973,102,"Comedy,Drama"
+tt0164699,Bodyguard Kiba,Ryûichi Takamori,1973,87,"Action,Crime,Drama"
+tt0165494,Ringmaster,Neil Abramson,1998,90,Comedy
+tt0167038,Belle's Magical World,"Bob Kline, Cullen Blaine, Dale Case, Daniel de la Vega, Barbara Dourmashkin-Case, Rick Leon, Burt Medall, Mitch Rochon",1998,92,"Adventure,Animation,Family"
+tt0195234,Saving Grace,Nigel Cole,2000,93,"Comedy,Crime"
+tt0199650,Jill Rips,Anthony Hickox,2000,94,"Drama,Thriller"
+tt0262333,Chronopolis,Piotr Kamler,1982,52,"Animation,Drama,Fantasy"
+tt0311018,Disappearance,Walter Klenhard,2002,92,"Horror,Mystery,Thriller"
+tt0318276,Adrenaline,Roel Reiné,2003,97,"Crime,Drama,Romance"
+tt0326820,DarkWolf,Richard Friedman,2003,94,Horror
+tt0326856,Envy,Barry Levinson,2004,99,Comedy
+tt0328031,King of the Ants,Stuart Gordon,2003,102,"Crime,Drama,Thriller"
+tt0331834,Alive,Ryūhei Kitamura,2002,110,"Action,Drama,Horror"
+tt0365960,Zero Day,Ben Coccio,2002,92,Drama
+tt0368078,Niki and Flo,Lucian Pintilie,2003,99,Drama
+tt0387989,Let's Bring Our Heroes Home,"Milan Luthria, Rajeev Jhaveri",2004,163,"Action,Drama,Thriller"
+tt0404802,The Notorious Bettie Page,Mary Harron,2005,91,"Biography,Drama"
+tt0433442,The Return,Asif Kapadia,2005,85,"Horror,Mystery,Thriller"
+tt0455590,The Last King of Scotland,Kevin Macdonald,2006,123,"Biography,Drama,History"
+tt0468464,Crippled Creek,Hans Hartman,2005,89,Horror
+tt0469999,Ulli Lommel's Zodiac Killer,Ulli Lommel,2005,83,"Crime,Drama,Thriller"
+tt0481280,Live Feed,Ryan Nicholson,2006,77,Horror
+tt0485272,Salaam-E-Ishq,Nikkhil Advani,2007,216,"Comedy,Drama,Musical"
+tt0705295,Whoever Did This,Timothy Van Patten,2002,58,"Crime,Drama"
+tt0834896,Barricade,Timo Rose,2007,96,"Horror,Thriller"

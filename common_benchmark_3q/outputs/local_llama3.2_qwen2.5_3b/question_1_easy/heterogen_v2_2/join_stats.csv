@@ -1,9 +1,0 @@
-block_1,block_2,tokens_read,tokens_written,seconds,overflow,prompt_tokens_estimated,parsed_pairs,raw_response
-1,1,3579,15,12.091958999633789,False,3274,1,"{""matching_movie_ids"":[""tt0188453""]}"
-1,2,3307,8,7.028503894805908,False,3009,0,"{""matching_movie_ids"":[]}"
-1,3,3107,23,6.7899391651153564,False,2802,1,"{
-  ""matching_movie_ids"": [
-    ""tt0272069""
-  ]
-}"
-1,4,2178,15,3.362694025039673,False,1910,1,"{""matching_movie_ids"":[""tt0325597""]}"

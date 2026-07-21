@@ -1,0 +1,41 @@
+{
+  "benchmark_id": "canonical_10q_q09",
+  "difficulty": 5,
+  "difficulty_label": "very_hard",
+  "question": "Which movies with title contains The, with reviews praising the story as original, inventive, or unpredictable?",
+  "semantic_question": "Does the review praise the story or premise as original, inventive, fresh, or unpredictable?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE title LIKE '%The%' AND answer(review, 'Does the review praise the story or premise as original, inventive, fresh, or unpredictable?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "title",
+      "op": "contains",
+      "value": "The"
+    }
+  ],
+  "semantic_task": "originality assessment",
+  "semantic_annotation_patterns": [
+    "\\boriginal (?:story|plot|idea|premise|concept)\\b",
+    "\\binventive\\b",
+    "\\brefreshingly original\\b",
+    "\\bfresh (?:idea|take|approach|story)\\b",
+    "\\bunpredictable\\b"
+  ],
+  "annotation_policy": "Deterministic lexical annotation; no evaluated LLM used",
+  "row_count": 100,
+  "structured_candidate_count": 40,
+  "semantic_positive_count": 42,
+  "ground_truth_movie_ids": [
+    "tt0016104",
+    "tt0096866",
+    "tt0099578",
+    "tt0118537",
+    "tt0160986",
+    "tt0329502",
+    "tt0361670",
+    "tt0369226",
+    "tt0434964",
+    "tt0483200",
+    "tt0800080",
+    "tt0888019"
+  ]
+}

@@ -1,0 +1,242 @@
+%% EDBT 2027 regular research-paper submission.
+%% IMPORTANT: Do not change the class options, geometry, fonts, margins,
+%% column spacing, footer, or other format settings supplied by EDBT.
+\documentclass[sigconf,review]{acmart}
+
+%% Copied verbatim from the official EDBT 2027 template.
+\geometry{twoside=true, head=13pt,
+     a4paper,
+     includeheadfoot, columnsep=2pc,
+     top=57pt, bottom=73pt, inner=54pt, outer=54pt,
+     marginparwidth=2pc,heightrounded
+     }%
+
+\AtBeginMaketitle{%
+  \input{edbt-macros}
+}%
+
+\begin{document}
+
+%% EDBT requests title case. A regular research paper needs no title prefix.
+\title{Combining Structured Pruning and Batched Model Cascades for
+Semantic Query Processing}
+
+%% EDBT 2027 uses single-anonymous review: keep author names and affiliations.
+%% TODO(submission): replace every placeholder and ensure the PDF author list
+%% exactly matches CMT. Every author must register in CMT and provide an ORCID.
+\author{Ann Remizova}
+\email{TODO@university.example}
+%% \orcid{0000-0000-0000-0000}
+\affiliation{%
+  \institution{TODO: Institution}
+  \city{TODO: City}
+  \country{France}
+}
+
+\renewcommand{\shortauthors}{Remizova et al.}
+
+\begin{abstract}
+Large language models enable database systems to evaluate semantic predicates
+over unstructured data, but invoking a powerful model for every tuple makes
+query execution slow and resource-intensive. We present a physical execution
+strategy for hybrid queries that combine structured predicates with semantic
+conditions. The strategy integrates three complementary optimizations:
+SQL-style structured pruning to eliminate irrelevant tuples before inference,
+batch prompting to evaluate multiple candidates per invocation, and a
+two-level model cascade that handles straightforward cases with a smaller
+model and escalates uncertain cases to a larger model. We evaluate the approach
+on ten queries over IMDb metadata and reviews, in which predicates on genre,
+year, and runtime are combined with review-sentiment conditions. The benchmark
+compares tuple-level semantic evaluation, batching without structured pruning,
+structured pruning with row-wise cascading, and their proposed combination.
+In the principal same-run comparison, structured pruning with a batched cascade
+reduces mean end-to-end latency from 24.97 to 5.95 seconds and mean model calls
+from 24.00 to 4.69 relative to the SUQL baseline, while achieving 0.990
+precision. Its lower recall exposes the central quality--efficiency trade-off
+and motivates query- and workload-aware cascade calibration. The results show
+that database-aware candidate reduction and adaptive batched inference can
+substantially lower the execution cost of language-model-powered queries.
+\end{abstract}
+
+\keywords{semantic query processing, large language models, query
+optimization, model cascades, batch prompting, structured pruning}
+
+\maketitle
+
+\section{Introduction}
+Hybrid analytical queries increasingly combine ordinary relational predicates
+with conditions that require semantic interpretation of text. For example, a
+query may restrict movies by year and runtime while asking whether each review
+expresses a negative opinion. A conventional database evaluates the structured
+conditions cheaply, whereas the semantic predicate may require one or more
+language-model calls. Applying the latter tuple by tuple creates a costly
+physical plan even when most tuples can be rejected using structured data.
+
+This paper studies how structured pruning, batch prompting, and heterogeneous
+model cascading interact in a single semantic-query plan. Our design first
+extracts deterministic predicates from the user question and applies them to
+the structured relation. It then groups the surviving exact-ID movie--review
+pairs into prompts for a smaller model. Only uncertain decisions are coalesced
+into fallback batches for a larger model.
+
+The paper makes the following contributions:
+\begin{itemize}
+  \item a physical plan that composes structured candidate pruning with
+        batched, cheap-to-expensive semantic inference;
+  \item a controlled ten-query benchmark covering different combinations of
+        structured and semantic predicates; and
+  \item an empirical analysis of answer quality, latency, and cheap versus
+        expensive model calls across four execution strategies.
+\end{itemize}
+
+\section{Background and Related Work}
+\label{sec:related}
+This section will position the method relative to semantic query languages,
+LLM-powered relational operators, block-wise semantic joins, and model cascades.
+
+%% TODO: Replace these drafting notes with a literature-backed discussion.
+\paragraph{Semantic query processing.}
+SUQL extends SQL with primitives that compose free-text processing with
+structured data access~\cite{liu2024suql}. Our baseline uses the resulting
+structured-first execution pattern but still incurs tuple-level semantic
+inference after pruning.
+
+\paragraph{Batch prompting and semantic joins.}
+Batch prompting amortizes request overhead by evaluating several samples in one
+model invocation~\cite{cheng2023batch}. Trummer adapts the same broad principle
+to semantic joins by placing blocks from both inputs into a prompt
+~\cite{trummer2025semanticjoins}. Such plans can still spend inference on
+candidates that deterministic predicates would remove.
+
+\paragraph{Model cascades.}
+Confidence-based routing sends easy cases to a smaller model and ambiguous
+cases to a more capable model. Semantic predicates make the routing threshold
+difficult to calibrate across queries.
+
+\section{Problem Formulation}
+\label{sec:problem}
+Let $M$ denote a structured movie relation and $R$ a review relation joined by
+movie identifier. A hybrid query contains a structured predicate $p_s(m)$ and
+a semantic predicate $p_u(r)$. The target result is
+\begin{equation}
+  Q = \{(m,r) \in M \Join R \mid p_s(m) \wedge p_u(r)\}.
+\end{equation}
+The optimizer seeks to minimize latency and model usage while maintaining
+precision and recall with respect to a labeled result set.
+
+\section{Structured Batched Cascade}
+\label{sec:method}
+The proposed plan has three stages.
+
+\subsection{Structured Candidate Pruning}
+Deterministic predicates over year, genre, and runtime are extracted from the
+question and evaluated before semantic inference. Exact identifiers then join
+the surviving movies to their reviews. This stage is conservative: an unsafe
+or unsupported extraction should leave the candidate set unchanged rather than
+discard possible answers.
+
+\subsection{Batched Cheap-Model Evaluation}
+Candidate pairs are grouped into schema-constrained prompts. Each output must
+refer to an input identifier, preventing free-form answers from introducing
+unknown tuples. Batching amortizes fixed request and prompt overhead across
+several candidates.
+
+\subsection{Uncertainty-Aware Escalation}
+The smaller model assigns a decision and confidence to each candidate. Decisions
+outside a calibrated confidence region are accepted or rejected immediately;
+uncertain candidates are coalesced into larger fallback batches for the more
+capable model. The cascade threshold controls the quality--cost trade-off.
+
+%% TODO: Add pseudocode for the complete execution plan and define the exact
+%% confidence score, threshold calibration procedure, and failure handling.
+
+\section{Experimental Methodology}
+\label{sec:methodology}
+\subsection{Dataset and Workload}
+The current benchmark contains ten disjoint IMDb-derived tasks. Each task has
+60 unique movies, 24 candidates satisfying the structured predicates, and 12
+ground-truth answers. Queries vary genre, release year or runtime, and positive
+or negative review sentiment. Ground truth is the intersection of deterministic
+structured filters and the source sentiment split.
+
+\subsection{Compared Execution Strategies}
+We compare (i) a SUQL baseline that prunes structured predicates and evaluates
+the semantic condition with the expensive model, (ii) a batched cascade without
+structured pruning, (iii) structured pruning followed by a row-wise cascade,
+and (iv) the proposed structured-pruned batched cascade.
+
+\subsection{Metrics and Repetition Policy}
+We report macro precision, recall, and F1 across queries, together with wall-clock
+time and the number of cheap and expensive model calls. Each question--method
+configuration is repeated 11 times and numeric and quality measures are averaged.
+
+%% TODO(submission): Document hardware, model identifiers and versions,
+%% decoding settings, batch sizes, thresholds, timeout policy, software commit,
+%% and statistical uncertainty. Avoid comparing rows from different runs as if
+%% they were paired measurements.
+
+\section{Results}
+\label{sec:results}
+Table~\ref{tab:principal-results} reports the principal same-run comparison.
+The combined plan is approximately $4.2\times$ faster and uses about $80\%$
+fewer model calls than SUQL. It nearly preserves precision, but the lower recall
+reduces macro F1. This result supports the efficiency claim while showing that
+threshold selection must be improved before claiming quality preservation.
+
+\begin{table}[t]
+  \caption{Macro results over ten IMDb queries (11 repetitions per
+  question--method configuration).}
+  \label{tab:principal-results}
+  \centering
+  \small
+  \begin{tabular}{lrrrr}
+    \toprule
+    Method & Prec. & Recall & F1 & Time (s) \\
+    \midrule
+    SUQL baseline & 1.000 & 0.621 & 0.756 & 24.97 \\
+    Batched cascade & 0.356 & 0.487 & 0.403 & 13.80 \\
+    Pruned row cascade & 0.693 & 0.214 & 0.322 & 29.66 \\
+    Pruned batched cascade & 0.990 & 0.494 & 0.607 & 5.95 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+%% TODO: Add confidence intervals, per-query results, a call-count table, and
+%% ablations isolating structured pruning, batching, and cascading.
+
+\section{Discussion and Limitations}
+The benchmark is currently limited to IMDb relations and sentiment predicates,
+so it does not establish generality across domains or semantic operators. The
+ground truth derives from an existing sentiment split rather than independent
+annotation. Local-model latency depends on the hardware and serving stack, and
+call count does not by itself measure tokens, energy, or monetary cost. Finally,
+the cascade sacrifices recall for some predicates; future work should calibrate
+thresholds per predicate and test conservative fallback policies.
+
+\section{Conclusion}
+Structured pruning and batch prompting address different sources of waste in
+semantic query execution, while a heterogeneous cascade reduces reliance on the
+largest model. Combining all three yields substantial latency and call-count
+reductions in the current benchmark. Broader workloads and improved calibration
+are needed to retain those savings while matching the strongest baseline's
+recall.
+
+%% This exact section name and its position immediately before the references
+%% are required by the EDBT 2027 call. The section is outside the page limit.
+\section{Artifacts}
+The implementation, benchmark-construction scripts, query specifications,
+derived data, raw run outputs, and plotting scripts will be submitted as EDBT
+supplemental material. The artifact README will document environment creation,
+model acquisition, commands for reproducing every experiment, and the mapping
+from raw outputs to each table and figure in the paper.
+
+%% TODO(submission): Add the final supplemental ZIP name or a public repository
+%% URL that does not monitor reviewer access. Verify that no secrets, local
+%% absolute paths, or unnecessary model files are included.
+
+\balance
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}
+\endinput

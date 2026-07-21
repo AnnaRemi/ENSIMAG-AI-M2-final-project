@@ -1,0 +1,52 @@
+{
+  "benchmark_id": "canonical_10q_q04",
+  "difficulty": 3,
+  "difficulty_label": "medium_hard",
+  "question": "Which Drama movies with runtime >= 100 and runtime <= 140 have reviews praising the acting or performances?",
+  "semantic_question": "Does the review praise the acting, cast, or a performance?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Drama%' AND runtime >= 100 AND runtime <= 140 AND answer(review, 'Does the review praise the acting, cast, or a performance?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "runtime",
+      "op": "ge",
+      "value": "100"
+    },
+    {
+      "column": "runtime",
+      "op": "le",
+      "value": "140"
+    },
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Drama"
+    }
+  ],
+  "semantic_task": "acting praise",
+  "semantic_annotation_patterns": [
+    "\\bgreat acting\\b",
+    "\\bexcellent (?:acting|performance)\\b",
+    "\\bstrong performance",
+    "\\bsuperb (?:acting|performance|cast)\\b",
+    "\\bbrilliant (?:acting|performance)\\b",
+    "\\bwell[- ]acted\\b"
+  ],
+  "annotation_policy": "Deterministic lexical annotation; no evaluated LLM used",
+  "row_count": 100,
+  "structured_candidate_count": 40,
+  "semantic_positive_count": 42,
+  "ground_truth_movie_ids": [
+    "tt0026725",
+    "tt0028944",
+    "tt0046149",
+    "tt0085112",
+    "tt0102422",
+    "tt0119792",
+    "tt0164877",
+    "tt0382765",
+    "tt0388769",
+    "tt0808331",
+    "tt0821642",
+    "tt0841150"
+  ]
+}

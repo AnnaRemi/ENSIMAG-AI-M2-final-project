@@ -1,0 +1,42 @@
+{
+  "benchmark_id": "canonical_10q_q05",
+  "difficulty": 3,
+  "difficulty_label": "medium_hard",
+  "question": "Which Fantasy movies have reviews praising the visuals or special effects?",
+  "semantic_question": "Does the review praise the visuals, cinematography, imagery, or special effects?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Fantasy%' AND answer(review, 'Does the review praise the visuals, cinematography, imagery, or special effects?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Fantasy"
+    }
+  ],
+  "semantic_task": "visual-quality praise",
+  "semantic_annotation_patterns": [
+    "\\bstunning visual",
+    "\\bbeautiful(?:ly)? (?:shot|filmed|photograph|visual|cinematograph)",
+    "\\bgreat special effects\\b",
+    "\\bexcellent special effects\\b",
+    "\\bvisual(?:ly)? (?:impressive|stunning|spectacular)\\b",
+    "\\bimpressive (?:visuals|effects|cinematography)\\b"
+  ],
+  "annotation_policy": "Deterministic lexical annotation; no evaluated LLM used",
+  "row_count": 100,
+  "structured_candidate_count": 40,
+  "semantic_positive_count": 42,
+  "ground_truth_movie_ids": [
+    "tt0038733",
+    "tt0051406",
+    "tt0070795",
+    "tt0076299",
+    "tt0098061",
+    "tt0170016",
+    "tt0218891",
+    "tt0259711",
+    "tt0286098",
+    "tt0298482",
+    "tt0481452",
+    "tt0734656"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "benchmark_id": "canonical_10q_q02",
+  "difficulty": 2,
+  "difficulty_label": "medium",
+  "question": "Which Comedy movies under 95 minutes have reviews describing them as funny?",
+  "semantic_question": "Does the review say the movie is funny, hilarious, or made the reviewer laugh?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Comedy%' AND runtime < 95 AND answer(review, 'Does the review say the movie is funny, hilarious, or made the reviewer laugh?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Comedy"
+    },
+    {
+      "column": "runtime",
+      "op": "lt",
+      "value": "95"
+    }
+  ],
+  "semantic_task": "humor recognition",
+  "semantic_annotation_patterns": [
+    "\\bfunny\\b",
+    "\\bhilarious\\b",
+    "\\blaugh(?:ed|ing|s)?\\b",
+    "\\bhumou?r\\b"
+  ],
+  "annotation_policy": "Deterministic lexical annotation; no evaluated LLM used",
+  "row_count": 100,
+  "structured_candidate_count": 40,
+  "semantic_positive_count": 42,
+  "ground_truth_movie_ids": [
+    "tt0020643",
+    "tt0090767",
+    "tt0106997",
+    "tt0184135",
+    "tt0322389",
+    "tt0324532",
+    "tt0342317",
+    "tt0365653",
+    "tt0404325",
+    "tt0462346",
+    "tt0783489",
+    "tt0821375"
+  ]
+}

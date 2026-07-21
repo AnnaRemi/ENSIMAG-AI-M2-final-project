@@ -1,5 +1,0 @@
-implementation,label,threshold,repetitions,cheap_model,expensive_model,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_early_accepts,cheap_early_rejects,expensive_candidates,final_answer_rows,true_positives,false_positives,false_negatives,precision,recall,f1
-v2,Row-wise cascade,0.0,2,ollama/test-cheap,ollama/test-expensive,0.0008845625561662018,0.0,0.0,0.0,50.0,0.0,0.0,13.0,13.0,0.0,0.0,1.0,1.0,1.0
-v2,Row-wise cascade,3.0,2,ollama/test-cheap,ollama/test-expensive,0.0010045000235550106,0.0,0.0,0.0,0.0,0.0,50.0,13.0,13.0,0.0,0.0,1.0,1.0,1.0
-v2_3,Batch-wise cascade,0.0,2,ollama/test-cheap,ollama/test-expensive,0.0006559585453942418,0.0,0.0,0.0,50.0,0.0,0.0,13.0,13.0,0.0,0.0,1.0,1.0,1.0
-v2_3,Batch-wise cascade,3.0,2,ollama/test-cheap,ollama/test-expensive,0.0006281879614107311,0.0,0.0,0.0,0.0,0.0,50.0,13.0,13.0,0.0,0.0,1.0,1.0,1.0

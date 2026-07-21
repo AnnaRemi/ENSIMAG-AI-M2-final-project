@@ -1,0 +1,5 @@
+implementation,method,precision,recall,f1,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds
+suql_baseline,SUQL baseline,0.5777777777777778,0.3333333333333333,0.3228869895536562,27.151184045399958,40.0,0.0,40.0,0.0,27.151184045399958
+suql_v1_two_level_cascade,SUQL V1 (2-level cascade),0.5833333333333334,0.3055555555555555,0.3452380952380952,34.383690340867425,60.0,40.0,20.0,21.593654157667334,12.766335397535295
+trummer_baseline_adaptive_block_join,Trummer baseline,0.0,0.0,0.0,5.7892463738658995,6.0,0.0,6.0,0.0,5.7892463738658995
+trummer_v1_structured_two_level_cascade,Trummer V1 (structured + 2-level cascade),0.0,0.0,0.0,24.372393779400102,7.0,5.0,2.0,21.970258571465575,2.4015369635342116

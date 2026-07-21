@@ -1,0 +1,233 @@
+{
+  "suite": "10q",
+  "question_count": 10,
+  "source": "project SUQL/data/imdb_joined.csv",
+  "questions": [
+    {
+      "id": "q_01",
+      "directory": "q_01",
+      "catalog_directory": "question_01_2001_recommended",
+      "benchmark_id": "canonical_10q_q01",
+      "difficulty": 1,
+      "difficulty_label": "easy",
+      "question": "Which movies released in 2001 have reviews that explicitly recommend the movie?",
+      "semantic_task": "explicit recommendation",
+      "structured_filters": [
+        {
+          "column": "year",
+          "op": "eq",
+          "value": "2001"
+        }
+      ],
+      "row_count": 100,
+      "structured_candidate_count": 40,
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_02",
+      "directory": "q_02",
+      "catalog_directory": "question_02_short_comedy_funny",
+      "benchmark_id": "canonical_10q_q02",
+      "difficulty": 2,
+      "difficulty_label": "medium",
+      "question": "Which Comedy movies under 95 minutes have reviews describing them as funny?",
+      "semantic_task": "humor recognition",
+      "structured_filters": [
+        {
+          "column": "genres",
+          "op": "contains",
+          "value": "Comedy"
+        },
+        {
+          "column": "runtime",
+          "op": "lt",
+          "value": "95"
+        }
+      ],
+      "row_count": 100,
+      "structured_candidate_count": 40,
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_03",
+      "directory": "q_03",
+      "catalog_directory": "question_03_short_horror_scary",
+      "benchmark_id": "canonical_10q_q03",
+      "difficulty": 2,
+      "difficulty_label": "medium",
+      "question": "Which Horror movies under 100 minutes have reviews describing them as scary or frightening?",
+      "semantic_task": "fear and atmosphere",
+      "structured_filters": [
+        {
+          "column": "runtime",
+          "op": "lt",
+          "value": "100"
+        },
+        {
+          "column": "genres",
+          "op": "contains",
+          "value": "Horror"
+        }
+      ],
+      "row_count": 100,
+      "structured_candidate_count": 40,
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_04",
+      "directory": "q_04",
+      "catalog_directory": "question_04_drama_100_140_acting",
+      "benchmark_id": "canonical_10q_q04",
+      "difficulty": 3,
+      "difficulty_label": "medium_hard",
+      "question": "Which Drama movies with runtime >= 100 and runtime <= 140 have reviews praising the acting or performances?",
+      "semantic_task": "acting praise",
+      "structured_filters": [
+        {
+          "column": "runtime",
+          "op": "ge",
+          "value": "100"
+        },
+        {
+          "column": "runtime",
+          "op": "le",
+          "value": "140"
+        },
+        {
+          "column": "genres",
+          "op": "contains",
+          "value": "Drama"
+        }
+      ],
+      "row_count": 100,
+      "structured_candidate_count": 40,
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_05",
+      "directory": "q_05",
+      "catalog_directory": "question_05_fantasy_visuals",
+      "benchmark_id": "canonical_10q_q05",
+      "difficulty": 3,
+      "difficulty_label": "medium_hard",
+      "question": "Which Fantasy movies have reviews praising the visuals or special effects?",
+      "semantic_task": "visual-quality praise",
+      "structured_filters": [
+        {
+          "column": "genres",
+          "op": "contains",
+          "value": "Fantasy"
+        }
+      ],
+      "row_count": 100,
+      "structured_candidate_count": 40,
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_06",
+      "directory": "q_06",
+      "catalog_directory": "question_06_romantic_comedy_chemistry",
+      "benchmark_id": "canonical_10q_q06",
+      "difficulty": 4,
+      "difficulty_label": "hard",
+      "question": "Which movies that are both Comedy and Romance have reviews praising romantic chemistry or the central relationship?",
+      "semantic_task": "relationship and chemistry praise",
+      "structured_filters": [
+        {
+          "column": "genres",
+          "op": "contains",
+          "value": "Comedy"
+        },
+        {
+          "column": "genres",
+          "op": "contains",
+          "value": "Romance"
+        }
+      ],
+      "row_count": 100,
+      "structured_candidate_count": 40,
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_07",
+      "directory": "q_07",
+      "catalog_directory": "question_07_director_john_slow",
+      "benchmark_id": "canonical_10q_q07",
+      "difficulty": 4,
+      "difficulty_label": "hard",
+      "question": "Which movies directed by John with reviews criticizing the pacing as slow or boring?",
+      "semantic_task": "negative pacing assessment",
+      "structured_filters": [
+        {
+          "column": "director",
+          "op": "contains",
+          "value": "john"
+        }
+      ],
+      "row_count": 100,
+      "structured_candidate_count": 40,
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_08",
+      "directory": "q_08",
+      "catalog_directory": "question_08_director_michael_exciting",
+      "benchmark_id": "canonical_10q_q08",
+      "difficulty": 4,
+      "difficulty_label": "hard",
+      "question": "Which movies directed by Michael with reviews calling them exciting, thrilling, or suspenseful?",
+      "semantic_task": "excitement and suspense",
+      "structured_filters": [
+        {
+          "column": "director",
+          "op": "contains",
+          "value": "michael"
+        }
+      ],
+      "row_count": 100,
+      "structured_candidate_count": 40,
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_09",
+      "directory": "q_09",
+      "catalog_directory": "question_09_the_title_original",
+      "benchmark_id": "canonical_10q_q09",
+      "difficulty": 5,
+      "difficulty_label": "very_hard",
+      "question": "Which movies with title contains The, with reviews praising the story as original, inventive, or unpredictable?",
+      "semantic_task": "originality assessment",
+      "structured_filters": [
+        {
+          "column": "title",
+          "op": "contains",
+          "value": "The"
+        }
+      ],
+      "row_count": 100,
+      "structured_candidate_count": 40,
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_10",
+      "directory": "q_10",
+      "catalog_directory": "question_10_crime_ending",
+      "benchmark_id": "canonical_10q_q10",
+      "difficulty": 5,
+      "difficulty_label": "very_hard",
+      "question": "Which Crime movies have reviews praising the ending or plot twist?",
+      "semantic_task": "ending and twist praise",
+      "structured_filters": [
+        {
+          "column": "genres",
+          "op": "contains",
+          "value": "Crime"
+        }
+      ],
+      "row_count": 100,
+      "structured_candidate_count": 40,
+      "ground_truth_count": 12
+    }
+  ],
+  "dataset_policy": "Ten disjoint balanced 100-row datasets. Each has 12 true positives, 28 structured semantic negatives, 30 semantic-only distractors, and 30 double negatives. Semantic labels use declared deterministic lexical rules over review text."
+}

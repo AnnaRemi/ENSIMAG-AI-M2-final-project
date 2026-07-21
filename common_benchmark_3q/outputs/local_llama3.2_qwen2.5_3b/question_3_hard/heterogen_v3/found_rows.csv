@@ -1,9 +1,0 @@
-movie_id,title,year,runtime,director,genres,match_source
-tt0065198,The Wedding Party,1969,92,"Brian De Palma, Wilford Leach, Cynthia Munroe",Comedy,expensive_accept
-tt0077275,The Brink's Job,1978,104,William Friedkin,"Comedy,Crime,Drama",expensive_accept
-tt0077372,Corvette Summer,1978,105,Matthew Robbins,"Adventure,Comedy",expensive_accept
-tt0081751,Wholly Moses!,1980,103,Gary Weis,"Comedy,Fantasy",expensive_accept
-tt0088242,Teachers,1984,107,Arthur Hiller,"Comedy,Drama",expensive_accept
-tt0101635,Curly Sue,1991,101,John Hughes,"Comedy,Drama,Family",expensive_accept
-tt0109287,Blank Check,1994,93,Rupert Wainwright,"Comedy,Crime,Family",expensive_accept
-tt0119303,Home Alone 3,1997,102,Raja Gosnell,"Action,Comedy,Crime",expensive_accept

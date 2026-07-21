@@ -1,0 +1,48 @@
+{
+  "suite": "3q",
+  "question_count": 3,
+  "questions": [
+    {
+      "id": "q_01",
+      "directory": "q_01",
+      "catalog_directory": "q_01",
+      "semantic_task": "explicit recommendation",
+      "structured_filters": [
+        {
+          "column": "year",
+          "op": "eq",
+          "value": "2001"
+        }
+      ],
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_02",
+      "directory": "q_02",
+      "catalog_directory": "q_07",
+      "semantic_task": "negative pacing assessment",
+      "structured_filters": [
+        {
+          "column": "director",
+          "op": "contains",
+          "value": "john"
+        }
+      ],
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_03",
+      "directory": "q_03",
+      "catalog_directory": "q_09",
+      "semantic_task": "originality assessment",
+      "structured_filters": [
+        {
+          "column": "title",
+          "op": "contains",
+          "value": "The"
+        }
+      ],
+      "ground_truth_count": 12
+    }
+  ]
+}

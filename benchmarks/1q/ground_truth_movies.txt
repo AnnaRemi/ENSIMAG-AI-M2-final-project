@@ -1,0 +1,13 @@
+Q1: Which movies released in 2001 have reviews that explicitly recommend the movie?
+- The Journey to Kafiristan (2001)
+- Angel of Death (2001)
+- Roberto Succo (2001)
+- Corky Romano (2001)
+- Late Night Shopping (2001)
+- Sister Mary Explains It All (2001)
+- Diary of a Sex Addict (2001)
+- Eva & Adam: Four Birthdays and a Fiasco (2001)
+- Festival in Cannes (2001)
+- Air Rage (2001)
+- Return to Cabin by the Lake (2001)
+- Slashers (2001)

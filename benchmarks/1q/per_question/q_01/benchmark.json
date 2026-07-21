@@ -1,0 +1,41 @@
+{
+  "benchmark_id": "canonical_10q_q01",
+  "difficulty": 1,
+  "difficulty_label": "easy",
+  "question": "Which movies released in 2001 have reviews that explicitly recommend the movie?",
+  "semantic_question": "Does the review explicitly recommend the movie or say it is worth watching?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE year = 2001 AND answer(review, 'Does the review explicitly recommend the movie or say it is worth watching?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "year",
+      "op": "eq",
+      "value": "2001"
+    }
+  ],
+  "semantic_task": "explicit recommendation",
+  "semantic_annotation_patterns": [
+    "\\brecommend(?:ed|ing|s)?\\b",
+    "\\bworth (?:a )?(?:watch|watching|seeing)\\b",
+    "\\bmust[- ]see\\b"
+  ],
+  "annotation_policy": "Deterministic lexical annotation; no evaluated LLM used",
+  "row_count": 100,
+  "structured_candidate_count": 40,
+  "semantic_positive_count": 42,
+  "ground_truth_movie_ids": [
+    "tt0207051",
+    "tt0216196",
+    "tt0234041",
+    "tt0250310",
+    "tt0250491",
+    "tt0250739",
+    "tt0253040",
+    "tt0268288",
+    "tt0273607",
+    "tt0274321",
+    "tt0283974",
+    "tt0286975"
+  ],
+  "suite_question_id": "q_01",
+  "catalog_question_id": "q_01"
+}

@@ -1,0 +1,81 @@
+{
+  "suite": "5q",
+  "question_count": 5,
+  "questions": [
+    {
+      "id": "q_01",
+      "directory": "q_01",
+      "catalog_directory": "q_01",
+      "semantic_task": "explicit recommendation",
+      "structured_filters": [
+        {
+          "column": "year",
+          "op": "eq",
+          "value": "2001"
+        }
+      ],
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_02",
+      "directory": "q_02",
+      "catalog_directory": "q_03",
+      "semantic_task": "fear and atmosphere",
+      "structured_filters": [
+        {
+          "column": "runtime",
+          "op": "lt",
+          "value": "100"
+        },
+        {
+          "column": "genres",
+          "op": "contains",
+          "value": "Horror"
+        }
+      ],
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_03",
+      "directory": "q_03",
+      "catalog_directory": "q_05",
+      "semantic_task": "visual-quality praise",
+      "structured_filters": [
+        {
+          "column": "genres",
+          "op": "contains",
+          "value": "Fantasy"
+        }
+      ],
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_04",
+      "directory": "q_04",
+      "catalog_directory": "q_07",
+      "semantic_task": "negative pacing assessment",
+      "structured_filters": [
+        {
+          "column": "director",
+          "op": "contains",
+          "value": "john"
+        }
+      ],
+      "ground_truth_count": 12
+    },
+    {
+      "id": "q_05",
+      "directory": "q_05",
+      "catalog_directory": "q_09",
+      "semantic_task": "originality assessment",
+      "structured_filters": [
+        {
+          "column": "title",
+          "op": "contains",
+          "value": "The"
+        }
+      ],
+      "ground_truth_count": 12
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+Q1: Which movies released in 2001 have reviews that explicitly recommend the movie?
+Semantic task: explicit recommendation
+Structured filters: [{"column": "year", "op": "eq", "value": "2001"}]

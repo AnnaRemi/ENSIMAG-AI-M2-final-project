@@ -1,3 +1,0 @@
-pandas>=2.0
-httpx>=0.25
-tiktoken>=0.7

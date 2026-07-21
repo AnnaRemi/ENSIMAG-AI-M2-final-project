@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""Evaluate benchmark outputs and create four aggregate and per-question plots."""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import shutil
+from pathlib import Path
+
+os.environ.setdefault("MPLBACKEND", "Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+
+LABELS = {
+    "suql_baseline": "SUQL baseline",
+    "suql_v1_two_level_cascade": "SUQL V1 (2-level cascade)",
+    "trummer_baseline_adaptive_block_join": "Trummer baseline",
+    "trummer_v1_structured_two_level_cascade": "Trummer V1 (structured + 2-level cascade)",
+}
+COLORS = {"precision": "#4c78a8", "recall": "#f58518", "f1": "#6f5bd3"}
+
+
+def quality(run: dict, truth: set[str]) -> dict[str, float]:
+    found = set(run.get("found_movie_ids", []))
+    tp, fp, fn = len(found & truth), len(found - truth), len(truth - found)
+    precision = tp / (tp + fp) if tp + fp else 0.0
+    recall = tp / (tp + fn) if tp + fn else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
+    return {"precision": precision, "recall": recall, "f1": f1}
+
+
+def annotated_bars(ax, bars, fmt="{:.2f}") -> None:
+    for bar in bars:
+        value = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2, value, fmt.format(value),
+                ha="center", va="bottom", fontsize=9)
+
+
+def plot_quality(frame: pd.DataFrame, path: Path, title: str) -> None:
+    methods = list(frame["method"]); x = np.arange(len(methods)); width = .24
+    fig, ax = plt.subplots(figsize=(max(9, len(methods)*1.8), 6))
+    for offset, metric in zip((-width, 0, width), ("precision", "recall", "f1")):
+        bars = ax.bar(x+offset, frame[metric], width, label=metric.title(), color=COLORS[metric])
+        annotated_bars(ax, bars, "{:.3f}")
+    ax.set(title=f"{title}: precision, recall, and F1", ylabel="Quality score (higher is better)", ylim=(0, 1.12))
+    ax.set_xticks(x, methods, rotation=12, ha="right"); ax.legend(); ax.grid(axis="y", alpha=.25)
+    fig.tight_layout(); fig.savefig(path, dpi=180); plt.close(fig)
+
+
+def plot_stacked(frame: pd.DataFrame, path: Path, title: str, kind: str) -> None:
+    methods = list(frame["method"]); x = np.arange(len(methods))
+    if kind == "time":
+        cheap, expensive = frame["cheap_seconds"], frame["expensive_seconds"]
+        ylabel, suffix = "Mean model time (seconds; lower is better)", "s"
+    else:
+        cheap, expensive = frame["cheap_calls"], frame["expensive_calls"]
+        ylabel, suffix = "Mean LLM calls (lower is better)", " calls"
+    fig, ax = plt.subplots(figsize=(max(9, len(methods)*1.8), 6))
+    ax.bar(x, cheap, label="Cheap model", color="#4c9f70")
+    ax.bar(x, expensive, bottom=cheap, label="Expensive model", color="#d95f02")
+    totals = cheap + expensive
+    for i, total in enumerate(totals): ax.text(i, total, f"total {total:.1f}{suffix}", ha="center", va="bottom")
+    ax.set(title=f"{title}: cheap vs expensive model {kind}", ylabel=ylabel)
+    ax.set_xticks(x, methods, rotation=12, ha="right"); ax.legend(); ax.grid(axis="y", alpha=.25)
+    fig.tight_layout(); fig.savefig(path, dpi=180); plt.close(fig)
+
+
+def plot_tradeoff(frame: pd.DataFrame, path: Path, title: str) -> None:
+    wall = frame["wall_seconds"].to_numpy(float); recall = frame["recall"].to_numpy(float)
+    calls = frame["llm_calls"].to_numpy(float)
+    wall_score = 1 - wall / max(wall.max(), 1e-9)
+    call_score = 1 - calls / max(calls.max(), 1e-9)
+    score = .6*recall + .2*wall_score + .2*call_score
+    best = int(np.argmax(score))
+    fig, ax = plt.subplots(figsize=(10, 6.5))
+    for i, row in frame.reset_index(drop=True).iterrows():
+        ax.scatter(row.wall_seconds, row.recall, s=180+35*row.llm_calls, alpha=.8,
+                   edgecolors="black" if i == best else "white", linewidths=3 if i == best else 1,
+                   label=row.method)
+        ax.annotate(f"{row.method}\n{row.wall_seconds:.1f}s, {row.llm_calls:.1f} calls",
+                    (row.wall_seconds, row.recall), xytext=(6, 6), textcoords="offset points", fontsize=8)
+    ax.set(title=f"{title}: quality/time/call tradeoff\nBest normalized solution: {frame.iloc[best].method}",
+           xlabel="Mean wall time in seconds (lower is better)", ylabel="Recall (higher is better)", ylim=(-.03, 1.08))
+    ax.grid(alpha=.25); fig.tight_layout(); fig.savefig(path, dpi=180); plt.close(fig)
+
+
+def make_four(frame: pd.DataFrame, directory: Path, title: str) -> None:
+    directory.mkdir(parents=True, exist_ok=True)
+    plot_quality(frame, directory/"01_quality.png", title)
+    plot_stacked(frame, directory/"02_time.png", title, "time")
+    plot_stacked(frame, directory/"03_calls.png", title, "calls")
+    plot_tradeoff(frame, directory/"04_best_solution.png", title)
+
+
+def remove_run_artifacts(outputs_dir: Path) -> None:
+    """Leave only publication-ready CSV tables and PNG plots."""
+    per_question = outputs_dir / "per_question"
+    if not per_question.exists():
+        return
+    for question_dir in per_question.iterdir():
+        if not question_dir.is_dir():
+            continue
+        for child in question_dir.iterdir():
+            if child.name == "plots":
+                continue
+            if child.is_dir():
+                shutil.rmtree(child)
+            else:
+                child.unlink()
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(); ap.add_argument("--suite-root", type=Path, required=True); ap.add_argument("--outputs-dir", type=Path, required=True); ap.add_argument("--keep-run-artifacts", action="store_true"); args = ap.parse_args()
+    manifest = json.loads((args.suite_root/"manifest.json").read_text()); rows=[]
+    for index, item in enumerate(manifest["questions"], 1):
+        q = item["directory"]; spec=json.loads((args.suite_root/"per_question"/q/"benchmark.json").read_text()); truth=set(spec["ground_truth_movie_ids"])
+        for metrics_path in sorted((args.outputs_dir/"per_question"/q).glob("*/run_metrics.json")):
+            run=json.loads(metrics_path.read_text()); rows.append({
+                "question_index": index, "question": q, "implementation": run["implementation"],
+                "method": LABELS.get(run["implementation"], run["implementation"]),
+                "repetitions": run.get("repetitions",1), "wall_seconds": float(run.get("wall_seconds",0)),
+                "llm_calls": float(run.get("llm_calls",0)), "cheap_calls": float(run.get("cheap_calls",0)),
+                "expensive_calls": float(run.get("expensive_calls",0)), "cheap_seconds": float(run.get("cheap_seconds",0)),
+                "expensive_seconds": float(run.get("expensive_seconds",run.get("wall_seconds",0))), **quality(run,truth)})
+    frame=pd.DataFrame(rows)
+    if frame.empty: raise SystemExit("No run_metrics.json files found")
+    frame.to_csv(args.outputs_dir/"comparison.csv",index=False)
+    numeric=["precision","recall","f1","wall_seconds","llm_calls","cheap_calls","expensive_calls","cheap_seconds","expensive_seconds"]
+    aggregate=frame.groupby(["implementation","method"],as_index=False)[numeric].mean()
+    aggregate.to_csv(args.outputs_dir/"aggregate.csv",index=False)
+    make_four(aggregate,args.outputs_dir/"plots",f"{manifest['suite']} averaged experiment")
+    for q,qframe in frame.groupby("question",sort=False):
+        make_four(qframe,args.outputs_dir/"per_question"/q/"plots",f"{q}")
+    if not args.keep_run_artifacts:
+        remove_run_artifacts(args.outputs_dir)
+    print(aggregate.to_string(index=False))
+
+
+if __name__ == "__main__": main()

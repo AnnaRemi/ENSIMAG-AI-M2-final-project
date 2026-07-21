@@ -1,3 +1,0 @@
-implementation,mode,model,cpu_seconds,engine_seconds,wall_seconds,llm_calls,final_answer_rows,unique_found_movie_ids,true_positives,false_positives,false_negatives,precision,recall,f1
-suql_baseline,llm,ollama/gemma2:2b,0.1486729999999996,1022.4626324516721,1022.582246763166,12,5,5,5,0,1,1.0,0.8333333333333334,0.9090909090909091
-trummer_heterogen_v1,llm,ollama/gemma2:2b,0.783849,603.361982753966,603.361982753966,1,0,0,0,0,6,0.0,0.0,0.0

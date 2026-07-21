@@ -1,2 +1,0 @@
-block_1,block_2,tokens_read,tokens_written,seconds,overflow,prompt_tokens_estimated,parsed_pairs,raw_response
-1,1,3152,24,28.625487089157104,False,2930,2,"{""matching_movie_ids"":[""tt0120247"",""tt0139465""]}"

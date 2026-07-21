@@ -1,0 +1,11 @@
+Q1: Which movies released in 2001 have reviews that explicitly recommend the movie?
+Semantic task: explicit recommendation
+Structured filters: [{"column": "year", "op": "eq", "value": "2001"}]
+
+Q2: Which movies directed by John with reviews criticizing the pacing as slow or boring?
+Semantic task: negative pacing assessment
+Structured filters: [{"column": "director", "op": "contains", "value": "john"}]
+
+Q3: Which movies with title contains The, with reviews praising the story as original, inventive, or unpredictable?
+Semantic task: originality assessment
+Structured filters: [{"column": "title", "op": "contains", "value": "The"}]

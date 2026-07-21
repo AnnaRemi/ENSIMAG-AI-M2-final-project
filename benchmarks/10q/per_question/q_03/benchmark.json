@@ -1,0 +1,46 @@
+{
+  "benchmark_id": "canonical_10q_q03",
+  "difficulty": 2,
+  "difficulty_label": "medium",
+  "question": "Which Horror movies under 100 minutes have reviews describing them as scary or frightening?",
+  "semantic_question": "Does the review describe the movie as scary, frightening, terrifying, or creepy?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Horror%' AND runtime < 100 AND answer(review, 'Does the review describe the movie as scary, frightening, terrifying, or creepy?') = 'Yes';",
+  "structured_filters": [
+    {
+      "column": "runtime",
+      "op": "lt",
+      "value": "100"
+    },
+    {
+      "column": "genres",
+      "op": "contains",
+      "value": "Horror"
+    }
+  ],
+  "semantic_task": "fear and atmosphere",
+  "semantic_annotation_patterns": [
+    "\\bscary\\b",
+    "\\bfrighten(?:ing|ed)?\\b",
+    "\\bterrifying\\b",
+    "\\bcreepy\\b",
+    "\\bchilling\\b"
+  ],
+  "annotation_policy": "Deterministic lexical annotation; no evaluated LLM used",
+  "row_count": 100,
+  "structured_candidate_count": 40,
+  "semantic_positive_count": 42,
+  "ground_truth_movie_ids": [
+    "tt0047966",
+    "tt0051484",
+    "tt0068837",
+    "tt0068966",
+    "tt0095684",
+    "tt0097874",
+    "tt0097981",
+    "tt0105410",
+    "tt0247164",
+    "tt0286669",
+    "tt0391198",
+    "tt0985025"
+  ]
+}

@@ -1,4 +1,0 @@
-cheap_model,ollama_model,installed,status,score_positive_example,score_negative_example,error,benchmark_run,benchmark_exit_code,benchmark_seconds
-ollama/tinyllama:1.1b,tinyllama:1.1b,True,ok,2.0,2.0,,,,
-ollama/smollm2:360m,smollm2:360m,True,ok,2.0,2.0,,,,
-ollama/llama3.2:1b,llama3.2:1b,True,ok,2.0,-2.0,,,,

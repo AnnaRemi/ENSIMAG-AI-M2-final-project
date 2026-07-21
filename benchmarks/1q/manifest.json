@@ -1,0 +1,20 @@
+{
+  "suite": "1q",
+  "question_count": 1,
+  "questions": [
+    {
+      "id": "q_01",
+      "directory": "q_01",
+      "catalog_directory": "q_01",
+      "semantic_task": "explicit recommendation",
+      "structured_filters": [
+        {
+          "column": "year",
+          "op": "eq",
+          "value": "2001"
+        }
+      ],
+      "ground_truth_count": 12
+    }
+  ]
+}
