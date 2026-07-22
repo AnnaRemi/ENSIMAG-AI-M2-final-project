@@ -106,6 +106,73 @@ QUESTIONS = [
 ]
 
 
+# This catalog is intentionally independent of the historical 1q/3q/5q
+# questions above. Keeping the old declarations in the file documents the
+# held-out prompts; only this new list is used to build 10q.
+QUESTIONS = [
+    QuestionSpec(1, "new_01_animation_humor", 2, "medium",
+        "Which animated movies have reviews saying that the film is funny or hilarious?",
+        "Does the review describe the film as funny, hilarious, humorous, or laugh-inducing?",
+        "animated-film humor", (r"\bfunny\b", r"\bhilarious\b", r"\blaugh(?:ed|ing|s)?\b", r"\bhumou?r\b"),
+        "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Animation%' AND answer(review, 'Does the review describe the film as funny, hilarious, humorous, or laugh-inducing?') = 'Yes';",
+        ({"column":"genres","op":"contains","value":"Animation"},), genres_all=("Animation",)),
+    QuestionSpec(2, "new_02_modern_drama_acting", 3, "medium_hard",
+        "Which Drama movies released since 1990 have reviews commending the acting or cast performances?",
+        "Does the review commend the acting, cast, or an individual performance?",
+        "modern-drama performance praise", (r"\bgreat acting\b", r"\bexcellent (?:acting|performance)\b", r"\bstrong performance", r"\bsuperb (?:acting|performance|cast)\b", r"\bbrilliant (?:acting|performance)\b", r"\bwell[- ]acted\b"),
+        "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Drama%' AND year >= 1990 AND answer(review, 'Does the review commend the acting, cast, or an individual performance?') = 'Yes';",
+        ({"column":"genres","op":"contains","value":"Drama"},{"column":"year","op":"ge","value":"1990"}), genres_all=("Drama",), year_min=1990),
+    QuestionSpec(3, "new_03_romance_chemistry", 4, "hard",
+        "Which Romance movies between 90 and 130 minutes have reviews praising the characters' chemistry or relationship?",
+        "Does the review praise the chemistry or relationship between the central characters?",
+        "feature-length romantic chemistry", (r"\b(?:great|wonderful|romantic) chemistry\b", r"\bbelievable relationship\b", r"\bchemistry between\b", r"\blove story (?:works|is touching|is convincing)\b"),
+        "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Romance%' AND runtime >= 90 AND runtime <= 130 AND answer(review, 'Does the review praise the chemistry or relationship between the central characters?') = 'Yes';",
+        ({"column":"genres","op":"contains","value":"Romance"},{"column":"runtime","op":"ge","value":"90"},{"column":"runtime","op":"le","value":"130"}), genres_all=("Romance",), runtime_min=90, runtime_max=130),
+    QuestionSpec(4, "new_04_long_action_excitement", 3, "medium_hard",
+        "Which Action movies lasting at least 100 minutes have reviews calling them exciting, gripping, or suspenseful?",
+        "Does the review call the movie exciting, thrilling, gripping, or suspenseful?",
+        "long-action excitement", (r"\bexciting\b", r"\bthrilling\b", r"\bgripping\b", r"\bsuspenseful\b", r"\bedge of (?:my|your|the) seat\b"),
+        "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Action%' AND runtime >= 100 AND answer(review, 'Does the review call the movie exciting, thrilling, gripping, or suspenseful?') = 'Yes';",
+        ({"column":"genres","op":"contains","value":"Action"},{"column":"runtime","op":"ge","value":"100"}), genres_all=("Action",), runtime_min=100),
+    QuestionSpec(5, "new_05_mystery_ending", 5, "very_hard",
+        "Which Mystery movies have reviews approving of the ending or a plot twist?",
+        "Does the review approve of the ending, finale, resolution, or plot twist?",
+        "mystery ending approval", (r"\b(?:great|excellent|brilliant|satisfying|powerful|perfect) ending\b", r"\b(?:great|clever) twist\b", r"\bsurprise ending\b", r"\bending (?:was|is) (?:great|excellent|brilliant|satisfying|powerful|perfect|effective)\b", r"\btwist (?:was|is) (?:great|excellent|brilliant|clever|effective)\b"),
+        "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Mystery%' AND answer(review, 'Does the review approve of the ending, finale, resolution, or plot twist?') = 'Yes';",
+        ({"column":"genres","op":"contains","value":"Mystery"},), genres_all=("Mystery",)),
+    QuestionSpec(6, "new_06_music_soundtrack", 3, "medium_hard",
+        "Which Music or Musical movies have reviews praising the soundtrack, score, music, or songs?",
+        "Does the review praise the soundtrack, musical score, music, or songs?",
+        "soundtrack and score praise", (r"\b(?:great|excellent|beautiful|amazing|wonderful|memorable) (?:soundtrack|score|music|songs?)\b", r"\bsoundtrack (?:is|was) (?:great|excellent|amazing|wonderful)\b"),
+        "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE (genres LIKE '%Music%' OR genres LIKE '%Musical%') AND answer(review, 'Does the review praise the soundtrack, musical score, music, or songs?') = 'Yes';",
+        ({"column":"genres","op":"contains_any","value":"Music|Musical"},), genres_any=("Music","Musical")),
+    QuestionSpec(7, "new_07_classic_drama_emotion", 3, "medium_hard",
+        "Which Drama movies released before 2000 have reviews describing them as emotional, moving, or heartbreaking?",
+        "Does the review describe the movie as emotional, moving, touching, or heartbreaking?",
+        "pre-2000 emotional impact", (r"\bemotional\b", r"\bmoving\b", r"\btouching\b", r"\bheartbreaking\b", r"\btear[- ]jerker\b", r"\bmade me cry\b"),
+        "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Drama%' AND year < 2000 AND answer(review, 'Does the review describe the movie as emotional, moving, touching, or heartbreaking?') = 'Yes';",
+        ({"column":"genres","op":"contains","value":"Drama"},{"column":"year","op":"lt","value":"2000"}), genres_all=("Drama",), year_max=1999),
+    QuestionSpec(8, "new_08_scifi_thought_provoking", 4, "hard",
+        "Which Science-Fiction movies have reviews describing them as intelligent, philosophical, or thought-provoking?",
+        "Does the review describe the movie as intelligent, philosophical, or thought-provoking?",
+        "science-fiction intellectual depth", (r"\bthought[- ]provoking\b", r"\bintelligent\b", r"\bphilosophical\b", r"\bmakes? you think\b", r"\bfood for thought\b"),
+        "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Sci-Fi%' AND answer(review, 'Does the review describe the movie as intelligent, philosophical, or thought-provoking?') = 'Yes';",
+        ({"column":"genres","op":"contains","value":"Sci-Fi"},), genres_all=("Sci-Fi",)),
+    QuestionSpec(9, "new_09_documentary_informative", 3, "medium_hard",
+        "Which Documentary movies have reviews calling them informative, educational, insightful, or enlightening?",
+        "Does the review call the documentary informative, educational, insightful, or enlightening?",
+        "documentary informational value", (r"\binformative\b", r"\beducational\b", r"\binsightful\b", r"\benlightening\b", r"\blearn(?:ed|t)\b"),
+        "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Documentary%' AND answer(review, 'Does the review call the documentary informative, educational, insightful, or enlightening?') = 'Yes';",
+        ({"column":"genres","op":"contains","value":"Documentary"},), genres_all=("Documentary",)),
+    QuestionSpec(10, "new_10_family_entertaining", 2, "medium",
+        "Which Family movies under 121 minutes have reviews describing them as entertaining, enjoyable, or great fun?",
+        "Does the review describe the movie as entertaining, enjoyable, or great fun?",
+        "family-film entertainment value", (r"\bentertaining\b", r"\benjoyable\b", r"\bfun (?:movie|film|adventure|ride)\b", r"\bgreat fun\b"),
+        "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Family%' AND runtime <= 120 AND answer(review, 'Does the review describe the movie as entertaining, enjoyable, or great fun?') = 'Yes';",
+        ({"column":"genres","op":"contains","value":"Family"},{"column":"runtime","op":"le","value":"120"}), genres_all=("Family",), runtime_max=120),
+]
+
+
 def load_source() -> pd.DataFrame:
     source = pd.read_csv(SOURCE).reset_index(names="source_row")
     source = source.dropna(subset=OUTPUT_COLUMNS).copy()
@@ -206,9 +273,28 @@ def main() -> None:
     manifest = {
         "suite": "10q", "question_count": 10, "source": str(SOURCE.relative_to(LAB_ROOT)),
         "questions": [{"id": f"q_{q.number:02d}", "directory": f"q_{q.number:02d}", "catalog_directory": q.slug, "benchmark_id": built[q.number]["benchmark_id"], "difficulty": q.difficulty, "difficulty_label": q.difficulty_label, "question": q.question, "semantic_task": q.semantic_task, "structured_filters": list(q.structured_filters), "row_count": ROWS_PER_QUESTION, "structured_candidate_count": built[q.number]["structured_candidate_count"], "ground_truth_count": len(built[q.number]["ground_truth_movie_ids"])} for q in QUESTIONS],
-        "dataset_policy": "Ten disjoint balanced 100-row datasets. Each has 12 true positives, 28 structured semantic negatives, 30 semantic-only distractors, and 30 double negatives. Semantic labels use declared deterministic lexical rules over review text.",
+        "dataset_policy": "Ten held-out questions independent of 1q/3q/5q, with disjoint balanced 100-movie datasets. Each has 12 true positives, 28 structured semantic negatives, 30 semantic-only distractors, and 30 double negatives. Semantic labels use declared deterministic lexical rules over review text.",
     }
     (ROOT / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    question_lines: list[str] = []
+    truth_lines: list[str] = []
+    for spec in QUESTIONS:
+        benchmark = built[spec.number]
+        question_lines.extend([
+            f"Q{spec.number}: {spec.question}",
+            f"Semantic task: {spec.semantic_task}",
+            f"Structured filters: {json.dumps(list(spec.structured_filters))}",
+            "",
+        ])
+        truth_lines.append(f"Q{spec.number}: {spec.question}")
+        rows = pd.read_csv(QUESTION_DATA_ROOT / f"q_{spec.number:02d}" / "imdb_structured_joined.csv")
+        by_id = rows.set_index("movie_id").to_dict("index")
+        for movie_id in benchmark["ground_truth_movie_ids"]:
+            row = by_id[movie_id]
+            truth_lines.append(f"- {row['title']} ({int(row['year'])})")
+        truth_lines.append("")
+    (ROOT / "questions.txt").write_text("\n".join(question_lines).rstrip() + "\n")
+    (ROOT / "ground_truth_movies.txt").write_text("\n".join(truth_lines).rstrip() + "\n")
     print(json.dumps(manifest, indent=2))
 
 

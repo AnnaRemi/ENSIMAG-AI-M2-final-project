@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the canonical 10q/5q/3q/1q suites from the validated diverse catalog."""
+"""Refresh 10q human-readable files without changing held-out smaller suites."""
 from __future__ import annotations
 
 import csv
@@ -13,11 +13,6 @@ SOURCE = ROOT / "10q"
 DATA_ROOT = ROOT.parent / "data" / "subdatasets"
 SELECTIONS = {
     "10q": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    # year, compound genre/runtime, genre, director, and title filters
-    "5q": [1, 3, 5, 7, 9],
-    # maximally distinct structured fields and semantic tasks
-    "3q": [1, 7, 9],
-    "1q": [1],
 }
 
 
@@ -52,7 +47,8 @@ def main() -> None:
     (SOURCE / "questions.txt").write_text("\n".join(source_questions).rstrip() + "\n")
     (SOURCE / "ground_truth_movies.txt").write_text("\n".join(source_truth).rstrip() + "\n")
 
-    # 10q is the canonical catalog. Rebuild only its nested subset suites.
+    # The smaller suites are historical held-out prompts and must not be
+    # regenerated from 10q; doing so would leak the evaluation questions.
     for suite_name, indices in SELECTIONS.items():
         if suite_name == "10q":
             continue

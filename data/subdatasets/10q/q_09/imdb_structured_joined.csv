@@ -1,101 +1,101 @@
 movie_id,title,director,year,runtime,genres
-tt0001032,The Sealed Room,D.W. Griffith,1909,11,"Drama,Short,Thriller"
-tt0016104,The Merry Widow,Erich von Stroheim,1925,137,"Drama,Romance"
-tt0028174,Revolt of the Zombies,Victor Halperin,1936,65,"Adventure,Horror"
-tt0043027,The Tattooed Stranger,Edward Montagne,1950,64,"Crime,Drama,Film-Noir"
-tt0051398,The Barbarian and the Geisha,John Huston,1958,105,"Adventure,Drama,History"
-tt0068173,The Adventures of Barry McKenzie,Bruce Beresford,1972,114,Comedy
-tt0071198,The Bat People,Jerry Jameson,1974,93,"Horror,Romance"
-tt0071627,The House of Seven Corpses,Paul Harrison,1973,88,Horror
-tt0074829,The Legend of the Wolf Woman,Rino Di Silvestro,1976,79,Horror
-tt0075888,The Crater Lake Monster,William R. Stromberg,1977,85,"Adventure,Comedy,Crime"
-tt0080391,Attack of the Killer Tomatoes!,John De Bello,1978,83,"Adventure,Comedy,Horror"
-tt0082778,The Munsters' Revenge,Don Weis,1981,96,"Comedy,Crime,Family"
-tt0096866,The BFG,Brian Cosgrove,1989,91,"Adventure,Animation,Drama"
-tt0099578,The First Power,Robert Resnikoff,1990,98,"Crime,Horror,Thriller"
-tt0099856,The Invisible Maniac,Adam Rifkin,1990,86,"Comedy,Horror,Sci-Fi"
-tt0106336,Babylon 5: The Gathering,Richard Compton,1993,89,"Action,Adventure,Drama"
-tt0115543,The Angel of Pennsylvania Avenue,Robert Ellis Miller,1996,92,Drama
-tt0118537,2103: The Deadly Wake,G. Philip Jackson,1997,100,"Drama,Sci-Fi,Thriller"
-tt0120613,A Walk on the Moon,Tony Goldwyn,1999,107,"Drama,Romance"
-tt0160986,Time at the Top,Jim Kaufman,1999,96,"Family,Sci-Fi"
-tt0201290,The Underground Comedy Movie,Vince Offer,1999,88,Comedy
-tt0255798,The Animal,Luke Greenfield,2001,84,"Comedy,Sci-Fi"
-tt0304584,The President's Man: A Line in the Sand,Eric Norris,2002,90,"Action,Drama,Thriller"
-tt0305264,The Bagman,Beverly Beaton,2002,80,Horror
-tt0312528,The Cat in the Hat,Bo Welch,2003,82,"Adventure,Comedy,Family"
-tt0317676,House of the Dead,Uwe Boll,2003,90,"Action,Adventure,Horror"
-tt0318040,Evil Breed: The Legend of Samhain,Christian Viel,2003,78,"Comedy,Horror"
-tt0329502,The Poet,Paul Hills,2003,100,"Drama,Romance,Thriller"
-tt0361670,The Great Journey,Ismaël Ferroukhi,2004,108,"Drama,Romance"
-tt0367245,Wuthering Heights,Suri Krishnamma,2003,90,"Drama,Musical,Romance"
-tt0369226,Alone in the Dark,Uwe Boll,2005,96,"Action,Horror,Sci-Fi"
-tt0413371,This Darkness: The Vampire Virus,Dylan O'Leary,2003,106,Horror
-tt0434964,Gammera the Invincible,"Sandy Howard, Noriaki Yuasa",1966,86,"Family,Sci-Fi"
-tt0450345,The Wicker Man,Neil LaBute,2006,102,"Horror,Mystery,Thriller"
-tt0464095,The Lives of the Saints,"Chris Cottam, Rankin",2006,97,"Comedy,Drama"
-tt0483200,The Power of Fear,Oleg Fesenko,2006,79,Horror
-tt0489318,The Perfect Witness,Thomas Dunn,2007,100,"Crime,Horror,Thriller"
-tt0770745,The Empty Acre,Patrick Rea,2007,103,Horror
-tt0800080,The Incredible Hulk,Louis Leterrier,2008,112,"Action,Sci-Fi"
-tt0888019,Five Across the Eyes,"Greg Swinson, Ryan Thiessen",2006,95,Horror
-tt0024078,Grand Slam,"William Dieterle, Alfred E. Green",1933,67,Comedy
-tt0046183,Peter Pan,"Clyde Geronimi, Wilfred Jackson, Hamilton Luske, Jack Kinney",1953,77,"Adventure,Animation,Family"
-tt0047834,Animal Farm,"Joy Batchelor, John Halas",1954,72,"Animation,Drama"
-tt0061834,I Am Curious (Yellow),Vilgot Sjöman,1967,121,"Drama,Romance"
+tt0023037,Land Without Bread,Luis Buñuel,1933,30,"Documentary,Short"
 tt0063665,One + One,Jean-Luc Godard,1968,115,"Documentary,Drama,Music"
-tt0064400,Hamlet,Tony Richardson,1969,117,Drama
-tt0072805,Playback,Bernard L. Kowalski,1975,70,"Crime,Drama,Mystery"
-tt0074331,Old Fashioned Murder,Robert Douglas,1976,72,"Crime,Drama,Mystery"
+tt0081242,No Nukes,"Danny Goldberg, Anthony Potenza, Julian Schlossberg, Barbara Kopple, Haskell Wexler",1980,103,"Documentary,Music"
+tt0084429,O Canada!,"William Bosche, Randy Bright",1982,18,"Documentary,Family,Short"
+tt0091125,God's Country,Louis Malle,1985,90,Documentary
+tt0095895,Powaqqatsi,Godfrey Reggio,1988,99,"Documentary,Music"
+tt0113270,The Haunted World of Edward D. Wood Jr.,Brett Thompson,1995,89,"Biography,Documentary,Horror"
+tt0119107,"Fast, Cheap & Out of Control",Errol Morris,1997,80,Documentary
+tt0125459,Pitch,"Kenny Hotz, Spencer Rice",1997,81,Documentary
+tt0156524,The Eternal Jew,Fritz Hippler,1940,62,"Documentary,History"
+tt0181817,Sing Faster: The Stagehands' Ring Cycle,Jon Else,1999,60,"Documentary,Music"
+tt0190806,The Story of Menstruation,Jack Kinney,1946,10,"Animation,Documentary,Family"
+tt0208570,Why Dogs Smile & Chimpanzees Cry,Carol L. Fleisher,1999,100,Documentary
+tt0221809,Ayurveda: Art of Being,Pan Nalin,2001,102,Documentary
+tt0244283,The Vagina Monologues,Eve Ensler,2002,77,"Comedy,Documentary,Drama"
+tt0260369,Signal 30,Richard Wayman,1959,28,"Documentary,Short"
+tt0312988,Mysteries of Love,Jeffrey Schwarz,2002,71,Documentary
+tt0314930,Yugoslavia: The Avoidable War,George Bogdanich,1999,165,"Documentary,War"
+tt0327920,I Am Trying to Break Your Heart,Sam Jones,2002,92,"Documentary,Music"
+tt0342317,Eddie Izzard: Circle,Anastasia Pappas,2002,82,"Comedy,Documentary"
+tt0368083,Noam Chomsky: Rebel Without a Pause,Will Pascoe,2003,74,"Documentary,War"
+tt0372806,Bright Leaves,Ross McElwee,2003,107,"Biography,Comedy,Documentary"
+tt0399877,What the #$*! Do We (K)now!?,"William Arntz, Betsy Chasse, Mark Vicente",2004,109,"Comedy,Documentary,Drama"
+tt0408304,"Yo soy Boricua, pa'que tu lo sepas!","Liz Garbus, Rosie Perez",2006,86,Documentary
+tt0427901,Stolen Honor: Wounds That Never Heal,Carlton Sherwood,2004,43,"Documentary,Short"
+tt0428959,"Peace, Propaganda & the Promised Land","Sut Jhally, Bathsheba Ratzkoff",2004,80,Documentary
+tt0433367,Dragons: A Fantasy Made Real,Justin Hardy,2004,100,"Documentary,Fantasy"
+tt0443057,Iberia,Carlos Saura,2005,99,"Documentary,Musical"
+tt0455507,The God Who Wasn't There,Brian Flemming,2005,62,"Biography,Documentary,History"
+tt0461887,Space Race,"Mark Everest, Christopher Spencer",2005,240,"Documentary,Drama"
+tt0478197,Leonard Cohen: I'm Your Man,Lian Lunson,2005,105,"Biography,Documentary,Music"
+tt0497116,An Inconvenient Truth,Davis Guggenheim,2006,96,Documentary
+tt0783489,Carlos Mencia: No Strings Attached,David Steinberg,2006,60,"Comedy,Documentary"
+tt0798733,Return to Gorée,Pierre-Yves Borgeaud,2007,110,"Documentary,Music"
+tt0815241,Religulous,Larry Charles,2008,101,"Comedy,Documentary,War"
+tt0818682,Islam: What the West Needs to Know,"Bryan Daly, Gregory M. Davis",2006,98,Documentary
+tt0832903,Manufactured Landscapes,Jennifer Baichwal,2006,86,Documentary
+tt0906091,To Die in Jerusalem,Hilla Medalia,2007,40,"Documentary,Short"
+tt0912593,No End in Sight,Charles Ferguson,2007,102,"Documentary,War"
+tt0986354,Frank and Cindy,G.J. Echternkamp,2007,73,"Biography,Documentary,Drama"
+tt0047834,Animal Farm,"Joy Batchelor, John Halas",1954,72,"Animation,Drama"
+tt0052646,The Brain That Wouldn't Die,Joseph Green,1962,82,"Horror,Sci-Fi"
+tt0061868,King Kong Escapes,Ishirō Honda,1967,96,"Action,Adventure,Family"
+tt0064027,The Angry Breed,David Commons,1968,94,Drama
+tt0070000,Double Indemnity,Jack Smight,1973,74,"Crime,Drama,Romance"
+tt0070784,Terror on the Beach,Paul Wendkos,1973,74,"Action,Drama,Thriller"
+tt0075132,The Return of a Man Called Horse,Irvin Kershner,1976,129,"Drama,Western"
+tt0076191,The Incredible Melting Man,William Sachs,1977,86,"Horror,Sci-Fi"
+tt0077696,Hooper,Hal Needham,1978,99,"Action,Comedy"
 tt0078801,Ashanti,Richard Fleischer,1979,118,"Action,Adventure,Drama"
-tt0088915,A Chorus Line,Richard Attenborough,1985,118,"Drama,Music,Musical"
-tt0090567,52 Pick-Up,John Frankenheimer,1986,110,"Crime,Drama,Thriller"
-tt0098375,Spontaneous Combustion,Tobe Hooper,1989,97,"Horror,Sci-Fi,Thriller"
-tt0100056,Lorna Doone,Andrew Grieve,1990,87,"Drama,Romance"
-tt0100156,Mirror Mirror,Marina Sargenti,1990,104,"Horror,Thriller"
-tt0101540,Cape Fear,Martin Scorsese,1991,128,"Crime,Drama,Thriller"
-tt0102800,Robot Jox,Stuart Gordon,1989,85,"Action,Sci-Fi,Thriller"
-tt0106753,Doppelganger,Avi Nesher,1993,104,"Horror,Romance,Thriller"
-tt0106983,Future Shock,"Eric Parkinson, Matt Reeves, Oley Sassone",1994,98,"Horror,Sci-Fi"
-tt0110695,Nowhere to Hide,Bobby Roth,1994,96,"Drama,Thriller"
-tt0114736,True Crime,Pat Verducci,1995,94,"Crime,Drama,Mystery"
-tt0116684,Jane Eyre,Franco Zeffirelli,1996,112,"Drama,Romance"
-tt0120041,Runaway Car,Jack Sholder,1997,90,"Action,Adventure,Comedy"
-tt0120430,Vanishing Point,Charles Robert Carner,1997,91,"Action,Adventure,Drama"
-tt0125510,Splatter University,Richard W. Haines,1984,78,"Horror,Mystery,Thriller"
-tt0150786,Gregory's Two Girls,Bill Forsyth,1999,116,Comedy
-tt0161634,Guinea Pig: Devil's Experiment,Satoru Ogura,1985,43,"Horror,Short"
-tt0163069,Losing Control,Julie Jordan,1998,93,"Mystery,Romance,Thriller"
-tt0187078,Gone in 60 Seconds,Dominic Sena,2000,118,"Action,Crime,Thriller"
-tt0191915,Hide and Seek,Sidney J. Furie,2000,100,"Crime,Drama,Thriller"
-tt0197153,Good Day L.A.,"Lisa Todd, Patrick Perez",1993,180,"News,Talk-Show"
-tt0202152,Zatoichi,Shintarō Katsu,1989,116,"Action,Drama"
-tt0218817,Antitrust,Peter Howitt,2001,108,"Action,Crime,Drama"
-tt0228158,Corpse Eaters,"Donald R. Passmore, Klaus Vetter",1974,61,Horror
-tt0246734,A Kite,"Yasuomi Umetsu, Yûki Iwai, Keizô Kusakawa",1998,26,"Action,Adventure,Animation"
-tt0259054,Ordinary Sinner,John Henry Davis,2001,91,"Drama,Romance"
-tt0267817,Party 7,Katsuhito Ishii,2000,104,Comedy
-tt0272069,Demonicus,Jay Woelfel,2001,72,Horror
-tt0277941,Ned Kelly,Gregor Jordan,2003,110,"Action,Adventure,Biography"
-tt0291833,Cradle of Fear,Alex Chandon,2001,120,Horror
-tt0302346,Blanche,Bernie Bonvoisin,2002,104,"Adventure,Comedy"
-tt0306047,Scary Movie 3,David Zucker,2003,84,Comedy
-tt0321018,What I Like About You,"Shelley Jensen, Steve Zuckerman, Gary Halvorson, Leslie Kolins Small, Rebecca Baughman, Peter Marc Jacobson, Dave Thomas, Sheldon Epps, Richard Correll, Mark Cendrowski, Gerry Cohen, Philip Charles MacKenzie, Peter Bonerz, Brian K. Roberts, Robert J. Krakower, Fred Savage, Dan Cortese, Madeline Cripe",2002,30,Comedy
-tt0329334,Bleed,"Devin Hamilton, Dennis Petersen",2002,82,"Horror,Mystery,Thriller"
-tt0348150,Superman Returns,Bryan Singer,2006,154,"Action,Adventure,Sci-Fi"
-tt0369946,Snitch'd,James Cahill,2003,86,"Action,Adventure,Crime"
-tt0377713,Cube Zero,Ernie Barbarash,2004,97,"Drama,Mystery,Sci-Fi"
-tt0430926,Bloodsuckers,Matthew Hastings,2005,99,"Action,Horror,Sci-Fi"
-tt0448190,Masters of Horror,"Stuart Gordon, Dario Argento, John Carpenter, Joe Dante, Mick Garris, Tobe Hooper, John Landis, Don Coscarelli, Brad Anderson, Larry Cohen, Ernest Dickerson, William Malone, Lucky McKee, John McNaughton, Takashi Miike, Tom Holland, Peter Medak, Rob Schmidt, Norio Tsuruta",2005,60,Horror
-tt0457275,Altered,Eduardo Sánchez,2006,88,"Horror,Sci-Fi,Thriller"
-tt0460838,Judges,Stephen Patrick Walker,2006,90,"Action,Adventure,Drama"
-tt0472126,Local Color,George Gallo,2006,107,Drama
-tt0477392,Broken Bridges,Steven Goldmann,2006,105,"Drama,Music"
-tt0480011,Closure,Dan Reed,2007,80,"Crime,Drama,Horror"
-tt0480242,Dan in Real Life,Peter Hedges,2007,98,"Comedy,Drama,Romance"
-tt0486968,Double Cross,George Erschbamer,2006,88,"Drama,Thriller"
-tt0487108,Un macho de mujer,Alfonso Rodríguez,2006,100,Comedy
-tt0497137,"I'm a Cyborg, But That's OK",Park Chan-wook,2006,107,"Comedy,Drama,Romance"
-tt0497323,Anamorph,Henry Miller,2007,103,"Crime,Horror,Thriller"
-tt0785007,Over Her Dead Body,Jeff Lowell,2008,95,"Comedy,Fantasy,Romance"
-tt0845463,Grendel,Nick Lyon,2007,82,"Drama,Fantasy,Sci-Fi"
+tt0083170,Tarzan the Ape Man,John Derek,1981,115,"Adventure,Drama"
+tt0084021,Grease 2,Patricia Birch,1982,115,"Comedy,Music,Musical"
+tt0087499,"The Jerk, Too",Michael Schultz,1984,95,Comedy
+tt0089880,Rambo: First Blood Part II,George P. Cosmatos,1985,96,"Action,Adventure,Thriller"
+tt0091631,Nightmare Weekend,Henri Sala,1986,85,"Horror,Sci-Fi"
+tt0091859,"Rita, Sue and Bob Too",Alan Clarke,1987,89,"Comedy,Drama"
+tt0096870,Going Overboard,Valerie Breiman,1989,99,Comedy
+tt0097635,Jesus of Montreal,Denys Arcand,1989,120,"Drama,Romance"
+tt0097670,Kinjite: Forbidden Subjects,J. Lee Thompson,1989,97,"Action,Crime,Drama"
+tt0100248,The Night Brings Charlie,Tom Logan,1990,75,Horror
+tt0105699,Unlawful Entry,Jonathan Kaplan,1992,111,"Crime,Drama,Thriller"
+tt0106997,Genghis Cohn,Elijah Moshinsky,1993,79,"Comedy,Drama"
+tt0113305,Higher Learning,John Singleton,1995,128,"Crime,Drama,Thriller"
+tt0117283,The Pallbearer,Matt Reeves,1996,98,"Comedy,Romance"
+tt0117894,Thinner,Tom Holland,1996,93,"Fantasy,Horror"
+tt0118580,Alibi,Andy Wolk,1997,120,Drama
+tt0119052,The Education of Little Tree,Richard Friedenberg,1997,112,Drama
+tt0119303,Home Alone 3,Raja Gosnell,1997,102,"Action,Comedy,Crime"
+tt0119700,Moonbase,Paolo Mazzucato,1997,89,"Action,Sci-Fi"
+tt0124265,The Voyage of the Mimi,"Richard Hendrick, D'Arcy Marsh",1984,30,"Adventure,Family,History"
+tt0141369,Inspector Gadget,David Kellogg,1999,78,"Action,Adventure,Comedy"
+tt0143096,The All New Adventures of Laurel & Hardy in 'For Love or Mummy',"John R. Cherry III, Larry Harmon",1999,85,Comedy
+tt0150143,Claire Dolan,Lodge Kerrigan,1998,95,Drama
+tt0167038,Belle's Magical World,"Bob Kline, Cullen Blaine, Dale Case, Daniel de la Vega, Barbara Dourmashkin-Case, Rick Leon, Burt Medall, Mitch Rochon",1998,92,"Adventure,Animation,Family"
+tt0175880,Magnolia,Paul Thomas Anderson,1999,188,Drama
+tt0184463,The Fear: Resurrection,Chris Angel,1999,87,Horror
+tt0200374,Shaka Zulu: The Citadel,Joshua Sinclair,2001,179,Drama
+tt0201538,Les convoyeurs attendent,Benoît Mariage,1999,94,"Comedy,Drama"
+tt0252028,Surviving Christmas,Mike Mitchell,2004,91,"Comedy,Romance"
+tt0253040,Diary of a Sex Addict,Joseph Brutsman,2001,93,Drama
+tt0257044,Road to Perdition,Sam Mendes,2002,117,"Crime,Drama,Thriller"
+tt0290382,A Wrinkle in Time,John Kent Harrison,2003,251,"Adventure,Family,Fantasy"
+tt0306063,Severed,Matt Green,2002,89,Horror
+tt0308132,The Corpse Grinders 2,Ted V. Mikels,2000,102,"Horror,Sci-Fi,Thriller"
+tt0317676,House of the Dead,Uwe Boll,2003,90,"Action,Adventure,Horror"
+tt0331338,16 Years of Alcohol,Richard Jobson,2003,102,"Crime,Drama"
+tt0339531,Sasquatch Hunters,Fred Tepper,2005,88,"Action,Horror,Thriller"
+tt0340883,Open House,Dan Mirvish,2004,95,Musical
+tt0367817,S.I.C.K. Serial Insane Clown Killer,Bob Willems,2003,97,"Horror,Thriller"
+tt0374569,Che: Part Two,Steven Soderbergh,2008,135,"Biography,Drama,History"
+tt0375154,Tristan + Isolde,Kevin Reynolds,2006,125,"Action,Drama,Romance"
+tt0377818,The Dukes of Hazzard,Jay Chandrasekhar,2005,104,"Action,Adventure,Comedy"
+tt0408309,"Carmilla, the Lesbian Vampire",Vince D'Amato,2004,85,"Drama,Horror"
+tt0425638,The War of the Worlds,Timothy Hines,2005,179,"Action,Adventure,Sci-Fi"
+tt0439932,The Jane Show,"George Bloomfield, T.W. Peacocke, Brian K. Roberts, Paul Fox, Craig Pryce, Ron Murphy, Chris Deacon",2004,30,Comedy
+tt0444628,Fay Grim,Hal Hartley,2006,118,"Action,Comedy,Thriller"
+tt0453671,Garam Masala,Priyadarshan,2005,146,"Comedy,Romance"
+tt0459387,The Great Ecstasy of Robert Carmichael,Thomas Clay,2005,96,"Crime,Drama"
+tt0468482,Fungicide,Dave Wascavage,2002,84,"Comedy,Horror"
+tt0473356,The Flock,Wai Keung Lau,2007,96,"Crime,Drama,Mystery"

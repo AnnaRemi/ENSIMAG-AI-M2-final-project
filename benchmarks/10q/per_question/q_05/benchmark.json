@@ -1,42 +1,41 @@
 {
   "benchmark_id": "canonical_10q_q05",
-  "difficulty": 3,
-  "difficulty_label": "medium_hard",
-  "question": "Which Fantasy movies have reviews praising the visuals or special effects?",
-  "semantic_question": "Does the review praise the visuals, cinematography, imagery, or special effects?",
-  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Fantasy%' AND answer(review, 'Does the review praise the visuals, cinematography, imagery, or special effects?') = 'Yes';",
+  "difficulty": 5,
+  "difficulty_label": "very_hard",
+  "question": "Which Mystery movies have reviews approving of the ending or a plot twist?",
+  "semantic_question": "Does the review approve of the ending, finale, resolution, or plot twist?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Mystery%' AND answer(review, 'Does the review approve of the ending, finale, resolution, or plot twist?') = 'Yes';",
   "structured_filters": [
     {
       "column": "genres",
       "op": "contains",
-      "value": "Fantasy"
+      "value": "Mystery"
     }
   ],
-  "semantic_task": "visual-quality praise",
+  "semantic_task": "mystery ending approval",
   "semantic_annotation_patterns": [
-    "\\bstunning visual",
-    "\\bbeautiful(?:ly)? (?:shot|filmed|photograph|visual|cinematograph)",
-    "\\bgreat special effects\\b",
-    "\\bexcellent special effects\\b",
-    "\\bvisual(?:ly)? (?:impressive|stunning|spectacular)\\b",
-    "\\bimpressive (?:visuals|effects|cinematography)\\b"
+    "\\b(?:great|excellent|brilliant|satisfying|powerful|perfect) ending\\b",
+    "\\b(?:great|clever) twist\\b",
+    "\\bsurprise ending\\b",
+    "\\bending (?:was|is) (?:great|excellent|brilliant|satisfying|powerful|perfect|effective)\\b",
+    "\\btwist (?:was|is) (?:great|excellent|brilliant|clever|effective)\\b"
   ],
   "annotation_policy": "Deterministic lexical annotation; no evaluated LLM used",
   "row_count": 100,
   "structured_candidate_count": 40,
   "semantic_positive_count": 42,
   "ground_truth_movie_ids": [
-    "tt0038733",
-    "tt0051406",
-    "tt0070795",
-    "tt0076299",
-    "tt0098061",
-    "tt0170016",
-    "tt0218891",
-    "tt0259711",
-    "tt0286098",
-    "tt0298482",
-    "tt0481452",
-    "tt0734656"
+    "tt0070723",
+    "tt0080661",
+    "tt0082279",
+    "tt0084133",
+    "tt0114746",
+    "tt0119196",
+    "tt0120620",
+    "tt0242998",
+    "tt0314204",
+    "tt0430912",
+    "tt0492754",
+    "tt0814314"
   ]
 }

@@ -3,12 +3,13 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
 DATA_ROOT = ROOT.parent / "data" / "subdatasets"
-EXPECTED = {"10q": 10, "5q": 5, "3q": 3, "1q": 1}
+EXPECTED = {"1q": 1, "3q": 3, "5q": 5, "10q": 10}
 REQUIRED_DATA = {
     "annotations.csv", "ground_truth.csv", "imdb_joined.csv",
     "imdb_reviews.csv", "imdb_structured_joined.csv",
@@ -21,6 +22,8 @@ def rows(path: Path) -> list[dict[str, str]]:
 
 
 def main() -> None:
+    historical_questions: set[str] = set()
+    historical_semantic_questions: set[str] = set()
     for suite_name, expected_count in EXPECTED.items():
         suite = ROOT / suite_name
         manifest = json.loads((suite / "manifest.json").read_text())
@@ -33,6 +36,14 @@ def main() -> None:
             assert item["directory"] == f"q_{index:02d}"
             qdir = suite / "per_question" / item["directory"]
             spec = json.loads((qdir / "benchmark.json").read_text())
+            normalized_question = re.sub(r"\W+", " ", spec["question"].lower()).strip()
+            normalized_semantic = re.sub(r"\W+", " ", spec["semantic_question"].lower()).strip()
+            if suite_name == "10q":
+                assert normalized_question not in historical_questions
+                assert normalized_semantic not in historical_semantic_questions
+            else:
+                historical_questions.add(normalized_question)
+                historical_semantic_questions.add(normalized_semantic)
             data_dir = DATA_ROOT / suite_name / item["directory"]
             assert REQUIRED_DATA <= {path.name for path in data_dir.iterdir()}
             movies = rows(data_dir / "imdb_structured_joined.csv")

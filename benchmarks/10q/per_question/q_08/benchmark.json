@@ -2,40 +2,40 @@
   "benchmark_id": "canonical_10q_q08",
   "difficulty": 4,
   "difficulty_label": "hard",
-  "question": "Which movies directed by Michael with reviews calling them exciting, thrilling, or suspenseful?",
-  "semantic_question": "Does the review describe the movie as exciting, thrilling, gripping, or suspenseful?",
-  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE director LIKE '%Michael%' AND answer(review, 'Does the review describe the movie as exciting, thrilling, gripping, or suspenseful?') = 'Yes';",
+  "question": "Which Science-Fiction movies have reviews describing them as intelligent, philosophical, or thought-provoking?",
+  "semantic_question": "Does the review describe the movie as intelligent, philosophical, or thought-provoking?",
+  "suql_query": "SELECT movie_id, title, year, runtime, director, genres FROM movies WHERE genres LIKE '%Sci-Fi%' AND answer(review, 'Does the review describe the movie as intelligent, philosophical, or thought-provoking?') = 'Yes';",
   "structured_filters": [
     {
-      "column": "director",
+      "column": "genres",
       "op": "contains",
-      "value": "michael"
+      "value": "Sci-Fi"
     }
   ],
-  "semantic_task": "excitement and suspense",
+  "semantic_task": "science-fiction intellectual depth",
   "semantic_annotation_patterns": [
-    "\\bexciting\\b",
-    "\\bthrilling\\b",
-    "\\bgripping\\b",
-    "\\bsuspenseful\\b",
-    "\\bedge of (?:my|your|the) seat\\b"
+    "\\bthought[- ]provoking\\b",
+    "\\bintelligent\\b",
+    "\\bphilosophical\\b",
+    "\\bmakes? you think\\b",
+    "\\bfood for thought\\b"
   ],
   "annotation_policy": "Deterministic lexical annotation; no evaluated LLM used",
   "row_count": 100,
   "structured_candidate_count": 40,
   "semantic_positive_count": 42,
   "ground_truth_movie_ids": [
-    "tt0033152",
-    "tt0071003",
-    "tt0072130",
-    "tt0091129",
-    "tt0096310",
-    "tt0111880",
-    "tt0114287",
-    "tt0116671",
-    "tt0314979",
-    "tt0409221",
-    "tt0411008",
-    "tt0466745"
+    "tt0049223",
+    "tt0087799",
+    "tt0099856",
+    "tt0112762",
+    "tt0120764",
+    "tt0234215",
+    "tt0255798",
+    "tt0343818",
+    "tt0348150",
+    "tt0369226",
+    "tt0445161",
+    "tt0457275"
   ]
 }

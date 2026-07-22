@@ -1,2 +1,0 @@
-implementation,method,precision,recall,f1,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds
-trummer_baseline_adaptive_block_join,Trummer baseline,0.2,0.016666666666666666,0.03076923076923077,1652.768760062009,56.4,0.0,56.4,0.0,1652.768760062009

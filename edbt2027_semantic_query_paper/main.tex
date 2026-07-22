@@ -1,242 +1,262 @@
 %% EDBT 2027 regular research-paper submission.
-%% IMPORTANT: Do not change the class options, geometry, fonts, margins,
-%% column spacing, footer, or other format settings supplied by EDBT.
 \documentclass[sigconf,review]{acmart}
-
-%% Copied verbatim from the official EDBT 2027 template.
-\geometry{twoside=true, head=13pt,
-     a4paper,
-     includeheadfoot, columnsep=2pc,
-     top=57pt, bottom=73pt, inner=54pt, outer=54pt,
-     marginparwidth=2pc,heightrounded
-     }%
-
-\AtBeginMaketitle{%
-  \input{edbt-macros}
-}%
-
+\geometry{twoside=true,head=13pt,a4paper,includeheadfoot,columnsep=2pc,
+  top=57pt,bottom=73pt,inner=54pt,outer=54pt,marginparwidth=2pc,heightrounded}
+\usepackage{balance}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+\AtBeginMaketitle{\input{edbt-macros}}
+\newcommand{\method}{\textsc{SBC}\xspace}
+\newcommand{\yes}{\mathsf{yes}}
+\newcommand{\no}{\mathsf{no}}
 \begin{document}
 
-%% EDBT requests title case. A regular research paper needs no title prefix.
-\title{Combining Structured Pruning and Batched Model Cascades for
-Semantic Query Processing}
-
-%% EDBT 2027 uses single-anonymous review: keep author names and affiliations.
-%% TODO(submission): replace every placeholder and ensure the PDF author list
-%% exactly matches CMT. Every author must register in CMT and provide an ORCID.
+\title{Structured Pruning and Calibrated Batched Model Cascades for Hybrid Semantic Queries}
 \author{Ann Remizova}
 \email{TODO@university.example}
-%% \orcid{0000-0000-0000-0000}
-\affiliation{%
-  \institution{TODO: Institution}
-  \city{TODO: City}
-  \country{France}
-}
-
-\renewcommand{\shortauthors}{Remizova et al.}
+\affiliation{\institution{Univ. Grenoble Alpes, Grenoble INP--Ensimag, LIG}\city{Grenoble}\country{France}}
+\renewcommand{\shortauthors}{Remizova}
 
 \begin{abstract}
-Large language models enable database systems to evaluate semantic predicates
-over unstructured data, but invoking a powerful model for every tuple makes
-query execution slow and resource-intensive. We present a physical execution
-strategy for hybrid queries that combine structured predicates with semantic
-conditions. The strategy integrates three complementary optimizations:
-SQL-style structured pruning to eliminate irrelevant tuples before inference,
-batch prompting to evaluate multiple candidates per invocation, and a
-two-level model cascade that handles straightforward cases with a smaller
-model and escalates uncertain cases to a larger model. We evaluate the approach
-on ten queries over IMDb metadata and reviews, in which predicates on genre,
-year, and runtime are combined with review-sentiment conditions. The benchmark
-compares tuple-level semantic evaluation, batching without structured pruning,
-structured pruning with row-wise cascading, and their proposed combination.
-In the principal same-run comparison, structured pruning with a batched cascade
-reduces mean end-to-end latency from 24.97 to 5.95 seconds and mean model calls
-from 24.00 to 4.69 relative to the SUQL baseline, while achieving 0.990
-precision. Its lower recall exposes the central quality--efficiency trade-off
-and motivates query- and workload-aware cascade calibration. The results show
-that database-aware candidate reduction and adaptive batched inference can
-substantially lower the execution cost of language-model-powered queries.
+Queries over heterogeneous data often combine exact predicates on tables with
+semantic predicates over text. Executing the latter with a large language model
+(LLM) once per surviving tuple is accurate but expensive; batching reduces calls
+but can waste inference on tuples that relational operators could eliminate. We
+present a structured batched cascade that (i) translates a natural-language query
+to a relational filter and semantic predicate, (ii) performs an exact key join,
+(iii) classifies candidate pairs in small-model batches, and (iv) coalesces only
+uncertain pairs into larger batches for a stronger model. A calibration sample is
+labelled by the strong model and selects the least confidence threshold attaining
+a target agreement. We implement this design in two existing execution styles:
+a row-oriented SUQL executor and a Trummer-style semantic block join. On a
+five-query IMDb benchmark with 100 movies, 40 structured candidates, and 12
+answers per query, the batched implementation obtains macro precision 0.786,
+recall 0.667, and F1 0.701 while averaging 21.84 seconds and 10 model calls. In
+the same preliminary run it is 4.28$\times$ faster and uses 13.78$\times$ fewer
+calls than the SUQL baseline, while improving macro F1 by 34.8\%. The experiment
+has one repetition and synthetic lexical ground truth; we therefore present it
+as an implementation study and state the repeated, independently annotated
+evaluation required to establish generality.
 \end{abstract}
-
-\keywords{semantic query processing, large language models, query
-optimization, model cascades, batch prompting, structured pruning}
-
+\keywords{semantic query processing, hybrid data, model cascades, batch prompting, query optimization}
 \maketitle
 
 \section{Introduction}
-Hybrid analytical queries increasingly combine ordinary relational predicates
-with conditions that require semantic interpretation of text. For example, a
-query may restrict movies by year and runtime while asking whether each review
-expresses a negative opinion. A conventional database evaluates the structured
-conditions cheaply, whereas the semantic predicate may require one or more
-language-model calls. Applying the latter tuple by tuple creates a costly
-physical plan even when most tuples can be rejected using structured data.
+A question such as ``Which Horror movies under 100 minutes have reviews
+describing them as frightening?'' spans two computational regimes. Genre and
+runtime are deterministic relational predicates. Whether prose describes fear
+requires semantic interpretation. SUQL makes this composition explicit with
+\texttt{answer(text, question)}~\cite{liu2024suql}; a naive physical plan still
+invokes the model for many tuples. Semantic block joins amortize prompt overhead
+across pairs~\cite{trummer2025semanticjoins}, while model cascades reserve a
+larger model for difficult inputs~\cite{chen2023frugalgpt}. These optimizations
+act on different terms of execution cost and should be composed.
 
-This paper studies how structured pruning, batch prompting, and heterogeneous
-model cascading interact in a single semantic-query plan. Our design first
-extracts deterministic predicates from the user question and applies them to
-the structured relation. It then groups the surviving exact-ID movie--review
-pairs into prompts for a smaller model. Only uncertain decisions are coalesced
-into fallback batches for a larger model.
+We study the physical plan
+\[
+ \text{parse}\rightarrow\text{relational prune}\rightarrow\text{exact join}
+ \rightarrow\text{cheap batches}\rightarrow\text{coalesced fallback}.
+\]
+The central technical issue is routing: a cheap prediction must be accepted only
+when its confidence is high enough, yet model scores are query-dependent. Our
+implementation samples candidates across the observed confidence range, obtains
+strong-model proxy labels, and learns a per-query threshold for a requested
+agreement level.
 
-The paper makes the following contributions:
-\begin{itemize}
-  \item a physical plan that composes structured candidate pruning with
-        batched, cheap-to-expensive semantic inference;
-  \item a controlled ten-query benchmark covering different combinations of
-        structured and semantic predicates; and
-  \item an empirical analysis of answer quality, latency, and cheap versus
-        expensive model calls across four execution strategies.
-\end{itemize}
+This paper contributes: (1) a database-aware batched cascade for hybrid queries;
+(2) a precise account of two current implementations, including their different
+confidence semantics; (3) a reproducible four-method IMDb benchmark measuring
+quality, latency, and calls; and (4) an analysis of failure behavior and threats
+to validity. The result is deliberately not described as a new query language:
+it is a physical execution strategy that can sit below one.
 
 \section{Background and Related Work}
-\label{sec:related}
-This section will position the method relative to semantic query languages,
-LLM-powered relational operators, block-wise semantic joins, and model cascades.
+SUQL extends SQL with \textsc{Answer} and \textsc{Summary} functions and uses an
+LLM semantic parser to translate conversational questions to the hybrid
+language~\cite{liu2024suql}. BlendSQL likewise integrates external reasoning
+within relational algebra~\cite{glenn2024blendsql}. Our work changes physical
+evaluation after parsing rather than expressiveness.
 
-%% TODO: Replace these drafting notes with a literature-backed discussion.
-\paragraph{Semantic query processing.}
-SUQL extends SQL with primitives that compose free-text processing with
-structured data access~\cite{liu2024suql}. Our baseline uses the resulting
-structured-first execution pattern but still incurs tuple-level semantic
-inference after pruning.
+Batch prompting places multiple examples in one request, amortizing fixed prompt
+and request costs; its benefit depends on batch size and task complexity
+~\cite{cheng2023batch}. Trummer derives block sizes for LLM semantic joins under
+context and output constraints~\cite{trummer2025semanticjoins}. We retain exact
+key equality outside the model and batch only the residual semantic predicate.
 
-\paragraph{Batch prompting and semantic joins.}
-Batch prompting amortizes request overhead by evaluating several samples in one
-model invocation~\cite{cheng2023batch}. Trummer adapts the same broad principle
-to semantic joins by placing blocks from both inputs into a prompt
-~\cite{trummer2025semanticjoins}. Such plans can still spend inference on
-candidates that deterministic predicates would remove.
+FrugalGPT learns cascades of heterogeneous models to trade quality against cost
+~\cite{chen2023frugalgpt}. Our router differs in being local to one query and in
+using the strong model as an online proxy oracle. This saves manual labels but
+only controls agreement with that model, not correctness against ground truth.
 
-\paragraph{Model cascades.}
-Confidence-based routing sends easy cases to a smaller model and ambiguous
-cases to a more capable model. Semantic predicates make the routing threshold
-difficult to calibrate across queries.
-
-\section{Problem Formulation}
-\label{sec:problem}
-Let $M$ denote a structured movie relation and $R$ a review relation joined by
-movie identifier. A hybrid query contains a structured predicate $p_s(m)$ and
-a semantic predicate $p_u(r)$. The target result is
+\section{Problem and Cost Model}
+Let $M$ be movies, $R$ reviews, $k_M(m)=k_R(r)$ their exact identifier join, and
+$q=(p_s,p_u)$ a structured predicate and semantic predicate. The desired movie
+set is
 \begin{equation}
-  Q = \{(m,r) \in M \Join R \mid p_s(m) \wedge p_u(r)\}.
+ A(q)=\{k_M(m):m\in M,\ p_s(m),\ \exists r\in R:\ k_M(m)=k_R(r)\land p_u(r)\}.
 \end{equation}
-The optimizer seeks to minimize latency and model usage while maintaining
-precision and recall with respect to a labeled result set.
+The implementation returns JSON-serializable rows keyed by movie identifier.
+Let $N=|M|$, $n=|\sigma_{p_s}(M)\Join_k R|$, cheap and expensive batch sizes be
+$b_c,b_e$, and $u(\tau)$ be the number routed to the expensive model at threshold
+$\tau$. Ignoring parsing and retries, Trummer V1 makes
+\begin{equation}
+ C(\tau)=\left\lceil n/b_c\right\rceil+
+ \left\lceil m/b_e\right\rceil+\left\lceil u(\tau)/b_e\right\rceil
+\end{equation}
+calls, where $m\leq\min(n,B)$ is the calibration sample size and $B$ its budget.
+Calibration and fallback samples can overlap, so this is a call count, not a
+count of unique evaluated pairs. With per-call latency functions $L_c(b)$ and
+$L_e(b)$, sequential model time is approximated by the analogous sum. Structured
+pruning changes $N$ to $n$; batching changes calls from $O(n)$ to $O(n/b)$; the
+cascade changes how many calls use the expensive model.
 
-\section{Structured Batched Cascade}
-\label{sec:method}
-The proposed plan has three stages.
+\section{Execution Strategy}
+Figure~\ref{fig:architecture} shows the physical plan. The parser emits a SUQL
+query; removing \texttt{answer(...)} leaves SQL executed by SQLite. A conservative
+regex extractor is used if parsing fails. Reviews are then restricted by exact
+identifier equality, never by an LLM.
 
-\subsection{Structured Candidate Pruning}
-Deterministic predicates over year, genre, and runtime are extracted from the
-question and evaluated before semantic inference. Exact identifiers then join
-the surviving movies to their reviews. This stage is conservative: an unsafe
-or unsupported extraction should leave the candidate set unchanged rather than
-discard possible answers.
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[node distance=6mm and 8mm,>=Latex,every node/.style={font=\small},
+ box/.style={draw,rounded corners,align=center,minimum height=8mm,fill=blue!5},
+ model/.style={draw,rounded corners,align=center,minimum height=8mm,fill=orange!12},
+ gate/.style={draw,diamond,aspect=2,align=center,fill=green!10}]
+\node[box] (q) {natural-language\\question};
+\node[model,right=of q] (parse) {SUQL parser\\(cheap model)};
+\node[box,right=of parse] (sql) {structured SQL\\$\sigma_{p_s}(M)$};
+\node[box,right=of sql] (join) {exact ID join\\with $R$};
+\node[model,right=of join] (cheap) {cheap model\\batches $b_c$};
+\node[gate,right=of cheap] (gate) {$|s_i|\geq\tau$?};
+\node[box,above right=5mm and 8mm of gate] (emit) {accept/reject\\cheap label};
+\node[model,below right=5mm and 8mm of gate] (strong) {strong model\\coalesced batches $b_e$};
+\node[box,right=17mm of gate] (json) {deduplicate IDs\\and emit rows/JSON};
+\draw[->] (q)--(parse);\draw[->] (parse)--(sql);\draw[->] (sql)--(join);
+\draw[->] (join)--(cheap);\draw[->] (cheap)--(gate);
+\draw[->] (gate)--node[above,sloped]{yes}(emit);\draw[->] (gate)--node[below,sloped]{no}(strong);
+\draw[->] (emit.east)-| (json.north);\draw[->] (strong.east)-| (json.south);
+\end{tikzpicture}
+\caption{Trummer V1 architecture. Calibration (omitted for clarity) samples cheap scores, queries the strong model, and supplies $\tau$ to the gate.}
+\label{fig:architecture}
+\end{figure*}
 
-\subsection{Batched Cheap-Model Evaluation}
-Candidate pairs are grouped into schema-constrained prompts. Each output must
-refer to an input identifier, preventing free-form answers from introducing
-unknown tuples. Batching amortizes fixed request and prompt overhead across
-several candidates.
+\subsection{Two confidence representations}
+SUQL V1 scores each row independently. Ideally its score is the binary log odds
+\begin{equation} s_i=\log P_c(\yes\mid x_i,q)-\log P_c(\no\mid x_i,q). \end{equation}
+When both token log-probabilities are unavailable, the emitted label is assigned
+a signed magnitude derived from its probability or a default magnitude 2. Thus
+$\hat y_i=\mathbb{1}[s_i\geq0]$ and confidence is $c_i=|s_i|$.
 
-\subsection{Uncertainty-Aware Escalation}
-The smaller model assigns a decision and confidence to each candidate. Decisions
-outside a calibrated confidence region are accepted or rejected immediately;
-uncertain candidates are coalesced into larger fallback batches for the more
-capable model. The cascade threshold controls the quality--cost trade-off.
+Trummer V1 asks for categorical labels in batches and maps
+\begin{equation}
+ s_i=\begin{cases}+2&\text{YES}\cr 0&\text{UNCERTAIN}\cr-2&\text{NO.}\end{cases}
+\end{equation}
+Consequently its ``confidence'' currently has only two magnitudes. This is a
+routing heuristic, not a calibrated probability; a threshold learned from these
+scores can only separate UNCERTAIN from hard decisions (or disable all cheap
+decisions). The distinction is important when interpreting calibration results.
 
-%% TODO: Add pseudocode for the complete execution plan and define the exact
-%% confidence score, threshold calibration procedure, and failure handling.
+\subsection{Online agreement threshold}
+Let $S$ be at most $B$ scored candidates, selected approximately uniformly by
+rank over descending confidence. The expensive model supplies proxy labels
+$y_i^e$. For each observed candidate threshold $t$, define
+\begin{equation}
+ \widehat a(t)=\frac{\sum_{i\in S}\mathbf1[c_i\geq t]\mathbf1[\hat y_i=y_i^e]}
+ {\sum_{i\in S}\mathbf1[c_i\geq t]}.
+\end{equation}
+For target agreement $\alpha=0.9$, the implementation scans distinct confidence
+values in increasing order and returns the first $t$ with $\widehat a(t)\geq
+\alpha$. If none exists, $\tau=\bot$ and every scored candidate is escalated.
+With a manual threshold, calibration is skipped. Missing cheap scores also route
+to fallback. A cheap score is accepted iff $c_i\geq\tau$; its sign determines
+accept or reject.
+
+\begin{figure}[t]
+\small
+\begin{tabular}{p{.97\columnwidth}}
+\toprule
+\textbf{Algorithm 1: structured batched cascade}\\\midrule
+1. Parse $q$ into $(p_s,p_u)$; on failure extract only safe predicates.\\
+2. $M'\leftarrow\sigma_{p_s}(M)$; $X\leftarrow M'\Join_{k_M=k_R}R$.\\
+3. For each block $G\subseteq X$, $|G|\le b_c$, obtain cheap scores $s_i$.\\
+4. Sample $S\subseteq X$, $|S|\le B$ across confidence ranks; obtain strong labels and learn $\tau$.\\
+5. Accept confident positive scores; reject confident negative scores; append all other candidates to $U$.\\
+6. For blocks $H\subseteq U$, $|H|\le b_e$, obtain strong labels and accept positives.\\
+7. Deduplicate accepted rows by movie ID and return them.\\\bottomrule
+\end{tabular}
+\end{figure}
+
+\subsection{Prompt and failure contracts}
+Both prompts demand one identifier-bound decision per candidate, temperature zero,
+and no prose. The cheap Trummer prompt defines YES/UNCERTAIN/NO; the expensive
+prompt defines recall-first YES/NO. Reviews are truncated to 3,500 characters;
+the SUQL scorer uses 1,800 and its expensive fallback 6,000. A malformed or
+incomplete cheap batch escalates its candidates. A failed Trummer expensive batch
+is conservatively rejected by producing no accepted IDs; SUQL retries transport
+errors and an invalid answer, then returns NO. These fail-closed choices improve
+precision but can reduce recall.
 
 \section{Experimental Methodology}
-\label{sec:methodology}
-\subsection{Dataset and Workload}
-The current benchmark contains ten disjoint IMDb-derived tasks. Each task has
-60 unique movies, 24 candidates satisfying the structured predicates, and 12
-ground-truth answers. Queries vary genre, release year or runtime, and positive
-or negative review sentiment. Ground truth is the intersection of deterministic
-structured filters and the source sentiment split.
-
-\subsection{Compared Execution Strategies}
-We compare (i) a SUQL baseline that prunes structured predicates and evaluates
-the semantic condition with the expensive model, (ii) a batched cascade without
-structured pruning, (iii) structured pruning followed by a row-wise cascade,
-and (iv) the proposed structured-pruned batched cascade.
-
-\subsection{Metrics and Repetition Policy}
-We report macro precision, recall, and F1 across queries, together with wall-clock
-time and the number of cheap and expensive model calls. Each question--method
-configuration is repeated 11 times and numeric and quality measures are averaged.
-
-%% TODO(submission): Document hardware, model identifiers and versions,
-%% decoding settings, batch sizes, thresholds, timeout policy, software commit,
-%% and statistical uncertainty. Avoid comparing rows from different runs as if
-%% they were paired measurements.
+The canonical five-query suite covers recommendation/year, fear/genre and
+runtime, visual praise/genre, pacing/director, and originality/title. Each query
+contains 100 movies, 40 structured candidates, and 12 answer IDs. Labels are
+generated by deterministic lexical patterns and include evidence and rationales;
+no evaluated model creates ground truth. We compare SUQL baseline, SUQL V1,
+Trummer adaptive block join, and Trummer V1. The reported run uses Gemma~4 e2b
+as cheap model and Gemma~4 26b as expensive model, temperature zero, $b_c=8$,
+$b_e=32$, $B=20$, and $\alpha=.9$. Metrics are macro-averaged across questions:
+$P=TP/(TP+FP)$, $R=TP/(TP+FN)$, and $F_1=2PR/(P+R)$.
 
 \section{Results}
-\label{sec:results}
-Table~\ref{tab:principal-results} reports the principal same-run comparison.
-The combined plan is approximately $4.2\times$ faster and uses about $80\%$
-fewer model calls than SUQL. It nearly preserves precision, but the lower recall
-reduces macro F1. This result supports the efficiency claim while showing that
-threshold selection must be improved before claiming quality preservation.
-
 \begin{table}[t]
-  \caption{Macro results over ten IMDb queries (11 repetitions per
-  question--method configuration).}
-  \label{tab:principal-results}
-  \centering
-  \small
-  \begin{tabular}{lrrrr}
-    \toprule
-    Method & Prec. & Recall & F1 & Time (s) \\
-    \midrule
-    SUQL baseline & 1.000 & 0.621 & 0.756 & 24.97 \\
-    Batched cascade & 0.356 & 0.487 & 0.403 & 13.80 \\
-    Pruned row cascade & 0.693 & 0.214 & 0.322 & 29.66 \\
-    Pruned batched cascade & 0.990 & 0.494 & 0.607 & 5.95 \\
-    \bottomrule
-  \end{tabular}
+\caption{Five-query preliminary run (one repetition). Calls and seconds are means per query; quality is macro-averaged.}
+\label{tab:results}\centering\small
+\begin{tabular}{lrrrrr}\toprule
+Method&P&R&F1&sec.&calls\\\midrule
+SUQL baseline&.537&.567&.520&93.39&137.8\\
+SUQL V1&.617&.717&.638&419.12&68.0\\
+Trummer baseline&.606&.333&.396&40.41&100.4\\
+Trummer V1&\textbf{.786}&.667&\textbf{.701}&\textbf{21.84}&\textbf{10.0}\\\bottomrule
+\end{tabular}
 \end{table}
+Trummer V1 reduces latency by 76.6\% and calls by 92.7\% relative to SUQL,
+while raising F1 by 34.8\%. Relative to the Trummer baseline, it reduces latency
+46.0\% and calls 90.0\%, and raises F1 77.0\%. It uses five cheap and five
+expensive calls per question; calibration calls are included. SUQL V1 improves
+quality but is 4.49$\times$ slower than its baseline because it scores 40 rows
+individually and performs row-wise calibration/fallback. Thus cascading alone
+does not guarantee lower latency: batching and the fraction escalated determine
+the outcome.
 
-%% TODO: Add confidence intervals, per-query results, a call-count table, and
-%% ablations isolating structured pruning, batching, and cascading.
+\section{Limitations and Future Work}
+The primary result has one repetition, one domain, five predicates, locally
+served models, and lexically constructed labels. It does not support confidence
+intervals or claims about arbitrary semantic queries. Strong-model agreement is
+not correctness, and calibration reuses the evaluated query population. Calls
+ignore prompt/completion tokens and model sizes. The four methods also implement
+different physical operators, so the comparison is end-to-end rather than a
+factorial ablation.
 
-\section{Discussion and Limitations}
-The benchmark is currently limited to IMDb relations and sentiment predicates,
-so it does not establish generality across domains or semantic operators. The
-ground truth derives from an existing sentiment split rather than independent
-annotation. Local-model latency depends on the hardware and serving stack, and
-call count does not by itself measure tokens, energy, or monetary cost. Finally,
-the cascade sacrifices recall for some predicates; future work should calibrate
-thresholds per predicate and test conservative fallback policies.
+The next evaluation should use independently annotated data, at least ten repeated
+runs with fixed software/model versions, per-query distributions and paired
+bootstrap intervals, token and energy measurements, and ablations for pruning,
+batching, calibration, and cascade. Replacing categorical Trummer scores with
+log-odds or calibrated probabilities would make $\tau$ genuinely granular.
 
 \section{Conclusion}
-Structured pruning and batch prompting address different sources of waste in
-semantic query execution, while a heterogeneous cascade reduces reliance on the
-largest model. Combining all three yields substantial latency and call-count
-reductions in the current benchmark. Broader workloads and improved calibration
-are needed to retain those savings while matching the strongest baseline's
-recall.
+Structured pruning, batching, and heterogeneous model routing remove three
+different sources of waste. Their composition yields the strongest preliminary
+quality/cost point in our benchmark, whereas a row-wise cascade can be slower
+despite fewer expensive calls. The mathematical account also exposes a current
+limitation: categorical batch decisions provide only coarse confidence. The
+promising result therefore motivates, rather than substitutes for, a repeated
+and independently annotated study.
 
-%% This exact section name and its position immediately before the references
-%% are required by the EDBT 2027 call. The section is outside the page limit.
 \section{Artifacts}
-The implementation, benchmark-construction scripts, query specifications,
-derived data, raw run outputs, and plotting scripts will be submitted as EDBT
-supplemental material. The artifact README will document environment creation,
-model acquisition, commands for reproducing every experiment, and the mapping
-from raw outputs to each table and figure in the paper.
-
-%% TODO(submission): Add the final supplemental ZIP name or a public repository
-%% URL that does not monitor reviewer access. Verify that no secrets, local
-%% absolute paths, or unnecessary model files are included.
+The supplement contains all four implementations, exact prompts, data provenance,
+annotations, manifests, runners, raw aggregate tables, and plotting scripts.
 
 \balance
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
-
 \end{document}
-\endinput
