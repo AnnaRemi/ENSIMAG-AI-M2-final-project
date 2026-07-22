@@ -1,0 +1,2 @@
+implementation,method,precision,recall,f1,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds
+suql_v1_two_level_cascade,SUQL V1 (2-level cascade),0.3142857142857143,0.9166666666666666,0.4680851063829787,1650.3686569770798,72.0,40.0,32.0,1354.4223274043761,295.8359219334088

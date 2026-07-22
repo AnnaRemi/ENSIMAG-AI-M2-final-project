@@ -1,0 +1,6 @@
+question_index,question,implementation,method,repetitions,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds,precision,recall,f1
+1,q_01,trummer_baseline_adaptive_block_join,Trummer baseline,1,2517.358105661813,51.0,0.0,51.0,0.0,2517.358105661813,0.0,0.0,0.0
+2,q_02,trummer_baseline_adaptive_block_join,Trummer baseline,1,1380.5658992952667,60.0,0.0,60.0,0.0,1380.5658992952667,0.0,0.0,0.0
+3,q_03,trummer_baseline_adaptive_block_join,Trummer baseline,1,1344.8133783722296,51.0,0.0,51.0,0.0,1344.8133783722296,0.0,0.0,0.0
+4,q_04,trummer_baseline_adaptive_block_join,Trummer baseline,1,1508.48105747113,60.0,0.0,60.0,0.0,1508.48105747113,1.0,0.08333333333333333,0.15384615384615385
+5,q_05,trummer_baseline_adaptive_block_join,Trummer baseline,1,1512.625359509606,60.0,0.0,60.0,0.0,1512.625359509606,0.0,0.0,0.0

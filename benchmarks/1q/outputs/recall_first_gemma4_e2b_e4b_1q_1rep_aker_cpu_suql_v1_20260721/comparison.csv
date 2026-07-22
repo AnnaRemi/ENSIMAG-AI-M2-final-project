@@ -1,0 +1,2 @@
+question_index,question,implementation,method,repetitions,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds,precision,recall,f1
+1,q_01,suql_v1_two_level_cascade,SUQL V1 (2-level cascade),1,646.4402350056916,60.0,40.0,20.0,267.2562595298514,379.01395667809993,0.5,0.08333333333333333,0.14285714285714285

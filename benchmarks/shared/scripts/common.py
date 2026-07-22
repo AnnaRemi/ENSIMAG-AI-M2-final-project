@@ -12,10 +12,34 @@ SUITE_ROOT = Path(os.environ["BENCHMARK_SUITE_ROOT"]).resolve()
 QUESTION_ROOT = SUITE_ROOT / "per_question"
 
 
+def _data_root() -> Path:
+    configured = os.environ.get("LAB_DATA_ROOT")
+    if configured:
+        return Path(configured).resolve()
+    for parent in Path(__file__).resolve().parents:
+        candidate = parent / "data"
+        if (candidate / "subdatasets").exists():
+            return candidate
+    return LAB_ROOT / "data"
+
+
+DATA_ROOT = _data_root()
+SUBDATASET_ROOT = DATA_ROOT / "subdatasets" / SUITE_ROOT.name
+
+
 def question_dir(name: str) -> Path:
     path = QUESTION_ROOT / name
     if not (path / "benchmark.json").exists():
         raise FileNotFoundError(f"Unknown question directory: {path}")
+    return path
+
+
+def question_data_dir(name: str) -> Path:
+    # Metadata stays with the benchmark suite; all CSV inputs are centralized.
+    question_dir(name)
+    path = SUBDATASET_ROOT / name
+    if not (path / "imdb_reviews.csv").exists():
+        raise FileNotFoundError(f"Missing centralized question data: {path}")
     return path
 
 
@@ -30,7 +54,7 @@ def cpu_seconds() -> float:
 
 def load_movies(name: str) -> list[dict[str, str]]:
     rows = []
-    with (question_dir(name) / "data/imdb_structured_joined.csv").open(
+    with (question_data_dir(name) / "imdb_structured_joined.csv").open(
         newline="", encoding="utf-8"
     ) as handle:
         for row in csv.DictReader(handle):
@@ -45,7 +69,7 @@ def load_movies(name: str) -> list[dict[str, str]]:
 
 def load_reviews(name: str) -> list[dict[str, str]]:
     rows = []
-    with (question_dir(name) / "data/imdb_reviews.csv").open(
+    with (question_data_dir(name) / "imdb_reviews.csv").open(
         newline="", encoding="utf-8"
     ) as handle:
         for row in csv.DictReader(handle):

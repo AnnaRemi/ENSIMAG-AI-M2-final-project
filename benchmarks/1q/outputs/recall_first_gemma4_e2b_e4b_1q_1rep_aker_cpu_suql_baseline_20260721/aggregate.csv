@@ -1,0 +1,2 @@
+implementation,method,precision,recall,f1,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds
+suql_baseline,SUQL baseline,0.5,0.08333333333333333,0.14285714285714285,4880.799141556025,40.0,0.0,40.0,0.0,4880.799141556025

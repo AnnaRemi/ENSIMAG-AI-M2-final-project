@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
+DATA_ROOT = ROOT.parent / "data" / "subdatasets"
 EXPECTED = {"10q": 10, "5q": 5, "3q": 3, "1q": 1}
 REQUIRED_DATA = {
     "annotations.csv", "ground_truth.csv", "imdb_joined.csv",
@@ -32,10 +33,11 @@ def main() -> None:
             assert item["directory"] == f"q_{index:02d}"
             qdir = suite / "per_question" / item["directory"]
             spec = json.loads((qdir / "benchmark.json").read_text())
-            assert REQUIRED_DATA <= {path.name for path in (qdir / "data").iterdir()}
-            movies = rows(qdir / "data/imdb_structured_joined.csv")
-            reviews = rows(qdir / "data/imdb_reviews.csv")
-            truth = rows(qdir / "data/ground_truth.csv")
+            data_dir = DATA_ROOT / suite_name / item["directory"]
+            assert REQUIRED_DATA <= {path.name for path in data_dir.iterdir()}
+            movies = rows(data_dir / "imdb_structured_joined.csv")
+            reviews = rows(data_dir / "imdb_reviews.csv")
+            truth = rows(data_dir / "ground_truth.csv")
             truth_ids = set(spec["ground_truth_movie_ids"])
             assert len(movies) == len(reviews) == 100
             assert len(truth_ids) >= 10

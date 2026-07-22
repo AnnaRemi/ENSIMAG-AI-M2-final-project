@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -13,10 +14,10 @@ from scorer import OllamaLogOddsScorer
 
 
 DEFAULT_API_BASE = os.environ.get("SUQL_API_BASE", "http://localhost:11434")
-DEFAULT_CHEAP_MODEL = os.environ.get("SUQL_CHEAP_MODEL", "ollama/gemma2:2b")
+DEFAULT_CHEAP_MODEL = os.environ.get("SUQL_CHEAP_MODEL", "ollama/gemma4:e2b")
 DEFAULT_EXPENSIVE_MODEL = os.environ.get(
     "SUQL_EXPENSIVE_MODEL",
-    os.environ.get("SUQL_MODEL", "ollama/phi4-mini"),
+    os.environ.get("SUQL_MODEL", "ollama/gemma4:e4b"),
 )
 DEFAULT_CHEAP_ACCEPT_FLOOR = float(os.environ.get("SUQL_CHEAP_ACCEPT_FLOOR", "4.0"))
 DEFAULT_CHEAP_MIN_DECISION_RATE = float(os.environ.get("SUQL_CHEAP_MIN_DECISION_RATE", "0.3"))
@@ -52,27 +53,21 @@ def ollama_model_name(model: str) -> str:
     """Return the model name expected by Ollama's native API."""
     return model.removeprefix("ollama/")
 
-ANSWER_SYSTEM = """You are evaluating a single movie review to answer a question about it.
+ANSWER_SYSTEM = """You are the final recall-first semantic filter for movie reviews.
 
-Determine whether the review contains credible evidence for the condition.
+Decide whether the review provides evidence that the movie satisfies the question.
 
-Maximize recall:
-- Answer YES if direct, indirect, synonymous, or reasonably implied evidence exists.
-- Answer NO only when the condition is clearly absent or contradicted.
-- If the evidence is genuinely ambiguous, answer UNCERTAIN.
-- Do not reject merely because the review uses different wording.
+Recall is the primary objective, but do not accept every review:
+- Answer YES for any concrete review-specific support, including direct wording,
+  synonyms, described examples, and reasonable implications.
+- Give borderline evidence the benefit of the doubt when it specifically bears on
+  the condition; exact wording is unnecessary.
+- This is evidence retrieval, not sentiment scoring: an explicit mention still
+  counts when it is negated, qualified, quoted, or used critically.
+- Answer NO when support is absent, merely generic, based only on genre/topic, or
+  never discusses the condition itself. Lack of contradiction alone is not evidence.
 
-Return only the decision. Do not include reasoning or evidence."""
-
-DECISION_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "decision": {"type": "string", "enum": ["yes", "no", "uncertain"]},
-    },
-    "required": ["decision"],
-    "additionalProperties": False,
-}
-
+Return exactly YES or NO. Do not include reasoning, punctuation, or extra text."""
 
 @dataclass
 class CascadeStats:
@@ -361,7 +356,7 @@ class CascadeAnswerFilter:
         usage = self.stats.usage_for(question, self.cheap_model, self.expensive_model)
         self.stats.expensive_full_calls += 1
         usage["expensive_full_calls"] = int(usage["expensive_full_calls"]) + 1
-        user_prompt = f"Review:\n{review_text[:1500]}\n\nQuestion: {question}"
+        user_prompt = f"Review:\n{review_text[:6000]}\n\nQuestion: {question}"
         payload = {
             "model": self.expensive_ollama_model,
             "messages": [
@@ -369,43 +364,53 @@ class CascadeAnswerFilter:
                 {"role": "user", "content": user_prompt},
             ],
             "stream": False,
-            "format": DECISION_SCHEMA,
             "think": EXPENSIVE_THINK,
             "keep_alive": "30m",
             "options": {
                 "temperature": 0,
                 "num_predict": EXPENSIVE_NUM_PREDICT,
-                "num_ctx": 4096,
+                "num_ctx": 8192,
             },
         }
         trace = os.environ.get("PIPELINE_TRACE", "0") == "1"
         if trace:
             print(f"[TRACE SUQL EXPENSIVE PROMPT] {payload!r}", flush=True)
-        started = time.perf_counter()
-        try:
-            response = _post_with_retries(
-                f"{self.api_base}/api/chat",
-                payload,
-                timeout=self.timeout,
-                retries=self.request_retries,
+        for attempt in range(2):
+            started = time.perf_counter()
+            try:
+                response = _post_with_retries(
+                    f"{self.api_base}/api/chat", payload,
+                    timeout=self.timeout, retries=self.request_retries,
+                )
+                result = extract_text(response.json()).strip()
+            except Exception:
+                result = ""
+            finally:
+                elapsed = time.perf_counter() - started
+                self.stats.expensive_seconds += elapsed
+                usage["expensive_seconds"] = float(usage["expensive_seconds"]) + elapsed
+            if trace:
+                print(f"[TRACE SUQL EXPENSIVE OUTPUT] {result!r}", flush=True)
+            decision = _parse_expensive_decision(result)
+            if decision is not None:
+                return decision
+            payload["messages"][-1]["content"] = (
+                user_prompt + "\n\nYour previous response was invalid. Reply with exactly YES or NO."
             )
-        except Exception:
-            return "Uncertain"
-        finally:
-            elapsed = time.perf_counter() - started
-            self.stats.expensive_seconds += elapsed
-            usage["expensive_seconds"] = float(usage["expensive_seconds"]) + elapsed
-        result = extract_text(response.json()).strip()
-        if trace:
-            print(f"[TRACE SUQL EXPENSIVE OUTPUT] {response.json()!r}", flush=True)
-        try:
-            structured = json.loads(result)
-            decision = str(structured["decision"]).strip().lower()
-            if decision not in {"yes", "no", "uncertain"}:
-                raise ValueError("invalid decision")
-            return decision.capitalize()
-        except (json.JSONDecodeError, KeyError, TypeError, ValueError):
-            return "Uncertain"
+        return "No"
+
+
+def _parse_expensive_decision(result: str) -> str | None:
+    try:
+        structured = json.loads(result)
+        if isinstance(structured, dict):
+            result = str(structured.get("decision", structured.get("answer", result)))
+    except (json.JSONDecodeError, TypeError, ValueError):
+        pass
+    match = re.search(r"\b(uncertain|yes|no)\b", result, re.IGNORECASE)
+    if not match or match.group(1).lower() == "uncertain":
+        return None
+    return match.group(1).capitalize()
 
 
 def _post_with_retries(

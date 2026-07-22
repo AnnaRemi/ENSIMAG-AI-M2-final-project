@@ -33,36 +33,6 @@ class JoinStats:
     raw_response: str
 
 
-def join_response_schema(block_1: list[dict]) -> dict:
-    return {
-        "type": "object",
-        "properties": {
-            "decisions": {
-                "type": "array",
-                "minItems": len(block_1),
-                "maxItems": len(block_1),
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "movie_id": {
-                            "type": "string",
-                            "enum": [str(movie.get("movie_id", "")) for movie in block_1],
-                        },
-                        "decision": {
-                            "type": "string",
-                            "enum": ["yes", "no", "uncertain"],
-                        },
-                    },
-                    "required": ["movie_id", "decision"],
-                    "additionalProperties": False,
-                },
-            }
-        },
-        "required": ["decisions"],
-        "additionalProperties": False,
-    }
-
-
 def token_size(text: str, model: str = "gpt-4o") -> int:
     """Return token size, using tiktoken when available.
 
@@ -118,18 +88,18 @@ def create_prompt(
         "Find every movie in Collection 1 that has a review in Collection 2 "
         "satisfying this predicate:",
         predicate,
-        "Determine whether each review contains credible evidence for the condition.",
-        "Maximize recall:",
-        "- Answer YES if direct, indirect, synonymous, or reasonably implied evidence exists.",
-        "- Answer NO only when the condition is clearly absent or contradicted.",
-        "- If the evidence is genuinely ambiguous, answer UNCERTAIN.",
-        "- Do not reject merely because the review uses different wording.",
+        "Act as a recall-first semantic filter, while requiring review-specific evidence.",
+        "- Answer YES for direct wording, synonyms/paraphrases, described examples, or reasonable implications.",
+        "- Give borderline evidence the benefit of the doubt when it specifically bears on the predicate.",
+        "- Count explicit mentions even when negated, qualified, quoted, or critical; retrieve evidence rather than score sentiment.",
+        "- Answer NO when support is absent, generic, based only on genre/topic, or never discusses the predicate itself.",
+        "- Lack of contradiction alone is not evidence.",
         "Collection 1 contains structured movie rows. Collection 2 contains review chunks.",
         "A review belongs to a movie only when tconst is exactly equal to movie_id.",
-        "Return one compact JSON decision for every movie_id.",
+        "Return one decision per line as: movie_id: YES or movie_id: NO.",
         "Do not include confidence, evidence, explanations, or prose.",
         "Copy each movie_id exactly from Collection 1.",
-        "Do not add prose or a completion marker.",
+        "Do not add prose, JSON, markdown, or a completion marker.",
         "",
         "Collection 1:",
     ]
@@ -140,7 +110,7 @@ def create_prompt(
     for idx, row in enumerate(block_2, 1):
         parts.append(f"{idx}: {row['text']}")
     parts.append("")
-    parts.append("JSON result:")
+    parts.append("Decisions:")
     return "\n".join(parts)
 
 
@@ -218,6 +188,17 @@ def parse_pairs(answer: str, block_1: list[dict], block_2: list[dict]) -> list[d
         except (TypeError, ValueError):
             pass
 
+    # Preferred schema-free protocol: one ``movie_id: decision`` per line.
+    for movie_id, label in re.findall(
+        r"\b(tt\d+)\b\s*(?:[:=,|\-]|\s)\s*(yes|no|uncertain)\b",
+        answer,
+        flags=re.IGNORECASE,
+    ):
+        if label.lower() != "yes" or movie_id not in movies_by_id:
+            continue
+        for review in reviews_by_id.get(movie_id, []):
+            _append_result(results, seen, movies_by_id[movie_id], review)
+
     for movie_id, tconst in id_pairs:
         if movie_id != tconst or movie_id not in movies_by_id:
             continue
@@ -240,6 +221,28 @@ def parse_pairs(answer: str, block_1: list[dict], block_2: list[dict]) -> list[d
             continue
         _append_result(results, seen, movie, review)
     return results
+
+
+def parse_decisions(answer: str, block_1: list[dict]) -> dict[str, str]:
+    """Return every explicit movie decision found in JSON or plain text."""
+    valid = {str(movie.get("movie_id", "")) for movie in block_1}
+    decisions: dict[str, str] = {}
+    payload = _extract_json(answer)
+    if isinstance(payload, dict) and isinstance(payload.get("decisions"), list):
+        for item in payload["decisions"]:
+            if not isinstance(item, dict):
+                continue
+            movie_id = str(item.get("movie_id", ""))
+            label = str(item.get("decision", "")).strip().lower()
+            if movie_id in valid and label in {"yes", "no", "uncertain"}:
+                decisions[movie_id] = label
+    for movie_id, label in re.findall(
+        r"\b(tt\d+)\b\s*(?:[:=,|\-]|\s)\s*(yes|no|uncertain)\b",
+        answer, flags=re.IGNORECASE,
+    ):
+        if movie_id in valid:
+            decisions[movie_id] = label.lower()
+    return decisions
 
 
 def has_complete_decision_coverage(answer: str, block_1: list[dict]) -> bool:
@@ -318,11 +321,29 @@ def join_two_blocks(
     dry_run: bool = False,
 ) -> tuple[JoinStats, list[dict]]:
     start_s = time.time()
-    prompt = create_prompt(block_1, block_2, predicate)
+    review_ids = {str(review.get("tconst", "")) for review in block_2}
+    active_block_1 = [
+        movie
+        for movie in block_1
+        if str(movie.get("movie_id", "")) in review_ids
+    ]
+    if not active_block_1:
+        return (
+            JoinStats(
+                block_1_index, block_2_index, 0, 0,
+                time.time() - start_s, False, 0, 0, ""
+            ),
+            [],
+        )
+    prompt = create_prompt(active_block_1, block_2, predicate)
     prompt_tokens = token_size(prompt, token_model)
     max_tokens = token_threshold - prompt_tokens
     if max_completion_tokens is not None:
         max_tokens = min(max_tokens, max_completion_tokens)
+    # Plain-text decisions are short. Bound generation by the number of
+    # candidates so a verbose model cannot spend hundreds of tokens after the
+    # useful answer has already been produced.
+    max_tokens = min(max_tokens, max(48, 16 + 16 * len(active_block_1)))
     if max_tokens < 1:
         return (
             JoinStats(
@@ -333,7 +354,7 @@ def join_two_blocks(
         )
 
     if dry_run:
-        results = _deterministic_dry_run(block_1, block_2)
+        results = _deterministic_dry_run(active_block_1, block_2)
         return (
             JoinStats(
                 block_1_index, block_2_index, prompt_tokens, 0,
@@ -348,7 +369,6 @@ def join_two_blocks(
             model=model,
             max_tokens=max_tokens,
             temperature=0,
-            response_schema=join_response_schema(block_1),
         )
     except Exception as exc:
         return (
@@ -365,11 +385,9 @@ def join_two_blocks(
             ),
             [],
         )
-    overflow = (
-        response.finish_reason != "stop"
-        or not has_complete_decision_coverage(response.content, block_1)
-    )
-    results = parse_pairs(response.content, block_1, block_2)
+    decisions = parse_decisions(response.content, active_block_1)
+    results = parse_pairs(response.content, active_block_1, block_2)
+    overflow = response.finish_reason == "length" or len(decisions) < len(active_block_1)
     return (
         JoinStats(
             block_1_index,
@@ -504,25 +522,7 @@ def adaptive_join(
         estimate *= 4
 
     all_stats = pd.concat(stats_frames, ignore_index=True) if stats_frames else pd.DataFrame()
-    if result.empty:
-        movies = df1.to_dict("records")
-        reviews_by_id: dict[str, dict] = {
-            str(review.get("tconst", "")): review
-            for review in df2.to_dict("records")
-        }
-        fallback_results: list[dict] = []
-        for movie in movies:
-            movie_id = str(movie.get("movie_id", ""))
-            review = reviews_by_id.get(movie_id)
-            if review is None:
-                continue
-            _append_result(fallback_results, set(), movie, review)
-            break
-        if fallback_results:
-            fallback_results[0]["match_source"] = "nonempty_fallback"
-            result = pd.DataFrame(fallback_results)
-            all_stats["nonempty_fallback_rows"] = 1
-    elif "nonempty_fallback_rows" not in all_stats:
+    if "nonempty_fallback_rows" not in all_stats:
         all_stats["nonempty_fallback_rows"] = 0
     return all_stats, result
 

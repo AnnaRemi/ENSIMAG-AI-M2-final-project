@@ -1,0 +1,2 @@
+question_index,question,implementation,method,repetitions,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds,precision,recall,f1
+1,q_01,trummer_v1_structured_two_level_cascade,Trummer V1 (structured + 2-level cascade),1,351.52172159589827,8.0,5.0,3.0,41.327068015467376,310.19309964124113,0.6,0.25,0.35294117647058826

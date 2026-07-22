@@ -1,12 +1,23 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import pandas as pd
 
 
-HETEROGEN_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_SUQL_DATA = HETEROGEN_ROOT.parent.parent / "project SUQL" / "data"
+def _default_data_root() -> Path:
+    configured = os.environ.get("LAB_DATA_ROOT")
+    if configured:
+        return Path(configured) / "canonical"
+    for parent in Path(__file__).resolve().parents:
+        candidate = parent / "data" / "canonical"
+        if (candidate / "imdb_reviews.csv").exists():
+            return candidate
+    raise FileNotFoundError("Cannot find data/canonical")
+
+
+DEFAULT_SUQL_DATA = _default_data_root()
 
 
 def load_movies_and_reviews(

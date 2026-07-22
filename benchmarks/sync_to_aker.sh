@@ -16,7 +16,7 @@ for relative in "${IMPLEMENTATIONS[@]}"; do
   [[ -d "$LAB_ROOT/$relative" ]] || { echo "ERROR: missing $LAB_ROOT/$relative" >&2; exit 1; }
 done
 
-ssh "$AKER_HOST" "mkdir -p '$AKER_ROOT/benchmarks' '$AKER_ROOT/project SUQL' '$AKER_ROOT/project Trummer'"
+ssh "$AKER_HOST" "mkdir -p '$AKER_ROOT/benchmarks' '$AKER_ROOT/project SUQL' '$AKER_ROOT/project Trummer' '$AKER_ROOT/data' '$AKER_ROOT/semantic_dict'"
 # Remove implementation directories retired by the canonical four-method layout.
 ssh "$AKER_HOST" "rm -rf \
   '$AKER_ROOT/project SUQL/Stage_1' \
@@ -34,6 +34,10 @@ remote_path() { printf "%s:%q" "$AKER_HOST" "$1"; }
 rsync -av --delete --exclude outputs/ --exclude logs/ --exclude jobs/ \
   --exclude .mplconfig/ --exclude __pycache__/ \
   "$HERE/" "$(remote_path "$AKER_ROOT/benchmarks/")"
+rsync -av --delete --exclude __pycache__/ --exclude sources/ --exclude .venv/ \
+  "$LAB_ROOT/data/" "$(remote_path "$AKER_ROOT/data/")"
+rsync -av --delete --exclude __pycache__/ --exclude .venv/ \
+  "$LAB_ROOT/semantic_dict/" "$(remote_path "$AKER_ROOT/semantic_dict/")"
 for relative in "${IMPLEMENTATIONS[@]}"; do
   ssh "$AKER_HOST" "mkdir -p '$AKER_ROOT/$relative'"
   rsync -av --delete --exclude outputs/ --exclude benchmarks/ --exclude model_sweeps/ \

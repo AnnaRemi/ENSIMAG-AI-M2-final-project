@@ -29,6 +29,10 @@ project SUQL/data/*
 project SUQL/data_samples/
 project SUQL/Stage_1/benchmarks/data_sample_*/
 project SUQL/Stage_2/benchmarks/data_sample_*/
+# The runnable benchmark subdatasets are versioned under data/subdatasets.
+# Full source snapshots and reconstructed canonical tables are local build products.
+data/sources/
+data/canonical/*.csv
 
 # Runtime logs and cluster scheduler artifacts
 *.log

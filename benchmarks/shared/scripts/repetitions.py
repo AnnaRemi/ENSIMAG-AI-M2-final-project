@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import shutil
 import subprocess
 import sys
 import threading
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Iterable, TextIO
 
@@ -25,9 +27,7 @@ def run_repeated(
     output_dir.mkdir(parents=True, exist_ok=True)
     repetitions_dir = output_dir / "repetitions"
     repetitions_dir.mkdir(parents=True, exist_ok=True)
-    run_metrics: list[dict] = []
-    last_run_dir: Path | None = None
-
+    prepared: list[tuple[int, Path, list[str]]] = []
     for index in range(1, repetitions + 1):
         run_dir = repetitions_dir / f"run_{index:02d}"
         if run_dir.exists():
@@ -37,9 +37,26 @@ def run_repeated(
             f"[repetition {index}/{repetitions}] {' '.join(command[:2])} -> {run_dir}",
             flush=True,
         )
-        _run(repeated, env, cwd)
-        run_metrics.append(json.loads((run_dir / "run_metrics.json").read_text()))
-        last_run_dir = run_dir
+        prepared.append((index, run_dir, repeated))
+
+    workers = max(1, min(repetitions, int(os.environ.get("PARALLEL_WORKERS", "1"))))
+    if workers == 1:
+        for _index, _run_dir, repeated in prepared:
+            _run(repeated, env, cwd)
+    else:
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            futures = [
+                executor.submit(_run, repeated, env, cwd)
+                for _index, _run_dir, repeated in prepared
+            ]
+            for future in futures:
+                future.result()
+
+    run_metrics = [
+        json.loads((run_dir / "run_metrics.json").read_text())
+        for _index, run_dir, _repeated in prepared
+    ]
+    last_run_dir = prepared[-1][1] if prepared else None
 
     if last_run_dir is None:
         return

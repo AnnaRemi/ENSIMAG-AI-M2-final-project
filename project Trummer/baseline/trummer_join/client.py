@@ -46,14 +46,13 @@ class ChatClient:
         max_tokens: int,
         temperature: float = 0.0,
         stop: list[str] | None = None,
-        response_schema: dict[str, Any] | None = None,
     ) -> ChatResult:
         if model.startswith("ollama/") or self._is_ollama:
             return self._chat_ollama(
-                messages, model, max_tokens, temperature, stop, response_schema
+                messages, model, max_tokens, temperature, stop
             )
         return self._chat_openai_compatible(
-            messages, model, max_tokens, temperature, stop, response_schema
+            messages, model, max_tokens, temperature, stop
         )
 
     @property
@@ -67,7 +66,6 @@ class ChatClient:
         max_tokens: int,
         temperature: float,
         stop: list[str] | None,
-        response_schema: dict[str, Any] | None,
     ) -> ChatResult:
         payload: dict[str, Any] = {
             "model": model.removeprefix("ollama/"),
@@ -82,9 +80,6 @@ class ChatClient:
         }
         if stop:
             payload["options"]["stop"] = stop
-        if response_schema is not None:
-            payload["format"] = response_schema
-
         response = httpx.post(f"{self.api_base}/api/chat", json=payload, timeout=self.timeout)
         response.raise_for_status()
         data = response.json()
@@ -105,7 +100,6 @@ class ChatClient:
         max_tokens: int,
         temperature: float,
         stop: list[str] | None,
-        response_schema: dict[str, Any] | None,
     ) -> ChatResult:
         headers = {"Content-Type": "application/json"}
         if self.api_key:
@@ -118,16 +112,6 @@ class ChatClient:
         }
         if stop:
             payload["stop"] = stop
-        if response_schema is not None:
-            payload["response_format"] = {
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "trummer_join_pairs",
-                    "strict": True,
-                    "schema": response_schema,
-                },
-            }
-
         response = httpx.post(
             f"{self.api_base}/v1/chat/completions",
             json=payload,

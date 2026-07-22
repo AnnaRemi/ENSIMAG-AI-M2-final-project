@@ -1,0 +1,21 @@
+{
+  "restored_at": "2026-07-21T23:43:50.384434+00:00",
+  "recovered_notebook_commit": "63438c90362fe5fa9b93f0292beb716987d8aec5",
+  "review_source": "https://huggingface.co/datasets/fgiobergia/imdb-id",
+  "review_relationship": "Stanford IMDb corpus with original movie_id and score restored",
+  "review_split": "train",
+  "imdb_source": "https://datasets.imdbws.com/",
+  "source_sha256": {
+    "imdb-id-train.parquet": "95e52d921855454c7781a5a95efc13ecc53b5f1541e30c3cd63557b4c2847ebc",
+    "title.basics.tsv.gz": "8d6521b3106d28b18d460cd40874e684dd1eec28f0e813b045a38ddc76fc2cfc",
+    "title.crew.tsv.gz": "9880dfff8cd53f8d78b41c38deefa8412c770e6e3b482358094425a8798b9505",
+    "name.basics.tsv.gz": "d9817451496e034597626082e2deebd0f95ce8736c0321aa3b19385e6b034b21"
+  },
+  "rows": {
+    "reviews": 25000,
+    "structured_movies": 431917,
+    "suql_joined": 25000
+  },
+  "unique_review_pairs": 24964,
+  "notes": "IMDb TSV files are the download-time snapshot; the lost historical snapshot was gitignored."
+}

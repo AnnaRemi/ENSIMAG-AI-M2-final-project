@@ -1,0 +1,13 @@
+question_index,question,implementation,method,repetitions,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds,precision,recall,f1
+1,q_01,suql_baseline,SUQL baseline,3,39.734739346662536,40.0,0.0,40.0,0.0,39.734739346662536,1.0,0.08333333333333333,0.15384615384615385
+1,q_01,suql_v1_two_level_cascade,SUQL V1 (2-level cascade),3,47.765802786661276,60.0,40.0,20.0,37.07810784071626,10.660891969654282,1.0,0.16666666666666666,0.2857142857142857
+1,q_01,trummer_baseline_adaptive_block_join,Trummer baseline,3,16.54649621300632,6.0,0.0,6.0,0.0,16.54649621300632,0.0,0.0,0.0
+1,q_01,trummer_v1_structured_two_level_cascade,Trummer V1 (structured + 2-level cascade),3,34.71339643433263,8.0,5.0,3.0,24.648305768680682,10.064579500001855,1.0,0.08333333333333333,0.15384615384615385
+2,q_02,suql_baseline,SUQL baseline,3,21.5117258366663,40.0,0.0,40.0,0.0,21.5117258366663,0.7692307692307693,0.8333333333333334,0.8
+2,q_02,suql_v1_two_level_cascade,SUQL V1 (2-level cascade),3,38.48930896733267,60.0,40.0,20.0,28.236656706692884,10.227416102017742,0.75,0.75,0.75
+2,q_02,trummer_baseline_adaptive_block_join,Trummer baseline,3,2.336354699000367,6.0,0.0,6.0,0.0,2.336354699000367,1.0,0.08333333333333333,0.15384615384615385
+2,q_02,trummer_v1_structured_two_level_cascade,Trummer V1 (structured + 2-level cascade),3,33.822747538002055,8.0,5.0,3.0,23.4616403033336,10.360568262675466,0.0,0.0,0.0
+3,q_03,suql_baseline,SUQL baseline,3,21.38481511666517,40.0,0.0,40.0,0.0,21.38481511666517,0.0,0.0,0.0
+3,q_03,suql_v1_two_level_cascade,SUQL V1 (2-level cascade),3,39.16737379900102,60.0,40.0,20.0,29.030458405676956,10.111576435020348,0.0,0.0,0.0
+3,q_03,trummer_baseline_adaptive_block_join,Trummer baseline,3,14.06572738166627,6.0,0.0,6.0,0.0,14.06572738166627,0.0,0.0,0.0
+3,q_03,trummer_v1_structured_two_level_cascade,Trummer V1 (structured + 2-level cascade),3,34.05714557933485,8.0,5.0,3.0,24.06243107134651,9.994182403335193,0.0,0.0,0.0

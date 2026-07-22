@@ -17,6 +17,7 @@ from common import (
     cpu_seconds,
     load_movies,
     load_reviews,
+    question_data_dir,
     question_dir,
     write_csv,
 )
@@ -26,7 +27,7 @@ def run_suql_baseline(args: argparse.Namespace, spec: dict, output_dir: Path) ->
     engine_dir = LAB_ROOT / "project SUQL" / "baseline"
     metrics_path = output_dir / "engine_metrics.json"
     os.environ["SUQL_DATA_PATH"] = str(
-        question_dir(args.question_dir) / "data" / "imdb_joined.csv"
+        question_data_dir(args.question_dir) / "imdb_joined.csv"
     )
     os.environ["SUQL_API_BASE"] = args.api_base
     os.environ["SUQL_MODEL"] = args.expensive_model
@@ -68,7 +69,7 @@ def run_suql_v1(args: argparse.Namespace, spec: dict, output_dir: Path) -> dict:
     engine_dir = LAB_ROOT / "project SUQL" / "v1"
     metrics_path = output_dir / "engine_metrics.json"
     os.environ["SUQL_DATA_PATH"] = str(
-        question_dir(args.question_dir) / "data" / "imdb_joined.csv"
+        question_data_dir(args.question_dir) / "imdb_joined.csv"
     )
     os.environ["SUQL_API_BASE"] = args.api_base
     os.environ["SUQL_MODEL"] = args.expensive_model

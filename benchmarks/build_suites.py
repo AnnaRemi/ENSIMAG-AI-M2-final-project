@@ -10,6 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "10q"
+DATA_ROOT = ROOT.parent / "data" / "subdatasets"
 SELECTIONS = {
     "10q": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     # year, compound genre/runtime, genre, director, and title filters
@@ -37,7 +38,7 @@ def main() -> None:
     for index, item in enumerate(catalog, 1):
         qdir = SOURCE / "per_question" / item["directory"]
         spec = json.loads((qdir / "benchmark.json").read_text())
-        movies = read_csv(qdir / "data/imdb_structured_joined.csv")
+        movies = read_csv(DATA_ROOT / "10q" / item["directory"] / "imdb_structured_joined.csv")
         by_id = {row["movie_id"]: row for row in movies}
         source_questions.extend([
             f"Q{index}: {spec['question']}", f"Semantic task: {spec['semantic_task']}",
@@ -67,9 +68,15 @@ def main() -> None:
         for local_index, catalog_index in enumerate(indices, 1):
             source_item = catalog[catalog_index - 1]
             source_dir = SOURCE / "per_question" / source_item["directory"]
+            source_data_dir = DATA_ROOT / "10q" / source_item["directory"]
             target_name = f"q_{local_index:02d}"
             target_dir = per_question / target_name
-            shutil.copytree(source_dir, target_dir)
+            target_dir.mkdir(parents=True)
+            shutil.copy2(source_dir / "benchmark.json", target_dir / "benchmark.json")
+            target_data_dir = DATA_ROOT / suite_name / target_name
+            if target_data_dir.exists():
+                shutil.rmtree(target_data_dir)
+            shutil.copytree(source_data_dir, target_data_dir)
             spec_path = target_dir / "benchmark.json"
             spec = json.loads(spec_path.read_text())
             spec["suite_question_id"] = target_name
@@ -78,7 +85,7 @@ def main() -> None:
             truth_ids = set(spec["ground_truth_movie_ids"])
             if len(truth_ids) < 10:
                 raise RuntimeError(f"{suite_name}/{target_name} has only {len(truth_ids)} truths")
-            movies = read_csv(target_dir / "data" / "imdb_structured_joined.csv")
+            movies = read_csv(target_data_dir / "imdb_structured_joined.csv")
             by_id = {row["movie_id"]: row for row in movies}
             missing = truth_ids - set(by_id)
             if missing:

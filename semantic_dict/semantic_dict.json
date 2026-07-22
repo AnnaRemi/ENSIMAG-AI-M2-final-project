@@ -1,0 +1,1182 @@
+{
+  "recommend_general": {
+    "template_type": "recommend",
+    "attribute": "general",
+    "seed_regex": "\\brecommend(?:ed)?\\b|\\bworth (?:watching|seeing)\\b|\\bmust[- ]see\\b",
+    "lexical_anchors": [
+      {
+        "term": "recommend",
+        "z_score": 17.686313
+      },
+      {
+        "term": "recommend this",
+        "z_score": 10.883002
+      },
+      {
+        "term": "worth",
+        "z_score": 10.797704
+      },
+      {
+        "term": "highly",
+        "z_score": 10.720477
+      },
+      {
+        "term": "i recommend",
+        "z_score": 9.371689
+      },
+      {
+        "term": "recommended",
+        "z_score": 9.156198
+      },
+      {
+        "term": "worth watching",
+        "z_score": 9.156198
+      },
+      {
+        "term": "recommend it",
+        "z_score": 8.935513
+      },
+      {
+        "term": "to anyone",
+        "z_score": 8.780462
+      },
+      {
+        "term": "must see",
+        "z_score": 7.992091
+      },
+      {
+        "term": "a must",
+        "z_score": 7.768593
+      },
+      {
+        "term": "i highly",
+        "z_score": 7.580231
+      },
+      {
+        "term": "highly recommend",
+        "z_score": 7.386341
+      },
+      {
+        "term": "worth seeing",
+        "z_score": 6.921288
+      },
+      {
+        "term": "a must see",
+        "z_score": 6.525433
+      },
+      {
+        "term": "recommend this movie",
+        "z_score": 6.422659
+      },
+      {
+        "term": "anyone who",
+        "z_score": 6.266276
+      },
+      {
+        "term": "i highly recommend",
+        "z_score": 6.212012
+      },
+      {
+        "term": "to anyone who",
+        "z_score": 5.898572
+      },
+      {
+        "term": "highly recommended",
+        "z_score": 5.881918
+      }
+    ],
+    "few_shot_positive": [
+      "…some bliss in everyday life. The pacing, the camera work, the emotion, the haunting musical score and the pure charm of this picture make it a must see. It isn't easily appreciated by the immature or emotionally stunted. The only flaw I can see about this film is that it wasn't captured in a more…",
+      "…get to see what Jigsaw even does with his so called \"new jigsaw puzzle\"....Unless you have nothing better to do...Id watch paint dry before Id recommend this God-forsaken movie to anyone else...oh and to make it even better the other movie totem you can see the guy throwing the one creature in the…",
+      "…Large Fan Base and Positive Responses from Critics the show has been dropped. It seems as though Ned has Touched ABC again and forever killed it for me. I will always be a fan of this show though, And I Recommend this to anyone who likes a lot of talking and a lot of love from the shows they watch.",
+      "…having Hitchcockian elements and this film was no exception. But any similarities between Hitchcocks works and De Palmas can only be seen as a good quality, as calling this film a 'rip-off' would be degrading to a fine thriller. Dressed to Kill is a must see for all cinema fans. **** out of ****",
+      "…with predictable twists and laughable one liners. I highly enjoyed this movie, but before you watch it make sure you're in for a good laugh. I recommend this movie to people who can watch a movie and not take it so serious. I can not, in my right mind, think that this movie was made for people to…"
+    ],
+    "few_shot_hard_negative": [
+      "…director has helmed a not-particularly good movie, yet I still found myself sitting through it to the closing credits, if for nothing more than to see what happens next. A rapist escapes from prison and calls up his old flame. After capturing her (even though she came willingly) and threatening her…",
+      "…10 and 14 (except for the R rating), there are very few things to like here. One or two lines from Kenan Thompson, David Koechner (we really should see him more) and Sam Jackson are humorous and Julianna Margulies is as good as she can be considering her surroundings, but sadly, that's it. Poor…",
+      "This gripping tale of intergenerational love, jealousy and revenge was even more enjoyable to see on DVD years after its PBS broadcast, with a sharper picture and crisper sound. My only reservations are that the plot has a few improbable moments and that some of the stronger Manchester accents are…",
+      "As an ordinary movie-watcher I can't say I enjoyed watching this one. It's not too emotional for a drama, not too gripping for a thriller, not too fast for an action. Plus, some moments of the movie are hardly credible. OK, I understand, soldiers become a bit out of their mind out there, but it's…",
+      "I refused to watch this when it originally aired, treasuring the memory of the late, lamented 1960s series with Mike Pratt and Kenneth Cope, but I can never resist a challenge. I should have known better. Not quite a remake, and more of a parody than a homage, this show didn't quite know how to…"
+    ],
+    "threshold": null,
+    "mining_stats": {
+      "mining_set_size": 3500,
+      "proxy_positive_count": 424,
+      "proxy_positive_rate": 0.12114285714285715,
+      "hard_negative_candidate_count": 1808,
+      "low_sample_warning": false
+    },
+    "provenance": {
+      "source_dataset": "/Users/annremizova/Desktop/lab m2/data/canonical/imdb_reviews.csv",
+      "corpus_unique_size": 24962,
+      "corpus_sample_size": 5000,
+      "random_seed": 42,
+      "embedding_backend": "sentence-transformers",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "mined_at": "2026-07-21T23:56:24.301015+00:00"
+    }
+  },
+  "praise_humor": {
+    "template_type": "praise",
+    "attribute": "humor/funniness",
+    "seed_regex": "\\bfunny\\b|\\bhilarious\\b|\\bcomedic\\b|\\blaugh(?:ed)?(?: out loud)?\\b|\\bhumorous\\b",
+    "lexical_anchors": [
+      {
+        "term": "funny",
+        "z_score": 25.686593
+      },
+      {
+        "term": "comedy",
+        "z_score": 14.027791
+      },
+      {
+        "term": "laugh",
+        "z_score": 13.726229
+      },
+      {
+        "term": "hilarious",
+        "z_score": 12.667013
+      },
+      {
+        "term": "humor",
+        "z_score": 8.584044
+      },
+      {
+        "term": "jokes",
+        "z_score": 8.439885
+      },
+      {
+        "term": "funny and",
+        "z_score": 8.139057
+      },
+      {
+        "term": "funniest",
+        "z_score": 7.749707
+      },
+      {
+        "term": "very funny",
+        "z_score": 7.048561
+      },
+      {
+        "term": "the funniest",
+        "z_score": 6.972113
+      },
+      {
+        "term": "be funny",
+        "z_score": 6.748467
+      },
+      {
+        "term": "laughed",
+        "z_score": 6.748467
+      },
+      {
+        "term": "laughs",
+        "z_score": 6.493606
+      },
+      {
+        "term": "comedic",
+        "z_score": 6.353452
+      },
+      {
+        "term": "laughing",
+        "z_score": 6.314358
+      },
+      {
+        "term": "comedies",
+        "z_score": 6.23354
+      },
+      {
+        "term": "humorous",
+        "z_score": 6.104188
+      },
+      {
+        "term": "is funny",
+        "z_score": 6.104188
+      },
+      {
+        "term": "a comedy",
+        "z_score": 5.927908
+      },
+      {
+        "term": "laugh at",
+        "z_score": 5.844305
+      }
+    ],
+    "few_shot_positive": [
+      "…capable of when they believe they're creative and smart and really aren't. The \"acting\" is sous-terrain (you can actually see the \"leading lady\" laugh on some occasions, she's definitely the worst). the \"story\" is to stupid to be summed up and really everything in this film sucked. please, pay…",
+      "…more out of life. He helps her prepare for a job interview as if she's auditioning for a role, while she introduces him to real life. It's truly funny watching “him” (for that's how the character is identified in the credits) be overwhelmed by a visit to the local Target store. Freeman and Vega…",
+      "…fun filled with predictable twists and laughable one liners. I highly enjoyed this movie, but before you watch it make sure you're in for a good laugh. I recommend this movie to people who can watch a movie and not take it so serious. I can not, in my right mind, think that this movie was made for…",
+      "…And it IS hillarious. There's actually a point in the movie where the entire theatre I was in (about a 100 people in a small art gallery) laughed non-stop for about 40-50 seconds. How often do you experience that with modern hollywood productions? Although the entire main cast is excellent…",
+      "This show is just annoying!!! I feel sorry for the actors for having to attempt to be funny (especially Bob Saget), the laugh track tries to cover up the sad jokes and the \"Awwww\" track comes up at the most unnecessary times. The over-dramatic kids are no exception, especially the Olsen twins.…"
+    ],
+    "few_shot_hard_negative": [
+      "…the very first tunes of the whistling melody during opening credits I was stuck. the colours, that minimal acting (well, in most cases), absurd comedy, slapstick, thoughtful, beautiful... along with a few other movies (Paris, Texas and Nenette et Boni), this one is able to speak to anyone's heart -…",
+      "…me some really bad science-fiction movies from 50's and 60's.It is not scary or interesting,but it's dull,cheesy and stupid.Special effects are laughable,all actors are ludicrous and the ending is simply awful.Don't waste your money,rent or buy something better.I give it 3.5 out of 10( I found this…",
+      "…a minute, what acting? The filming sucks: home video is bad enough, but 20 minutes of graveyard footage is just a damn insult. And the budget is a joke: get it...'budget', that was the punchline. And yet there was a charm to the thing. Back in the 70's these kind of movies came out in theatres with…",
+      "This film stands head and shoulders above the vast majority of cinematic romantic comedies. It is virtually flawless! The writing, acting, production design, humor and pathos are all wonderful! Even the music -- from Dean Martin to La Boheme -- is captivating and delightful! Every character is…",
+      "…it's supposed to be: children's. They had more guidelines to follow in order to make this movie (meaning it could not get away with some of the humor and or language from the 1st) taking all that in this movie was fun and enjoyable to watch. Sequels usually make me nervous, however this one did…"
+    ],
+    "threshold": null,
+    "mining_stats": {
+      "mining_set_size": 3500,
+      "proxy_positive_count": 718,
+      "proxy_positive_rate": 0.20514285714285715,
+      "hard_negative_candidate_count": 427,
+      "low_sample_warning": false
+    },
+    "provenance": {
+      "source_dataset": "/Users/annremizova/Desktop/lab m2/data/canonical/imdb_reviews.csv",
+      "corpus_unique_size": 24962,
+      "corpus_sample_size": 5000,
+      "random_seed": 42,
+      "embedding_backend": "sentence-transformers",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "mined_at": "2026-07-21T23:56:24.301015+00:00"
+    }
+  },
+  "praise_fear": {
+    "template_type": "describe",
+    "attribute": "scary/frightening",
+    "seed_regex": "\\bscary\\b|\\bfrightening\\b|\\bterrifying\\b|\\bcreepy\\b|\\bunsettling\\b",
+    "lexical_anchors": [
+      {
+        "term": "scary",
+        "z_score": 13.292279
+      },
+      {
+        "term": "creepy",
+        "z_score": 11.292149
+      },
+      {
+        "term": "horror",
+        "z_score": 10.973679
+      },
+      {
+        "term": "frightening",
+        "z_score": 7.3325
+      },
+      {
+        "term": "halloween",
+        "z_score": 7.254245
+      },
+      {
+        "term": "horror films",
+        "z_score": 6.400798
+      },
+      {
+        "term": "haunting",
+        "z_score": 5.835254
+      },
+      {
+        "term": "preston",
+        "z_score": 5.596531
+      },
+      {
+        "term": "haunted",
+        "z_score": 5.574452
+      },
+      {
+        "term": "ghosts",
+        "z_score": 5.497429
+      },
+      {
+        "term": "scared",
+        "z_score": 5.417415
+      },
+      {
+        "term": "freddy",
+        "z_score": 5.387479
+      },
+      {
+        "term": "santa",
+        "z_score": 5.387479
+      },
+      {
+        "term": "slasher",
+        "z_score": 5.347599
+      },
+      {
+        "term": "karloff",
+        "z_score": 5.167896
+      },
+      {
+        "term": "house",
+        "z_score": 5.009964
+      },
+      {
+        "term": "monster",
+        "z_score": 4.923025
+      },
+      {
+        "term": "mansion",
+        "z_score": 4.871633
+      },
+      {
+        "term": "kid",
+        "z_score": 4.630184
+      },
+      {
+        "term": "lugosi",
+        "z_score": 4.584253
+      }
+    ],
+    "few_shot_positive": [
+      "…die,yada yada yada.however there are some good positives in this film.first off,i really liked the mask the nut job wore.it is definitely creepy to say the least and possibly unique(although i haven't watched every single slasher film ever made)also,the genesis of the bad due is something i haven't…",
+      "…of another actor in the wolfman get-up ambling about in long shot. The music is incredibly bad varying almost at random from full orchestral creepy house music, to bosannova, to the longest piano and gong duet ever recorded. (Thinking about it, it might not have been a duet. It might have been a…",
+      "…treatment of chickens. Still, I don't consider these to be negative remarks, as \"The Unseen\" is a completely unpretentious and modestly unsettling thriller that clearly never intended to be the greatest horror classic of the decade. Although the denouement of the plot is pretty clear quite fast,…",
+      "…one absolutely sucked. Low budget doesn't mean the movie has to be demented. Horror doesn't mean the movie has to be demented. There was nothing scary about this movie at all. It was just a gore-fest, and a particularly disturbing one at that. The acting was average, considering they were all…",
+      "…Strode's short life. It's about the night his demented brother comes back home to finish what he started 15 years ago. This movie is meant to be scary and I think it succeeds very well. It's also one of the first slasher movies, a horror sub-genre that I always loved. Halloween has a very dark…"
+    ],
+    "few_shot_hard_negative": [
+      "…relate to them all It had a singularly horrifying monster. It's first victim is heard moaning 'it hurts.....it hurts' and we were convinced and frightened. The menace grows continually throughout the story. There are intense periods of suspense, colourful effects, a fabulous lead in McQueen, and…",
+      "…numbers. Unfortunately, we don't really get to see much of the zombies in action and the love story seems to play a much too large role for a horror film (though this has a valid plot reason later on). I would have loved to see some 1930s zombies attack helpless city folk, but this film just did…",
+      "…that swiftly brings tears to any parent/grandparent. this is not a film for the young--unless 'experienced' and rather those who have seen 'the horror' it opposes. sure, the 'phony-parachuting', looks hokey---while using a 'magnetic-cannon', now termed 'mass-driver' may be viewed as ridiculous, vs.…",
+      "…is sexy indeed. The main vampire also looks perfect for the role. The female victim looks vulnerable. My only complaint is that for a low budget horror flick, there should have been more nudity. If you want to see an original vampire movie with a great story, this flick is for you. I'm looking…",
+      "…scene i have seen. the scene lasted almost forever, well actually, it was probably around 5 min but still. i want to note that i like some horror movies and i do give credit if they are good. this director uwe boll, and his group of people used to make this movie should think it over before making…"
+    ],
+    "threshold": null,
+    "mining_stats": {
+      "mining_set_size": 3500,
+      "proxy_positive_count": 203,
+      "proxy_positive_rate": 0.058,
+      "hard_negative_candidate_count": 354,
+      "low_sample_warning": false
+    },
+    "provenance": {
+      "source_dataset": "/Users/annremizova/Desktop/lab m2/data/canonical/imdb_reviews.csv",
+      "corpus_unique_size": 24962,
+      "corpus_sample_size": 5000,
+      "random_seed": 42,
+      "embedding_backend": "sentence-transformers",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "mined_at": "2026-07-21T23:56:24.301015+00:00"
+    }
+  },
+  "praise_acting": {
+    "template_type": "praise",
+    "attribute": "acting or performances",
+    "seed_regex": "\\b(?:great|excellent|strong|convincing) (?:acting|performances?)\\b|\\bwell[- ]acted\\b|\\bcast (?:was|is) (?:great|excellent)\\b",
+    "lexical_anchors": [
+      {
+        "term": "football",
+        "z_score": 6.599756
+      },
+      {
+        "term": "othello",
+        "z_score": 6.59514
+      },
+      {
+        "term": "great",
+        "z_score": 5.518318
+      },
+      {
+        "term": "great acting",
+        "z_score": 5.428634
+      },
+      {
+        "term": "well acted",
+        "z_score": 5.078009
+      },
+      {
+        "term": "performance",
+        "z_score": 4.92042
+      },
+      {
+        "term": "hooligans",
+        "z_score": 4.864518
+      },
+      {
+        "term": "strong",
+        "z_score": 4.850806
+      },
+      {
+        "term": "excellent",
+        "z_score": 4.844094
+      },
+      {
+        "term": "great performances",
+        "z_score": 4.701312
+      },
+      {
+        "term": "the grinch",
+        "z_score": 4.619267
+      },
+      {
+        "term": "grinch",
+        "z_score": 4.486306
+      },
+      {
+        "term": "cindy",
+        "z_score": 4.291786
+      },
+      {
+        "term": "desdemona",
+        "z_score": 4.291786
+      },
+      {
+        "term": "well-acted",
+        "z_score": 4.29168
+      },
+      {
+        "term": "maya",
+        "z_score": 4.2728
+      },
+      {
+        "term": "poirot",
+        "z_score": 4.2728
+      },
+      {
+        "term": "acted",
+        "z_score": 4.183702
+      },
+      {
+        "term": "excellent performance",
+        "z_score": 4.07144
+      },
+      {
+        "term": "performances",
+        "z_score": 4.01178
+      }
+    ],
+    "few_shot_positive": [
+      "How did such a terrible script manage to attract this cast? Ridiculous, predictable and thoroughly unbelievable, this is well-acted and slickly directed, but the material is so bad it still qualifies as one of the all-time worst thrillers I've seen in years. Amazingly bad, and not in a fun way.…",
+      "Like Ishtar and King of Comedy, other great, misunderstood comedies, Envy has great performances by two actors playing essentially, losers (may be too harsh a word, I will call them suburban under-achievers). This film was a dark comedy gem, and I'm not sure what people expect. I relish seeing a…",
+      "This was a strong Poirot/Suchet, television mystery selection. The characters were vivid and well-acted. The plot and the main setting--a student hostel-- were excellent. Japp was nothing special but for me did not distract from story. One significant point, many Poirot watchers don't recognize…",
+      "…like this I would normally smell \"tearjerker\" in the first ten minutes and turn it off, but this was very well made, with emotional subtleties, great acting, and some genuinely funny moments. It was also interesting to see a different culture - a vanishing one at that. My wife and I both dug it!",
+      "…led to his son's eventual psychosis and indirect, unintentional murder of his mother. Ultimately this film is really only worth watching for PSH's great performance and it's family train wreck nature. Just don't expect there to be any characters worth cheering for, because there really aren't."
+    ],
+    "few_shot_hard_negative": [
+      "A wonderful film to watch with astonishing scenes and talented actors, such as Misa Shimizu and Nagiko Tono. After 15 minutes of watching, your eyes get locked on the screen and you do nothing but breathing in the atmosphere of the film waiting what the destiny will bring to the characters. This…",
+      "…and Sam Jackson are humorous and Julianna Margulies is as good as she can be considering her surroundings, but sadly, that's it. Poor plot. Poor acting. Worse writing and delivery. The special effects are dismal. As much as the entire situation is an odd and awful joke, the significant individual…",
+      "Poorly cast, terrible script full of holes, hot blonde gets eaten alive, The evil scientist has a seriously nasty mustache, one man takes on a platoon of trained gunman and comes out victor, terrible special effects, they fix the problem by blowing the head off the monster... Awesome. The only…",
+      "This is an action Western. James Steart leads an all star cast in the scenic Northwest, which is filmed in great splendor. The scenery and costumes are great. There is action and adventure. Stewart plays a wealthy cattleman who runs afoul of a crooked government in the old Nothwest. The main…",
+      "…that some of the stronger Manchester accents are difficult at times. Luckily even missing a word here and there won't spoil the fun: the primary actors are ideally cast. Robson Green brings an enigmatic smile, a go-for-broke temperament and an athletic physicality to his role as a young surgeon who…"
+    ],
+    "threshold": null,
+    "mining_stats": {
+      "mining_set_size": 3500,
+      "proxy_positive_count": 93,
+      "proxy_positive_rate": 0.026571428571428572,
+      "hard_negative_candidate_count": 1720,
+      "low_sample_warning": false
+    },
+    "provenance": {
+      "source_dataset": "/Users/annremizova/Desktop/lab m2/data/canonical/imdb_reviews.csv",
+      "corpus_unique_size": 24962,
+      "corpus_sample_size": 5000,
+      "random_seed": 42,
+      "embedding_backend": "sentence-transformers",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "mined_at": "2026-07-21T23:56:24.301015+00:00"
+    }
+  },
+  "praise_visuals": {
+    "template_type": "praise",
+    "attribute": "visuals/effects",
+    "seed_regex": "\\bvisuals?\\b|\\bcinematography\\b|\\bspecial effects\\b|\\bCGI\\b|\\bvisually stunning\\b|\\bproduction design\\b",
+    "lexical_anchors": [
+      {
+        "term": "effects",
+        "z_score": 17.360474
+      },
+      {
+        "term": "special",
+        "z_score": 14.969245
+      },
+      {
+        "term": "cinematography",
+        "z_score": 13.719963
+      },
+      {
+        "term": "special effects",
+        "z_score": 13.436987
+      },
+      {
+        "term": "visual",
+        "z_score": 10.057399
+      },
+      {
+        "term": "the special",
+        "z_score": 9.422546
+      },
+      {
+        "term": "the special effects",
+        "z_score": 8.391617
+      },
+      {
+        "term": "the cinematography",
+        "z_score": 8.001063
+      },
+      {
+        "term": "effects are",
+        "z_score": 7.378604
+      },
+      {
+        "term": "visuals",
+        "z_score": 7.333051
+      },
+      {
+        "term": "cgi",
+        "z_score": 7.156314
+      },
+      {
+        "term": "special effects are",
+        "z_score": 6.093332
+      },
+      {
+        "term": "cinematography is",
+        "z_score": 5.185169
+      },
+      {
+        "term": "invisible",
+        "z_score": 5.16591
+      },
+      {
+        "term": "robot",
+        "z_score": 5.16591
+      },
+      {
+        "term": "werewolf",
+        "z_score": 5.028053
+      },
+      {
+        "term": "cinematography and",
+        "z_score": 4.932072
+      },
+      {
+        "term": "the cinematography is",
+        "z_score": 4.932072
+      },
+      {
+        "term": "science fiction",
+        "z_score": 4.888991
+      },
+      {
+        "term": "kells",
+        "z_score": 4.870331
+      }
+    ],
+    "few_shot_positive": [
+      "…Seriously, it's THAT BAD. I watched it in 20 minutes flat, on almost continual fast forward. From rubbish lighting to dreadful directing, grainy visuals to muffled sound, and of course not forgetting the ABYSMAL acting, this was one completely and utterly pathetic piece of so-called film making. It…",
+      "…I saw it again. I love this movie! The things they do are sometimes dumb but that's what makes it my third favorite movie of all time. The special effects are okay, but the witty dialog will have you rolling. I'm the kind of person that'll say i'm inspired by this movie, so if you like dramas and…",
+      "…music, and, of course, hot naked dancing chicks. Robert O. Ragland's funky score hits the gnarly spot. Stanton Fox's stark black and white cinematography adds an extra gritty edge to the deliriously sleazy goings-on. Best of all, this flick rates as a marvelous showcase for the utterly charming and…",
+      "…modern \"hollywood\" production minus the garbage that seems to get attached to the genre over the past several years. Superb soundtrack, excellent visual editing, beautiful Prague cityscape, to mention but a few. The story is actually comprised of several sub-stories that frequently intertwain and…",
+      "…movie, much like Kurosawa's \"Ran\". It probably what made the movie the most interesting to me although it's nowheres near \"Ran's\" league. Stylish visual direction and excellent photography keep the movie mostly interesting throughout the two hour and eighteen minute length. The lead actors are…"
+    ],
+    "few_shot_hard_negative": [
+      "…movie is devoted to protracted lesbian action; this footage actually gets real boring, real fast, which says more about the critters behind the camera than the curvaceous creatures in front of it. MISTY gets its nominal plot out of the way first and fast, then gives undivided attention to nudity…",
+      "…that's a blessing in disguise. And to top it all off, it looks likes it's been filmed on someone's mobile phone for broadcast on Youtube. Jerky camera-work, scratches on the print, flickering lights... I had to rub my eyes when I realised it was made in 2001, and not 1971. Even the clothes and…",
+      "…more pauses in the dialog than a Pinter Play. In the book I felt a deep caring for Catherine Sloper and her life. The movie had just the opposite effect. I also disliked the twist where her aunt has a sexual attraction to Morris. Eeeeeeeek. YUK. Watch it if you can't sleep, it's a definite snoozer.…",
+      "…put your trust in me, flick the off switch and destroy your copy of this film. There is a plot... that could take about 5 minutes to show on camera. This is the key problem, the story 'based on a true story' (mmm... whatever) just in no way lends itself to be padded out for 80 minutes. And so we…",
+      "…and talking to them lasts for quite a long time and it's creepy. Here we don't see fancy or good imagery, it looks as if shot with your home camera. It doesn't look horrifying, but in a way seeing a criminal engage his victims for quite some time before killing them is quite unusual and chilling.…"
+    ],
+    "threshold": null,
+    "mining_stats": {
+      "mining_set_size": 3500,
+      "proxy_positive_count": 370,
+      "proxy_positive_rate": 0.10571428571428572,
+      "hard_negative_candidate_count": 320,
+      "low_sample_warning": false
+    },
+    "provenance": {
+      "source_dataset": "/Users/annremizova/Desktop/lab m2/data/canonical/imdb_reviews.csv",
+      "corpus_unique_size": 24962,
+      "corpus_sample_size": 5000,
+      "random_seed": 42,
+      "embedding_backend": "sentence-transformers",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "mined_at": "2026-07-21T23:56:24.301015+00:00"
+    }
+  },
+  "praise_chemistry": {
+    "template_type": "praise",
+    "attribute": "romantic chemistry",
+    "seed_regex": "\\b(?:on[- ]screen )?chemistry\\b|\\brelationship felt real\\b|\\bbelievable couple\\b",
+    "lexical_anchors": [
+      {
+        "term": "chemistry",
+        "z_score": 9.804615
+      },
+      {
+        "term": "gates",
+        "z_score": 7.444377
+      },
+      {
+        "term": "lincoln",
+        "z_score": 7.156497
+      },
+      {
+        "term": "chan",
+        "z_score": 5.51789
+      },
+      {
+        "term": "riley",
+        "z_score": 5.272158
+      },
+      {
+        "term": "jackie",
+        "z_score": 5.176284
+      },
+      {
+        "term": "chemistry between",
+        "z_score": 4.999151
+      },
+      {
+        "term": "the chemistry",
+        "z_score": 4.803023
+      },
+      {
+        "term": "ford",
+        "z_score": 4.408733
+      },
+      {
+        "term": "tony's",
+        "z_score": 4.345825
+      },
+      {
+        "term": "jackie chan",
+        "z_score": 4.269012
+      },
+      {
+        "term": "clarke",
+        "z_score": 4.262923
+      },
+      {
+        "term": "dalton",
+        "z_score": 4.173402
+      },
+      {
+        "term": "rochester",
+        "z_score": 4.10773
+      },
+      {
+        "term": "ford's",
+        "z_score": 4.081862
+      },
+      {
+        "term": "gino",
+        "z_score": 4.05259
+      },
+      {
+        "term": "fay wray",
+        "z_score": 4.046549
+      },
+      {
+        "term": "wray",
+        "z_score": 3.98098
+      },
+      {
+        "term": "spinal",
+        "z_score": 3.901662
+      },
+      {
+        "term": "gates and",
+        "z_score": 3.897202
+      }
+    ],
+    "few_shot_positive": [
+      "…Video) it didn't really have anything that most big budget romantic comedy's have. But it did have what most of those lack. It had great chemistry between the love interests, \"Parker\" (Jonathan Schaech) and \"Sam\" (Alison Eastwood). Their love story wasn't forced on us like so many. The director…",
+      "…at times (a problem which actually works in favor of the character). That said, both do good jobs overall and provide a fairly believable chemistry throughout. It's the lively supporting cast, however, that really make this dub so much fun, particularly Cloris Leachman's Dola and Mark Hamill's…",
+      "…been developed more. The film does tend to be plot-heavy, and the potentially good subplots are pushed off to the side. Instead of developing a chemistry between the two of them, we end up watching a careless three-minute montage of them on their romantic endeavors. They end up kissing at the end,…",
+      "…by a visit to the local Target store. Freeman and Vega were great together, with a strange but completely believable sort of combined romantic but father-daughter chemistry. If you feel lost at the beginning, stick with this. In the end, it turns out to be a delightfully charming movie. 7/10",
+      "…a swirling vortex of blurred screen - which hid the awful effects quite nicely. Wilson's sidekick was a lame excuse for a man and Wilson had no chemistry with either Uma or his office co-worker. The sex scenes weren't sexy and the funny scenes weren't funny. I guess I just expected too much from…"
+    ],
+    "few_shot_hard_negative": [
+      "…Yet, it isn't a comedy in the sense of side-splitting laughter or eternally memorable jokes. It mixes in a dose of drama, of discovery and of romance, but never really ventures fully into any of it. What really makes Mystery Men a good film, in the end, is that it is very engaging. The weak/lame…",
+      "This movie is one of my favourites. It is a genre-mixture with ingredients of the Action-/Horror-/Romantic-/Comedygenre. Some of the special effects may seem outdated compared to modern standards. This minor flaw is easily ignored. There is so much to discover in this story. The romantic relation…",
+      "…to take it seriously. However, if you can watch it and sit back and just enjoy, I really think you can enjoy this movie in the way it was meant to be enjoyed. Very simply. So get some popcorn and a couple beers and have a fun night with some friends and this movie. It brought some joy into my life.",
+      "I love this film and it is such a wonderful example of a family jeopardy, a romantic love story, and a very sad story plot. Everything was just so perfect and excellent about this film. It was such a great mixture of actors and actresses and with some laughs and a lot of cries this film deserves to…",
+      "…boss. On the way home, they upset three locals in a Landover who take their revenge by giving Dyer a good shoeing and gang raping Anderson. The couple then set about getting their revenge. So far, so \"Straw Dogs\", \"Late Night Trains\", \"House on the Edge of the Park\", \"I Spit On Your Grave\" etc etc.…"
+    ],
+    "threshold": null,
+    "mining_stats": {
+      "mining_set_size": 3500,
+      "proxy_positive_count": 45,
+      "proxy_positive_rate": 0.012857142857142857,
+      "hard_negative_candidate_count": 473,
+      "low_sample_warning": true
+    },
+    "provenance": {
+      "source_dataset": "/Users/annremizova/Desktop/lab m2/data/canonical/imdb_reviews.csv",
+      "corpus_unique_size": 24962,
+      "corpus_sample_size": 5000,
+      "random_seed": 42,
+      "embedding_backend": "sentence-transformers",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "mined_at": "2026-07-21T23:56:24.301015+00:00"
+    }
+  },
+  "criticize_pacing": {
+    "template_type": "criticize",
+    "attribute": "pacing",
+    "seed_regex": "\\bslow\\b|\\bboring\\b|\\bdrags?\\b|\\bdragged\\b|\\btedious\\b|\\bplodding\\b",
+    "lexical_anchors": [
+      {
+        "term": "boring",
+        "z_score": 17.114403
+      },
+      {
+        "term": "slow",
+        "z_score": 14.018357
+      },
+      {
+        "term": "boring and",
+        "z_score": 6.660803
+      },
+      {
+        "term": "drag",
+        "z_score": 6.467686
+      },
+      {
+        "term": "tedious",
+        "z_score": 6.368932
+      },
+      {
+        "term": "gray",
+        "z_score": 5.951922
+      },
+      {
+        "term": "pokemon",
+        "z_score": 5.533971
+      },
+      {
+        "term": "and boring",
+        "z_score": 5.515624
+      },
+      {
+        "term": "slow and",
+        "z_score": 5.515624
+      },
+      {
+        "term": "hackenstein",
+        "z_score": 5.416433
+      },
+      {
+        "term": "action",
+        "z_score": 5.184782
+      },
+      {
+        "term": "scarecrow",
+        "z_score": 5.144863
+      },
+      {
+        "term": "cannibal",
+        "z_score": 5.105893
+      },
+      {
+        "term": "dillinger",
+        "z_score": 5.077667
+      },
+      {
+        "term": "franco",
+        "z_score": 5.055884
+      },
+      {
+        "term": "pace",
+        "z_score": 5.055515
+      },
+      {
+        "term": "slow motion",
+        "z_score": 5.035038
+      },
+      {
+        "term": "motion",
+        "z_score": 4.992645
+      },
+      {
+        "term": "kelly",
+        "z_score": 4.933165
+      },
+      {
+        "term": "action scenes",
+        "z_score": 4.846631
+      }
+    ],
+    "few_shot_positive": [
+      "…the cast was used badly and what was the director thinking when he made this. This could have been a great but i turned out to be the most boring film i have ever watched. OK so what if there was a nice bit of T and A, I was after the gore and i was bitterly disappointed. Don't expect a film thats…",
+      "I am astounded at the positive reviews for this thoroughly uninspiring film. Often with foreign films I skip over reviews that complain about slow pace and seeming \"absence of action\" as many of the best international films do not live up to the Western Hollywood model of cinematic storytelling. I…",
+      "…crew: Gordy comes to her rescue and convinces her to go to a lesbian bar. 'Sorry no men' says the bouncer. So Gray and Gordy return with Gordy in drag. Bad drag. He was in a sleeveless black satin-like blouse, a string of pearls, and a grandma's church hat. No lesbian would ever confuse this 'man…",
+      "It's been a long time since I last saw a movie this bad.. The acting is very average, the story is horribly boring, and I'm at a loss for words as to the execution. It was completely unoriginal. O, and this is as much a comedy as Clint Eastwood's a pregnant Schwarzenegger! One of the first scenes…",
+      "The acting in the film is really well done honestly, but the movie is so slow and so boring, as soon as it gets interesting everything slows to a major halt. I am glad to see Sam Rockwell in this, he did a great job, so did the other actors as I mentioned but man... this is one of the worst dragged…"
+    ],
+    "few_shot_hard_negative": [
+      "Carter Wong plays a noble hero on a quest for a book of healing which leads him seeking ultimate vengeance! The pacing is good in this film and there are a lot of fight scenes to keep the movie going. The flying guillotines look wicked and the main villain has no problems using them. Although the…",
+      "…of being his wife. Everything works out fine. It's sometimes argued, and I can see why, that Scott's romance with Hilliard is unnecessary and slows the plot down. Especially painful are Hilliard's singing of sappy love songs. I could have done without her singing, right enough, but I found the…",
+      "Yes, some people have said that this movie was a waste of money, but i'm the kind of die hard dragon/world-ending/holy crap action movie fan. But if you take it from my stand point this movie had some of the best action sences were pretty dang good. But its that kind of movie that everything just…",
+      "…doesn't take kindly to any strangers trespassing on his terrain. Director/co-writer Pedro Galindo III relates the gripping story at a steady pace, creates a good deal of nerve-rattling tension, and delivers a fair amount of graphic gore with the brutal murder set pieces (a nasty throat slicing and…",
+      "…as hell, the other guys are also really funny (the nerdier ones). I think the problem is the director just doesn't move things along at the right pace. He starts out very deadpan, and that sets the monotone. But when he lets things get really outrageous (the drug sequence is the second funniest…"
+    ],
+    "threshold": null,
+    "mining_stats": {
+      "mining_set_size": 3500,
+      "proxy_positive_count": 404,
+      "proxy_positive_rate": 0.11542857142857142,
+      "hard_negative_candidate_count": 191,
+      "low_sample_warning": false
+    },
+    "provenance": {
+      "source_dataset": "/Users/annremizova/Desktop/lab m2/data/canonical/imdb_reviews.csv",
+      "corpus_unique_size": 24962,
+      "corpus_sample_size": 5000,
+      "random_seed": 42,
+      "embedding_backend": "sentence-transformers",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "mined_at": "2026-07-21T23:56:24.301015+00:00"
+    }
+  },
+  "praise_excitement": {
+    "template_type": "praise",
+    "attribute": "excitement/suspense",
+    "seed_regex": "\\bexciting\\b|\\bthrilling\\b|\\bsuspenseful\\b|\\bedge of (?:my|your) seat\\b|\\btense\\b",
+    "lexical_anchors": [
+      {
+        "term": "exciting",
+        "z_score": 12.287947
+      },
+      {
+        "term": "thrilling",
+        "z_score": 6.741995
+      },
+      {
+        "term": "pokemon",
+        "z_score": 6.530266
+      },
+      {
+        "term": "suspenseful",
+        "z_score": 6.370567
+      },
+      {
+        "term": "scarecrow",
+        "z_score": 6.334694
+      },
+      {
+        "term": "cape fear",
+        "z_score": 5.645936
+      },
+      {
+        "term": "geisha",
+        "z_score": 5.478363
+      },
+      {
+        "term": "cape",
+        "z_score": 5.446383
+      },
+      {
+        "term": "and exciting",
+        "z_score": 5.405567
+      },
+      {
+        "term": "edge of",
+        "z_score": 5.37064
+      },
+      {
+        "term": "shanghai",
+        "z_score": 5.172249
+      },
+      {
+        "term": "tense",
+        "z_score": 5.096408
+      },
+      {
+        "term": "beetle",
+        "z_score": 5.047431
+      },
+      {
+        "term": "japanese",
+        "z_score": 4.915348
+      },
+      {
+        "term": "action",
+        "z_score": 4.890571
+      },
+      {
+        "term": "the edge of",
+        "z_score": 4.795475
+      },
+      {
+        "term": "from shanghai",
+        "z_score": 4.610455
+      },
+      {
+        "term": "lady from",
+        "z_score": 4.610455
+      },
+      {
+        "term": "lady from shanghai",
+        "z_score": 4.610455
+      },
+      {
+        "term": "the lady from",
+        "z_score": 4.610455
+      }
+    ],
+    "few_shot_positive": [
+      "…a good way. From the box I got the impression that it was an action thriller but it was too funny to be a thriller, even though it was somewhat exciting. There's a lot of nice one-liners and funny situations in this movie and James Belushi was born to do Bill Manucci, he does a great job. The rest…",
+      "…top employee unravels a tale of deceit and corruption with a Cold hearted hero at the helm. Can't say much without giving it all away...except that while the movie keeps you at the edge of your seat, the climax leaves you speechless. A must watch..even for the 'grown-ups' who smirk at 'cartoons'",
+      "…duped into believing it is in fact a horror film. On the contrary though, its actually a supernatural thriller. Too bad it is not the least bit thrilling. 'The Return' stars Sarah Michelle Gellar as Joanna Mills, a young woman who has had personal problems since the age of eleven. It was at that…",
+      "This was a less than exciting short film I saw between features on Turner Classic Movies recently. While the film popped out due to its very intense Technicolor, the film itself just wasn't that moving and at times the plot looked pretty cheesy--like this was made for classroom use and capturing…",
+      "…the fetching Anita Strindberg. With all this talent behind it, does Scorpione deliver? You bet. The film works on many different levels. It's a thrilling murder mystery, a tense and violent horror film, and a suspenseful thriller. All in all one of the best gialli around. Martino definitely knows…"
+    ],
+    "few_shot_hard_negative": [
+      "…of the life of his master, Mas Oyama, were amazing and among the best martial arts films ever made, as were most of his Street Fighter films. The action was practically non-stop and with the possible exception of Bruce Lee (depending on who you ask), he was the greatest martial arts practitioner on…",
+      "…show up full force, so I could learn how not to make a movie. It seems when they set out to make this movie, the crew watched every single other action/science-fiction/shoot-em-up/good vs. evil movie ever made, and saw cool things and said: \"Hey, we can do that.\" For example, the only car parked…",
+      "…i would cut that part for sure, gave me the urge to stop seeing the rest of the movie... For some people it will be boring cause it lacks action, feels home made sometimes... Take for example a scene that one of the friends died and next thing they are doing is what? nop,not crying...their telling…",
+      "…dynamic event. No such luck. The movie continues it's bland, boring, uneventful story all the way to the end. I'm not saying this because I'm an action-junkie. I like all kinds of movies, especially romantic-comedies. But I expect to be entertained. Add the fact that the cinematography and sound…",
+      "…found it very engaging, though it was obviously made by an amateur. The direction is nothing special, but the story is intriguing with some good thrills. I expected it to be more of a comedy, but I wasn't too disappointed. For a thriller, this movie is surprisingly good-natured. There's no bloody…"
+    ],
+    "threshold": null,
+    "mining_stats": {
+      "mining_set_size": 3500,
+      "proxy_positive_count": 154,
+      "proxy_positive_rate": 0.044,
+      "hard_negative_candidate_count": 543,
+      "low_sample_warning": false
+    },
+    "provenance": {
+      "source_dataset": "/Users/annremizova/Desktop/lab m2/data/canonical/imdb_reviews.csv",
+      "corpus_unique_size": 24962,
+      "corpus_sample_size": 5000,
+      "random_seed": 42,
+      "embedding_backend": "sentence-transformers",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "mined_at": "2026-07-21T23:56:24.301015+00:00"
+    }
+  },
+  "praise_originality": {
+    "template_type": "praise",
+    "attribute": "originality",
+    "seed_regex": "\\boriginal\\b|\\binventive\\b|\\bfresh\\b|\\bunpredictable\\b|\\bcreative\\b|\\bsurprising\\b",
+    "lexical_anchors": [
+      {
+        "term": "original",
+        "z_score": 23.953796
+      },
+      {
+        "term": "the original",
+        "z_score": 18.942423
+      },
+      {
+        "term": "version",
+        "z_score": 9.276928
+      },
+      {
+        "term": "of the original",
+        "z_score": 7.990293
+      },
+      {
+        "term": "creative",
+        "z_score": 7.61842
+      },
+      {
+        "term": "fresh",
+        "z_score": 7.464486
+      },
+      {
+        "term": "surprising",
+        "z_score": 6.982359
+      },
+      {
+        "term": "remake",
+        "z_score": 6.813206
+      },
+      {
+        "term": "in the original",
+        "z_score": 6.094661
+      },
+      {
+        "term": "original and",
+        "z_score": 5.801933
+      },
+      {
+        "term": "as",
+        "z_score": 5.693898
+      },
+      {
+        "term": "enterprise",
+        "z_score": 5.593642
+      },
+      {
+        "term": "modesty",
+        "z_score": 5.455315
+      },
+      {
+        "term": "series",
+        "z_score": 5.370706
+      },
+      {
+        "term": "jane",
+        "z_score": 5.253391
+      },
+      {
+        "term": "the",
+        "z_score": 5.16855
+      },
+      {
+        "term": "sebastian",
+        "z_score": 5.072583
+      },
+      {
+        "term": "new",
+        "z_score": 4.85758
+      },
+      {
+        "term": "naschy",
+        "z_score": 4.848974
+      },
+      {
+        "term": "spock",
+        "z_score": 4.739537
+      }
+    ],
+    "few_shot_positive": [
+      "…the way. Of course that doesn't work, made me think of Cannibal Girls, had that annoying bell when the red stuff started to flow. They had the original idea, Cannibal Girls was made a year earlier. Don't go for the storyline, go for the zombies and notice a continuity mistake. When the girl and guy…",
+      "This one is quite a nice surprise. Cute little story of the heroine's quest, very surprising metamorphosis of the four-eye prissy soon-to-be-spinster type into a raunchy DD-cup sex queen. Visually a sight for sore eyes, not only for two quite stunning actresses but also for (most of) the costumes…",
+      "…it really is a masterpiece. it's hard to describe. you should see it, it's a real lesson on what people are capable of when they believe they're creative and smart and really aren't. The \"acting\" is sous-terrain (you can actually see the \"leading lady\" laugh on some occasions, she's definitely the…",
+      "…a favor and go buy it. The only sour note is the American Dubbing. I found Vander-Geek to be just plain annoying. But all is not lost, the original Japanese version is on the two-disc set and it rocks! Who cares if you can't understand spoken Japanese? If you can read at a second-grade level then…",
+      "I started watching the show from the first season, and at the beginning I was pretty skeptical about it. Original movie was kind of childish, and I was just looking for some sci-fi show while waiting for the BSG new season. But after few episodes I became a fan. I've loved the characters - the…"
+    ],
+    "few_shot_hard_negative": [
+      "…inducing bad movies of the year so far for me. Enjoy. Favourite line: \"Ilona! This madness and perversity will turn against you!\" How true. Favourite shot: The lover, discovering his girlfriend slain, dropping the candle in a cartoon-like demonstration of surprise. Rank amateur directing there.",
+      "…less of what he tried to tell us about humanity and our robotic creations. (Those of you that will run out and buy I, Robot will be very much surprised-this movie isn't even based on that story at all!) The film has enormous plot holes, that at some points are stretched to the limits of credulity.…",
+      "I was pleasantly surprised to find that How to Lose Friends and Alienate People was nowhere near as 'gross-out' a comedy as the trailer had led me to expect. I rapidly became absorbed in the unfolding of the narrative and remained engrossed throughout. Pacing of the more visual humorous content…",
+      "…Why does her family live in England? Or, at the very least, why doesn't she have a British accent? She's sure cozy with her dad and he's surprisingly forgiving of her not being around for the last two years. (On that subject, no one ever makes much of a deal about her being away for so long). And…",
+      "…Fifty-percent of the time the movies I find in the bin are pure crap (I mean horrible beyond belief) but half the time they turn out to be surprisingly good. This movie is much better than I expected. I found it very engaging, though it was obviously made by an amateur. The direction is nothing…"
+    ],
+    "threshold": null,
+    "mining_stats": {
+      "mining_set_size": 3500,
+      "proxy_positive_count": 461,
+      "proxy_positive_rate": 0.1317142857142857,
+      "hard_negative_candidate_count": 393,
+      "low_sample_warning": false
+    },
+    "provenance": {
+      "source_dataset": "/Users/annremizova/Desktop/lab m2/data/canonical/imdb_reviews.csv",
+      "corpus_unique_size": 24962,
+      "corpus_sample_size": 5000,
+      "random_seed": 42,
+      "embedding_backend": "sentence-transformers",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "mined_at": "2026-07-21T23:56:24.301015+00:00"
+    }
+  },
+  "praise_ending_twist": {
+    "template_type": "praise",
+    "attribute": "ending/plot twist",
+    "seed_regex": "\\bplot twist\\b|\\bsurprising ending\\b|\\bdid(?:n't| not) see (?:it|that) coming\\b|\\btwist\\b|\\bending\\b",
+    "lexical_anchors": [
+      {
+        "term": "ending",
+        "z_score": 20.882774
+      },
+      {
+        "term": "the ending",
+        "z_score": 14.628759
+      },
+      {
+        "term": "twist",
+        "z_score": 12.091316
+      },
+      {
+        "term": "ending is",
+        "z_score": 7.559424
+      },
+      {
+        "term": "the ending is",
+        "z_score": 6.521173
+      },
+      {
+        "term": "slasher",
+        "z_score": 5.999374
+      },
+      {
+        "term": "vs",
+        "z_score": 5.763472
+      },
+      {
+        "term": "match",
+        "z_score": 5.565988
+      },
+      {
+        "term": "scarecrow",
+        "z_score": 5.360871
+      },
+      {
+        "term": "marty",
+        "z_score": 5.296824
+      },
+      {
+        "term": "ending was",
+        "z_score": 5.155391
+      },
+      {
+        "term": "the ending was",
+        "z_score": 5.155391
+      },
+      {
+        "term": "the twist",
+        "z_score": 5.155391
+      },
+      {
+        "term": "and the ending",
+        "z_score": 5.02485
+      },
+      {
+        "term": "sebastian",
+        "z_score": 4.967194
+      },
+      {
+        "term": "a twist",
+        "z_score": 4.890826
+      },
+      {
+        "term": "happy ending",
+        "z_score": 4.890826
+      },
+      {
+        "term": "architect",
+        "z_score": 4.692433
+      },
+      {
+        "term": "the",
+        "z_score": 4.583204
+      },
+      {
+        "term": "the house",
+        "z_score": 4.540336
+      }
+    ],
+    "few_shot_positive": [
+      "…activated by the good guy's remote control! That's the way its been done since the days of the Ottoman Empire! Also, to add insult to injury, the \"twist\" at the end was so formulaic, that it could have come from any action movie written in the past 25 years. Burt Reynolds was fine, but he should…",
+      "…from 50's and 60's.It is not scary or interesting,but it's dull,cheesy and stupid.Special effects are laughable,all actors are ludicrous and the ending is simply awful.Don't waste your money,rent or buy something better.I give it 3.5 out of 10( I found this turkey quite amusing because of its…",
+      "This film was so bad i had to fast forward most of it to get to the good bits. Hah what good bits? the only bit that was worth it was the ending (those who have seen the film will know what i mean). I expected a lot from this film like a underworld meets dawn of the dead meets Freddy vs. Jason but…",
+      "…killed the kid, blamed the father, create a real havoc. Or the kid should have killed the father at the end etc., but no, we have gotten cheesy ending where kids miss the loony, the father is puzzled over his own life and relationship with them and the loony, of course, dies. The happy…",
+      "…very fresh and after about forty minutes, the film wore out it's welcome. Sure, there were a few funny lines however the weak middle and horrible ending kept it from really breaking out. Director Ivan Reitman has lost his touch. After a successful run in the eighties and early nineties, he started…"
+    ],
+    "few_shot_hard_negative": [
+      "…hardships) I have to single out Jiri Machacek for his superbly believeable portrayal of Jakub, a constantly stoned bohemian whose brain is severely affected by the stuff he smokes landing him in a plethora of funny situations. Conclusion: don't miss this one! It's got a lot to offer.",
+      "…from hell to Earth, just to make little kids naughty and turn Santa's Christmas Eve rounds into a nightmare. Watching this movie is a trippy and twisted experience, and it's bound to frighten little children and turn them off Santa Claus and the holidays forever. Oddly, the name of Jesus Christ is…",
+      "…Awesome. The only thing missing was an unnecessary graphic sex scene during one of the killings. Haha. Good gored up fun filled with predictable twists and laughable one liners. I highly enjoyed this movie, but before you watch it make sure you're in for a good laugh. I recommend this movie to…",
+      "…genre. The film has a noirish atmosphere centered around a femme fatale. Just like all the old noir classics, this, too, has a screenplay that twists you around so that you don't always know how to make sense of it at first, and it can be a stretch if you think too deeply and try to put all of the…",
+      "…seemed lackluster. In general War, Inc. keeps you on your toes throughout with its intelligent humor, and ends with just the right amount of twists in the plot. I would highly recommend this movie to all (and more so to Hilary Duff fans)!!! P.S. - I am really glad to hear the movie is going to…"
+    ],
+    "threshold": null,
+    "mining_stats": {
+      "mining_set_size": 3500,
+      "proxy_positive_count": 328,
+      "proxy_positive_rate": 0.09371428571428571,
+      "hard_negative_candidate_count": 182,
+      "low_sample_warning": false
+    },
+    "provenance": {
+      "source_dataset": "/Users/annremizova/Desktop/lab m2/data/canonical/imdb_reviews.csv",
+      "corpus_unique_size": 24962,
+      "corpus_sample_size": 5000,
+      "random_seed": 42,
+      "embedding_backend": "sentence-transformers",
+      "embedding_model": "all-MiniLM-L6-v2",
+      "mined_at": "2026-07-21T23:56:24.301015+00:00"
+    }
+  }
+}

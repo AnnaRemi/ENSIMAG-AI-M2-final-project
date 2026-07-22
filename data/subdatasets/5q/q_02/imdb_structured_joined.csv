@@ -1,0 +1,101 @@
+movie_id,title,director,year,runtime,genres
+tt0027800,The Invisible Ray,Lambert Hillyer,1936,80,"Horror,Sci-Fi,Thriller"
+tt0047966,Cult of the Cobra,Francis D. Lyon,1955,82,"Fantasy,Horror"
+tt0051484,The Colossus of New York,Eugène Lourié,1958,70,"Horror,Sci-Fi"
+tt0052844,Ghost of Dragstrip Hollow,William J. Hole Jr.,1959,65,"Comedy,Horror"
+tt0068504,Dr. Tarr's Torture Dungeon,Juan López Moctezuma,1973,84,Horror
+tt0068837,The Legend of Boggy Creek,Charles B. Pierce,1972,87,"Drama,Horror,Mystery"
+tt0068966,The Witches Mountain,Raúl Artigot,1973,86,Horror
+tt0078015,Eyes Behind the Stars,Mario Gariazzo,1978,92,"Crime,Horror,Mystery"
+tt0082425,Full Moon High,Larry Cohen,1981,93,"Comedy,Fantasy,Horror"
+tt0089280,Hobgoblins,Rick Sloane,1988,88,"Comedy,Horror,Sci-Fi"
+tt0089326,Igor and the Lunatics,W.J. Parolini,1985,82,Horror
+tt0090849,Class of Nuke 'Em High,"Richard W. Haines, Lloyd Kaufman",1986,85,"Comedy,Horror,Sci-Fi"
+tt0093741,The Pink Chiquitas,Tony Currie,1986,83,"Comedy,Horror,Sci-Fi"
+tt0093995,Slugs,Juan Piquer Simón,1988,89,Horror
+tt0095043,Doctor Hackenstein,Richard Clark,1988,88,"Comedy,Horror,Sci-Fi"
+tt0095684,My Best Friend Is a Vampire,Jimmy Huston,1987,89,"Comedy,Horror,Romance"
+tt0097845,Massacre,Andrea Bianchi,1989,89,"Horror,Thriller"
+tt0097874,Metamorphosis,George Eastman,1990,96,"Horror,Sci-Fi"
+tt0097981,A Nightmare on Elm Street: The Dream Child,Stephen Hopkins,1989,89,"Fantasy,Horror"
+tt0100248,The Night Brings Charlie,Tom Logan,1990,75,Horror
+tt0105410,"Silent Night, Deadly Night 5: The Toy Maker",Martin Kitrosser,1991,86,"Horror,Sci-Fi"
+tt0107626,My Boyfriend's Back,Bob Balaban,1993,85,"Comedy,Fantasy,Horror"
+tt0113270,The Haunted World of Edward D. Wood Jr.,Brett Thompson,1995,89,"Biography,Documentary,Horror"
+tt0126814,Big Meat Eater,Chris Windsor,1982,82,"Comedy,Horror,Musical"
+tt0189727,Memorial Day,Christopher Alender,1999,81,Horror
+tt0197116,Zombie Bloodbath 3: Zombie Armageddon,Todd Sheets,2000,90,Horror
+tt0219103,Jessica: A Ghost Story,Richard Lowry,1992,94,Horror
+tt0222817,Entrails of a Virgin,Kazuo 'Gaira' Komizu,1986,72,"Horror,Sci-Fi"
+tt0247164,American Nightmare,Jon Keeyes,2002,91,Horror
+tt0263005,The 13th Sign,"Jonty Acton, Adam Mason",2000,85,"Horror,Thriller"
+tt0286669,Rooms for Tourists,Adrian Garcia Bogliano,2004,90,"Crime,Horror,Mystery"
+tt0365265,Ginger Snaps Back: The Beginning,Grant Harvey,2004,94,"Drama,Horror,Thriller"
+tt0391198,The Grudge,Takashi Shimizu,2004,91,"Horror,Mystery,Thriller"
+tt0421199,The Fallen Ones,Kevin VanHook,2005,89,Horror
+tt0436301,Feeding the Masses,Richard Griffin,2004,85,Horror
+tt0457572,Fido,Andrew Currie,2006,93,"Comedy,Drama,Horror"
+tt0734607,Once Upon a Time,Norman Z. McLeod,1961,25,"Drama,Fantasy,Horror"
+tt0734686,Two,Montgomery Pittman,1961,25,"Drama,Fantasy,Horror"
+tt0783492,666: The Child,Jack Perez,2006,80,Horror
+tt0985025,Dark Floors,Pete Riski,2008,85,"Action,Fantasy,Horror"
+tt0021873,Five Star Final,Mervyn LeRoy,1931,89,"Crime,Drama"
+tt0025173,The Girl from Missouri,"Jack Conway, Sam Wood",1934,75,"Comedy,Drama,Romance"
+tt0031398,Gunga Din,George Stevens,1939,117,"Adventure,Comedy,War"
+tt0038360,Black Angel,Roy William Neill,1946,81,"Adventure,Crime,Drama"
+tt0041259,A Connecticut Yankee in King Arthur's Court,Tay Garnett,1949,106,"Comedy,Family,Fantasy"
+tt0049223,Forbidden Planet,Fred M. Wilcox,1956,98,"Adventure,Sci-Fi"
+tt0053224,The Rookie,George O'Hanlon,1959,84,Comedy
+tt0063094,Hot Millions,Eric Till,1968,106,"Comedy,Crime"
+tt0068098,M*A*S*H,"Charles S. Dubin, Alan Alda, Burt Metcalfe, Gene Reynolds, Hy Averback, Don Weis, Jackie Cooper, William K. Jurgensen, Harry Morgan, George Tyne, William Wiard, Larry Gelbart, Mike Farrell, Nell Cox, James Sheldon, Lee Philips, Earl Bellamy, Alan Rafkin, Tony Mordente, David Ogden Stiers, Terry Becker, Bruce Bilson, Michael O'Herlihy, E.W. Swackhamer, Norman Tokar, John Erman, Joan Darling, Joshua Shelley, Mel Damski, Stuart Millar, Gabrielle Beaumont, Rena Down, Susan Oliver, Michael Switzer, Jamie Farr",1972,25,"Comedy,Drama,War"
+tt0070784,Terror on the Beach,Paul Wendkos,1973,74,"Action,Drama,Thriller"
+tt0074776,The Last Hard Men,Andrew V. McLaglen,1976,98,"Drama,Western"
+tt0075357,Tunnel Vision,"Neal Israel, Bradley R. Swirnoff",1976,70,Comedy
+tt0078895,The Border,Christopher Leitch,1980,90,"Crime,Drama,Thriller"
+tt0083050,G.I. Samurai,Kôsei Saitô,1979,85,"Action,Adventure,Sci-Fi"
+tt0083541,Alley Cat,"Victor M. Ordonez, Ed Palmos, Al Valletta",1984,82,"Action,Crime"
+tt0083739,Class of 1984,Mark L. Lester,1982,98,"Action,Crime,Drama"
+tt0087402,Hell Riders,James Bryan,1984,90,"Action,Drama"
+tt0088330,Until September,Richard Marquand,1984,95,"Drama,Romance"
+tt0090799,Care Bears Movie II: A New Generation,Dale Schott,1986,76,"Adventure,Animation,Comedy"
+tt0095904,Prison,Renny Harlin,1987,102,"Crime,Drama,Horror"
+tt0101452,Bill & Ted's Bogus Journey,Peter Hewitt,1991,93,"Adventure,Comedy,Fantasy"
+tt0101969,Grand Canyon,Lawrence Kasdan,1991,134,"Crime,Drama"
+tt0102655,The Perfect Weapon,Mark DiSalle,1991,83,"Action,Crime,Drama"
+tt0116061,Death and the Compass,Alex Cox,1992,86,Drama
+tt0118787,Buddy,Caroline Thompson,1997,84,"Adventure,Comedy,Drama"
+tt0131484,Misbegotten,Mark L. Lester,1997,95,Thriller
+tt0156789,Men in White,Scott P. Levy,1998,83,"Comedy,Sci-Fi"
+tt0176269,Universal Soldier: The Return,Mic Rodgers,1999,83,"Action,Sci-Fi"
+tt0197570,The Hungry Bachelors Club,Gregory Ruzzin,1999,93,"Comedy,Drama,Romance"
+tt0200550,Coyote Ugly,David McNally,2000,100,"Comedy,Drama,Music"
+tt0203408,The Omega Code,Robert Marcarelli,1999,100,"Action,Adventure,Fantasy"
+tt0209037,Everybody's Famous!,Dominique Deruddere,2000,97,"Comedy,Drama,Music"
+tt0211181,102 Dalmatians,Kevin Lima,2000,100,"Adventure,Comedy,Family"
+tt0216930,My 5 Wives,Sidney J. Furie,2000,100,Comedy
+tt0218138,Dead Babies,William Marsh,2000,101,Comedy
+tt0230631,A Perfect Son,Leonard Farlinger,2000,89,Drama
+tt0243135,Happenstance,Laurent Firode,2000,90,"Comedy,Drama,Romance"
+tt0265459,One Hour Photo,Mark Romanek,2002,96,"Drama,Thriller"
+tt0295725,Time Changer,Rich Christiano,2002,95,"Drama,Fantasy,Sci-Fi"
+tt0304711,The Order,Brian Helgeland,2003,102,"Horror,Mystery,Thriller"
+tt0314930,Yugoslavia: The Avoidable War,George Bogdanich,1999,165,"Documentary,War"
+tt0331338,16 Years of Alcohol,Richard Jobson,2003,102,"Crime,Drama"
+tt0352426,Ice Bound,Roger Spottiswoode,2003,89,Drama
+tt0368891,National Treasure,Jon Turteltaub,2004,131,"Action,Adventure,Mystery"
+tt0371282,Tales from Beyond,"Josh Austin, Nate Barlow, Eric Manning, Russell Scott",2004,115,"Drama,Fantasy,Sci-Fi"
+tt0372346,IOWA,Matt Farnsworth,2005,104,"Crime,Drama"
+tt0377057,Elvis Has Left the Building,Joel Zwick,2004,90,Comedy
+tt0378854,Target of Opportunity,Danny Lerner,2005,88,"Action,Drama"
+tt0381707,White Chicks,Keenen Ivory Wayans,2004,109,"Comedy,Crime"
+tt0385988,Red Riding Hood,Randal Kleiser,2006,82,"Adventure,Family,Fantasy"
+tt0389796,The Best Thief in the World,Jacob Kornbluth,2004,93,"Comedy,Drama"
+tt0406943,The Gospel of Lou,Bret Carr,2003,72,Action
+tt0408304,"Yo soy Boricua, pa'que tu lo sepas!","Liz Garbus, Rosie Perez",2006,86,Documentary
+tt0432283,Fantastic Mr. Fox,Wes Anderson,2009,87,"Adventure,Animation,Comedy"
+tt0450470,Two Drifters,João Pedro Rodrigues,2005,98,Drama
+tt0455829,Vettaiyaadu Vilaiyaadu,Gautham Vasudev Menon,2006,174,"Action,Crime,Drama"
+tt0462160,Dead Tone,"Brian Hooks, Deon Taylor",2007,100,"Horror,Thriller"
+tt0486583,Fred Claus,David Dobkin,2007,116,"Comedy,Family,Fantasy"
+tt0758442,Black Night,Olivier Smolders,2005,90,"Drama,Mystery,Sci-Fi"
+tt0925266,Pushing Daisies,"Lawrence Trilling, Adam Kane, Peter O'Fallon, Allan Kroeker, Barry Sonnenfeld, Peter Lauer, Brian Dannelly, Paul A. Edwards, Tricia Brock, Paul Shapiro, Julie Anne Robinson, Dean White",2007,44,"Comedy,Drama,Fantasy"

@@ -1,0 +1,2 @@
+question_index,question,implementation,method,repetitions,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds,precision,recall,f1
+1,q_01,suql_baseline,SUQL baseline,1,4880.799141556025,40.0,0.0,40.0,0.0,4880.799141556025,0.5,0.08333333333333333,0.14285714285714285

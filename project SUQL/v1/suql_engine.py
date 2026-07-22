@@ -33,6 +33,7 @@ import pandas as pd
 import os
 import time
 import sys
+from pathlib import Path
 from contextlib import contextmanager
 from contextvars import ContextVar
 from typing import Optional
@@ -76,9 +77,14 @@ CHEAP_DISABLED_QUESTIONS = parse_disabled_questions(os.environ.get("SUQL_CHEAP_D
 
 
 def _default_data_path() -> str:
-    local_data = os.path.join(os.path.dirname(__file__), "data", "imdb_joined.csv")
-    repo_data = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "imdb_joined.csv")
-    return local_data if os.path.exists(local_data) else repo_data
+    configured = os.environ.get("LAB_DATA_ROOT")
+    if configured:
+        return str(Path(configured) / "canonical" / "imdb_joined.csv")
+    for parent in Path(__file__).resolve().parents:
+        candidate = parent / "data" / "canonical" / "imdb_joined.csv"
+        if candidate.exists():
+            return str(candidate)
+    raise FileNotFoundError("Cannot find data/canonical/imdb_joined.csv")
 
 
 DATA_PATH = os.environ.get("SUQL_DATA_PATH", _default_data_path())
@@ -299,15 +305,21 @@ _answer_cache: dict[str, str] = {}
 _stage2_answer_filter: CascadeAnswerFilter | None = None
 
 ANSWER_SYSTEM = textwrap.dedent("""
-You are evaluating a single movie review to answer a question about it.
+You are the final recall-first semantic filter for movie reviews.
 
-Determine whether the review contains credible evidence for the condition.
+Decide whether the review provides evidence that the movie satisfies the question.
 
-Maximize recall:
-- Answer YES if direct, indirect, synonymous, or reasonably implied evidence exists.
-- Answer NO only when the condition is clearly absent or contradicted.
-- If the evidence is genuinely ambiguous, answer UNCERTAIN.
-- Do not reject merely because the review uses different wording.
+Recall is the primary objective, but do not accept every review:
+- Answer YES for any concrete review-specific support, including direct wording,
+  synonyms, described examples, and reasonable implications.
+- Give borderline evidence the benefit of the doubt when it specifically bears on
+  the condition; exact wording is unnecessary.
+- This is evidence retrieval, not sentiment scoring: an explicit mention still
+  counts when it is negated, qualified, quoted, or used critically.
+- Answer NO when support is absent, merely generic, based only on genre/topic, or
+  never discusses the condition itself. Lack of contradiction alone is not evidence.
+
+Return exactly YES or NO. Do not include reasoning, punctuation, or extra text.
 """).strip()
 
 SUMMARY_SYSTEM = textwrap.dedent("""
@@ -693,8 +705,6 @@ def _execute_suql_impl(
 
     if candidate_df.empty:
         return candidate_df
-    structural_candidates = candidate_df.copy()
-
     # --- Apply answer() predicates (LLM, cached) ---
     if answer_predicates:
         keep_mask = pd.Series([True] * len(candidate_df), index=candidate_df.index)
@@ -724,12 +734,6 @@ def _execute_suql_impl(
         _last_query_counts["semantic_rows"] = len(candidate_df)
     else:
         _last_query_counts["semantic_rows"] = len(candidate_df)
-
-    if candidate_df.empty and not structural_candidates.empty:
-        candidate_df = structural_candidates.head(1).copy()
-        _last_query_counts["nonempty_fallback_rows"] = 1
-        if verbose:
-            print("  [fallback] No semantic match; returning one structured candidate")
 
     if final_limit is not None:
         candidate_df = candidate_df.head(final_limit)

@@ -1,0 +1,72 @@
+[
+  {
+    "category_id": "recommend_general",
+    "template_type": "recommend",
+    "attribute": "general",
+    "seed_regex": "\\brecommend(?:ed)?\\b|\\bworth (?:watching|seeing)\\b|\\bmust[- ]see\\b",
+    "topic_regex": "\\brecommend\\w*\\b|\\bworth\\b|\\bwatch\\w*\\b|\\bsee(?:ing)?\\b"
+  },
+  {
+    "category_id": "praise_humor",
+    "template_type": "praise",
+    "attribute": "humor/funniness",
+    "seed_regex": "\\bfunny\\b|\\bhilarious\\b|\\bcomedic\\b|\\blaugh(?:ed)?(?: out loud)?\\b|\\bhumorous\\b",
+    "topic_regex": "\\bhumou?r\\w*\\b|\\bcomed\\w*\\b|\\bjoke\\w*\\b|\\blaugh\\w*\\b|\\bfunny\\b"
+  },
+  {
+    "category_id": "praise_fear",
+    "template_type": "describe",
+    "attribute": "scary/frightening",
+    "seed_regex": "\\bscary\\b|\\bfrightening\\b|\\bterrifying\\b|\\bcreepy\\b|\\bunsettling\\b",
+    "topic_regex": "\\bscar\\w*\\b|\\bfright\\w*\\b|\\bterror\\w*\\b|\\bcreep\\w*\\b|\\bhorror\\w*\\b|\\bunsettling\\b"
+  },
+  {
+    "category_id": "praise_acting",
+    "template_type": "praise",
+    "attribute": "acting or performances",
+    "seed_regex": "\\b(?:great|excellent|strong|convincing) (?:acting|performances?)\\b|\\bwell[- ]acted\\b|\\bcast (?:was|is) (?:great|excellent)\\b",
+    "topic_regex": "\\bact(?:ing|ed|or|ors|ress|resses)\\b|\\bperform(?:ance|ances|er|ers|ing)\\b|\\bcast\\b"
+  },
+  {
+    "category_id": "praise_visuals",
+    "template_type": "praise",
+    "attribute": "visuals/effects",
+    "seed_regex": "\\bvisuals?\\b|\\bcinematography\\b|\\bspecial effects\\b|\\bCGI\\b|\\bvisually stunning\\b|\\bproduction design\\b",
+    "topic_regex": "\\bvisual\\w*\\b|\\bcinematograph\\w*\\b|\\beffects?\\b|\\bCGI\\b|\\bproduction design\\b|\\bcamera(?:work)?\\b"
+  },
+  {
+    "category_id": "praise_chemistry",
+    "template_type": "praise",
+    "attribute": "romantic chemistry",
+    "seed_regex": "\\b(?:on[- ]screen )?chemistry\\b|\\brelationship felt real\\b|\\bbelievable couple\\b",
+    "topic_regex": "\\bchemistry\\b|\\brelationship\\w*\\b|\\bromance\\b|\\bromantic\\b|\\bcouple\\b"
+  },
+  {
+    "category_id": "criticize_pacing",
+    "template_type": "criticize",
+    "attribute": "pacing",
+    "seed_regex": "\\bslow\\b|\\bboring\\b|\\bdrags?\\b|\\bdragged\\b|\\btedious\\b|\\bplodding\\b",
+    "topic_regex": "\\bpac(?:e|ed|ing)\\b|\\btempo\\b|\\brhythm\\b|\\bslow\\w*\\b|\\bdrag\\w*\\b|\\bboring\\b"
+  },
+  {
+    "category_id": "praise_excitement",
+    "template_type": "praise",
+    "attribute": "excitement/suspense",
+    "seed_regex": "\\bexciting\\b|\\bthrilling\\b|\\bsuspenseful\\b|\\bedge of (?:my|your) seat\\b|\\btense\\b",
+    "topic_regex": "\\bexcit\\w*\\b|\\bthrill\\w*\\b|\\bsuspense\\w*\\b|\\btension\\b|\\btense\\b|\\baction\\b"
+  },
+  {
+    "category_id": "praise_originality",
+    "template_type": "praise",
+    "attribute": "originality",
+    "seed_regex": "\\boriginal\\b|\\binventive\\b|\\bfresh\\b|\\bunpredictable\\b|\\bcreative\\b|\\bsurprising\\b",
+    "topic_regex": "\\boriginal\\w*\\b|\\binvent\\w*\\b|\\bfresh\\b|\\bpredict\\w*\\b|\\bcreativ\\w*\\b|\\bsurpris\\w*\\b"
+  },
+  {
+    "category_id": "praise_ending_twist",
+    "template_type": "praise",
+    "attribute": "ending/plot twist",
+    "seed_regex": "\\bplot twist\\b|\\bsurprising ending\\b|\\bdid(?:n't| not) see (?:it|that) coming\\b|\\btwist\\b|\\bending\\b",
+    "topic_regex": "\\btwist\\w*\\b|\\bending\\w*\\b|\\bfinale\\b|\\bconclusion\\b"
+  }
+]

@@ -7,7 +7,7 @@ from typing import Iterable
 import httpx
 
 
-DEFAULT_MODEL = os.environ.get("SUQL_MODEL", "ollama/phi4-mini")
+DEFAULT_MODEL = os.environ.get("SUQL_MODEL", "ollama/gemma4:e2b")
 DEFAULT_API_BASE = os.environ.get("SUQL_API_BASE", "http://localhost:11434")
 
 
@@ -150,9 +150,14 @@ class OllamaLogOddsScorer:
     @staticmethod
     def _prompt(review: str, question: str) -> str:
         return (
-            "Classify whether the review provides evidence for a Yes answer.\n"
-            "This is recall-first classification: avoid false negatives. If there is credible "
-            "supporting evidence or ambiguity, answer 1. Answer 0 only when clearly absent.\n"
+            "Act as a high-recall first-pass semantic filter. Decide whether this review "
+            "contains review-specific evidence for a Yes answer. Count direct wording, "
+            "synonyms, described examples, and reasonable implications as evidence. Give "
+            "borderline but condition-specific evidence the benefit of the doubt. Do not "
+            "discard an explicit mention because it is negated, qualified, quoted, or "
+            "critical: this is evidence retrieval, not sentiment scoring. Do not "
+            "count genre/topic alone, generic praise or criticism, or mere lack of "
+            "contradiction as evidence.\n"
             "Return exactly one token: 1 for Yes, 0 for No.\n\n"
             f"Question: {question}\nReview: {review[:1800]}\n\nAnswer:"
         )

@@ -1,0 +1,570 @@
+FOUR SEMANTIC-QUERY SOLUTIONS: OPERATION, PROMPTS, AND OUTPUT PROBLEMS
+=====================================================================
+
+Purpose
+-------
+
+This document explains the four benchmarked solutions:
+
+1. SUQL baseline
+2. SUQL V1 two-level cascade
+3. Trummer baseline adaptive block join
+4. Trummer V1 structured two-level cascade
+
+It also records every prompt involved in structured parsing or semantic
+classification and explains why semantic output is currently unreliable.
+
+The benchmark runner can use the Gemma 4 family names gemma4:e2b,
+gemma4:e4b, gemma4:12b, gemma4:26b, and gemma4:31b. In a cascade, the cheap
+and expensive roles can be assigned any two of these models. The completed
+q01 smoke test used e2b for the cheap role and e4b for the expensive role.
+
+
+COMMON BENCHMARK FLOW
+---------------------
+
+Each benchmark question contains structured conditions and a condition that
+requires reading a review. For example:
+
+  Full question:
+  Which movies released in 2001 have reviews that explicitly recommend the
+  movie?
+
+  Structured condition:
+  year = 2001
+
+  Semantic condition:
+  Does the review explicitly recommend the movie or say it is worth watching?
+
+The evaluator compares the unique returned movie IDs with a fixed set of
+ground-truth movie IDs and computes precision, recall, and F1. Structured
+filtering only decides which candidates reach semantic classification. It
+cannot recover a candidate that the semantic classifier later rejects.
+
+In the canonical benchmark runner, SUQL baseline and SUQL V1 receive the
+SUQL query already stored in benchmark.json. Their natural-language-to-SUQL
+parser is therefore part of the implementation but is not invoked during
+these benchmark runs. Trummer V1 parses the full question to obtain its
+structured filters. Trummer baseline deliberately performs no deterministic
+structured pruning.
+
+
+1. SUQL BASELINE
+================
+
+How it works
+------------
+
+1. The input is a SUQL query containing normal SQL predicates and an
+   answer(review, semantic_question) predicate.
+2. Normal SQL predicates are executed first in an in-memory SQLite database.
+   For q01, this reduced 100 movies to the 40 movies released in 2001.
+3. Every surviving review is classified independently by the main/expensive
+   model. There is no cheap model and no semantic batching.
+4. Only rows whose model result parses as YES are returned.
+5. Results are cached by review and semantic question.
+6. Empty or very short reviews are rejected without calling a model.
+7. If the response is malformed, the implementation retries once. A second
+   malformed response becomes NO. This fail-closed behavior protects precision
+   but can create false negatives.
+
+The q01 run made 40 expensive calls: one call for each of the 40 correctly
+structured-filtered candidates.
+
+Optional natural-language-to-SUQL parser prompt
+-----------------------------------------------
+
+This parser is used by nl_to_suql() when a raw natural-language question is
+provided. {TABLE_SCHEMA} and {FEW_SHOT_EXAMPLES} are filled by the engine.
+
+  You are a SUQL (Structured and Unstructured Query Language) semantic parser.
+  SUQL extends SQL with two free-text functions:
+    • answer(free_text_column, 'question')  → 'Yes' | 'No' | short string
+    • summary(free_text_column)             → a short prose summary
+
+  {TABLE_SCHEMA}
+
+  Rules:
+  1. Use plain SQL WHERE clauses for ALL structured predicates (year, runtime,
+     director, genres, title, movie_id).
+  2. Use answer() ONLY for predicates that require understanding the review text.
+  3. Always apply structured filters BEFORE answer() in the WHERE clause
+     (efficiency).
+  4. The SELECT list must include: movie_id, title, year, runtime, director,
+     genres. Add summary(review) AS review_summary whenever you use answer() on
+     the review.
+  5. Use LIKE '%value%' for partial text matches on genres and director.
+  6. For "top N" questions without a numeric ranking field, use LIMIT N.
+  7. Output ONLY the raw SQL query — no markdown fences, no explanation.
+
+  Few-shot examples:
+  {FEW_SHOT_EXAMPLES}
+
+Parser user prompt:
+
+  -- Question: {full_question}
+
+Semantic system prompt
+----------------------
+
+  You are a recall-first semantic filter for movie reviews.
+
+  Decide whether the review provides evidence that the movie satisfies the
+  question.
+
+  Recall is the primary objective, but do not accept every review:
+  - Answer YES when there is any concrete review-specific evidence: direct
+    wording, a synonym/paraphrase, a described example, or a reasonable
+    implication.
+  - Give borderline evidence the benefit of the doubt when it specifically
+    bears on the condition. The evidence need not use the question's exact words.
+  - This is evidence retrieval, not sentiment scoring: an explicit mention still
+    counts when it is negated, qualified, quoted, or used critically.
+  - Answer NO when there is no review-specific support, the connection is only
+    the movie's genre/topic, the text is generic praise or criticism, or the
+    review never discusses the condition itself.
+  - Do not infer evidence merely because the condition is not contradicted.
+
+  Return exactly YES or NO. Do not include reasoning, punctuation, or extra text.
+
+Semantic user prompt:
+
+  Review:
+  {review_text, truncated to 6000 characters}
+
+  Question: {semantic_question}
+
+Malformed-output retry suffix:
+
+  Your previous response was invalid. Reply with exactly YES or NO.
+
+Auxiliary summary prompt
+------------------------
+
+This prompt belongs to the SUQL summary() operator. It is not used to make the
+benchmark's binary semantic decision.
+
+  Summarize the following movie review in 1-2 concise sentences.
+  Capture the reviewer's overall sentiment and the most notable point.
+  Output only the summary — no preamble.
+
+
+2. SUQL V1 TWO-LEVEL CASCADE
+============================
+
+How it works
+------------
+
+1. The same structured-first SUQL execution reduces the input with normal SQL.
+2. Each surviving review is sent to the cheap model, normally e2b. The cheap
+   scorer asks for one binary token and obtains a score/confidence from the
+   model probabilities.
+3. A calibration sample is also classified by the expensive model. Agreement
+   between cheap and expensive decisions is used to learn a routing-confidence
+   threshold targeting the configured cascade agreement (0.9 by default).
+4. Confident cheap positives are accepted, confident cheap negatives are
+   rejected, and uncertain candidates are routed to the expensive model.
+5. The expensive model makes the final YES/NO decision for routed candidates.
+6. Calls and decisions are cached and separately measured.
+7. Cheap-model errors route to the expensive model rather than silently
+   rejecting the candidate.
+8. A malformed expensive answer is retried once and then becomes NO.
+
+For q01, structured filtering succeeded: 40 candidates reached the cheap model.
+The run made 40 cheap calls and 20 expensive calibration/fallback calls.
+
+The optional natural-language-to-SUQL parser and auxiliary summary prompts are
+the same as in SUQL baseline.
+
+Cheap first-pass prompt
+-----------------------
+
+  Act as a high-recall first-pass semantic filter. Decide whether this review
+  contains review-specific evidence for a Yes answer. Count direct wording,
+  synonyms, described examples, and reasonable implications as evidence. Give
+  borderline but condition-specific evidence the benefit of the doubt. Do not
+  discard an explicit mention because it is negated, qualified, quoted, or
+  critical: this is evidence retrieval, not sentiment scoring. Do not count
+  genre/topic alone, generic praise or criticism, or mere lack of contradiction
+  as evidence.
+
+  Return exactly one token: 1 for Yes, 0 for No.
+
+  Question: {semantic_question}
+  Review: {review_text, truncated to 1800 characters}
+
+  Answer:
+
+Expensive final system prompt
+-----------------------------
+
+  You are the final recall-first semantic filter for movie reviews.
+
+  Decide whether the review provides evidence that the movie satisfies the
+  question.
+
+  Recall is the primary objective, but do not accept every review:
+  - Answer YES for any concrete review-specific support, including direct
+    wording, synonyms, described examples, and reasonable implications.
+  - Give borderline evidence the benefit of the doubt when it specifically bears
+    on the condition; exact wording is unnecessary.
+  - This is evidence retrieval, not sentiment scoring: an explicit mention still
+    counts when it is negated, qualified, quoted, or used critically.
+  - Answer NO when support is absent, merely generic, based only on genre/topic,
+    or never discusses the condition itself. Lack of contradiction alone is not
+    evidence.
+
+  Return exactly YES or NO. Do not include reasoning, punctuation, or extra text.
+
+Expensive final user prompt:
+
+  Review:
+  {review_text, truncated to 6000 characters}
+
+  Question: {semantic_question}
+
+Malformed-output retry suffix:
+
+  Your previous response was invalid. Reply with exactly YES or NO.
+
+
+3. TRUMMER BASELINE ADAPTIVE BLOCK JOIN
+=======================================
+
+How it works
+------------
+
+1. The implementation receives the complete natural-language question as one
+   semantic predicate.
+2. It does not deterministically extract or apply year, runtime, genre,
+   director, or title conditions before the model call.
+3. Movie rows and review rows are divided into blocks. The adaptive join chooses
+   block sizes under a token budget and asks the main/expensive model to classify
+   all active movie IDs in the block.
+4. A movie and review are eligible only when review.tconst exactly equals
+   movie.movie_id. Rows without a matching ID in the current blocks are removed
+   before prompting.
+5. The response parser accepts tolerant plain-text or legacy JSON decisions.
+6. Missing or ambiguous decisions are retried one movie at a time. Only an
+   explicit YES is returned.
+7. There is no fabricated nonempty fallback: if no movie is accepted, the result
+   is empty.
+
+The configured maxima in the q01 run were 25 movie rows and 8 review rows per
+block, with a 4096-token total threshold. Effective blocks can be smaller. The
+lack of deterministic structured filtering is an important reason that Trummer
+baseline produced more false positives than the other methods.
+
+Adaptive block-join prompt
+--------------------------
+
+  Find every movie in Collection 1 that has a review in Collection 2 satisfying
+  this predicate:
+  {complete_question}
+
+  Act as a recall-first semantic filter, while requiring review-specific evidence.
+  - Answer YES for direct wording, synonyms/paraphrases, described examples, or
+    reasonable implications.
+  - Give borderline evidence the benefit of the doubt when it specifically bears
+    on the predicate.
+  - Count explicit mentions even when negated, qualified, quoted, or critical;
+    retrieve evidence rather than score sentiment.
+  - Answer NO when support is absent, generic, based only on genre/topic, or never
+    discusses the predicate itself.
+  - Lack of contradiction alone is not evidence.
+  Collection 1 contains structured movie rows. Collection 2 contains review chunks.
+  A review belongs to a movie only when tconst is exactly equal to movie_id.
+  Return one decision per line as: movie_id: YES or movie_id: NO.
+  Do not include confidence, evidence, explanations, or prose.
+  Copy each movie_id exactly from Collection 1.
+  Do not add prose, JSON, markdown, or a completion marker.
+
+  Collection 1:
+  1: {serialized movie row}
+  ...
+
+  Collection 2:
+  1: {serialized review row}
+  ...
+
+  Decisions:
+
+Missing-decision retry suffix:
+
+  Reply with exactly one line: {movie_id}: YES or {movie_id}: NO.
+
+
+4. TRUMMER V1 STRUCTURED TWO-LEVEL CASCADE
+==========================================
+
+How it works
+------------
+
+1. A structured parser converts the complete question into SUQL.
+2. answer(review, ...) is removed from that SUQL, and the remaining normal SQL is
+   executed in SQLite. A conservative regex extractor is used if model parsing
+   fails.
+3. Reviews are pruned to the surviving movie IDs.
+4. Movie-review candidate pairs are created only when movie_id equals tconst.
+5. Candidates are classified by the cheap model in batches of 8 by default.
+6. The cheap model returns YES, NO, or UNCERTAIN. These map to positive, negative,
+   or zero proxy scores.
+7. An expensive-model calibration sample is used to learn a confidence threshold
+   targeting 0.9 agreement by default.
+8. Confident cheap positives are accepted, confident cheap negatives are
+   rejected, and uncertain/failed candidates are routed to the expensive model.
+9. Expensive candidates are coalesced into batches of up to 32 by default.
+10. Missing or ambiguous expensive decisions are retried individually.
+11. The result is the deduplicated union of cheap and expensive accepted rows.
+
+For q01, structured filtering succeeded: 100 movies became 40 year-2001 movies.
+Five cheap batches of 8 confirm that all 40 structured candidates entered the
+semantic cascade.
+
+Structured-parser system prompt
+-------------------------------
+
+  You are a SUQL semantic parser for an IMDb movie table. Convert the user's
+  question into one SUQL query.
+
+  Table: movies
+  Columns:
+    movie_id TEXT
+    title TEXT
+    year INTEGER
+    runtime INTEGER
+    director TEXT
+    genres TEXT
+
+  There is also conceptual review text available only through:
+    answer(review, '<yes/no question>') = 'Yes'
+
+  Rules:
+  1. Put every movie-table condition in normal SQL over movies.
+  2. Use answer(review, ...) only for conditions that require reading review text.
+  3. Do not use answer() for director, title, year, runtime, movie_id, or genres.
+  4. Treat genre-like words as structured genre predicates when possible:
+     funny/comedic/comedy -> genres LIKE '%Comedy%'
+     scary/terrifying -> genres LIKE '%Horror%'
+     romantic -> genres LIKE '%Romance%'
+     sci-fi/science fiction -> genres LIKE '%Sci-Fi%'
+  5. Use LIKE '%value%' for director, title, and genres.
+  6. Select only movie_id, title, year, runtime, director, genres.
+  7. Output only raw SQL, no markdown and no explanation.
+
+  Examples:
+  Question: movies directed by Christopher Nolan which are funny
+  SELECT movie_id, title, year, runtime, director, genres
+  FROM movies
+  WHERE director LIKE '%Christopher Nolan%'
+    AND genres LIKE '%Comedy%';
+
+  Question: movies directed by Wes with reviews saying they are scary
+  SELECT movie_id, title, year, runtime, director, genres
+  FROM movies
+  WHERE director LIKE '%Wes%'
+    AND answer(review, 'Does the review say the movie is scary or terrifying?')
+        = 'Yes';
+
+  Question: Which movies released in 1998 have reviews expressing an overall
+  negative opinion?
+  SELECT movie_id, title, year, runtime, director, genres
+  FROM movies
+  WHERE year = 1998
+    AND answer(review, 'Does the review express an overall negative, critical,
+        or strongly unfavorable opinion of the movie?') = 'Yes';
+
+Structured-parser user prompt:
+
+  Question: {complete_question}
+
+Cheap batch prompt
+------------------
+
+  Classify every explicit candidate pair below.
+  Predicate: {semantic_question}
+
+  Act as a high-recall first-pass semantic filter.
+
+  Answer YES for direct evidence, synonyms, described examples, or reasonable
+  implications. Answer UNCERTAIN when evidence is condition-specific but too weak
+  or ambiguous for a reliable YES. Answer NO only when review-specific support is
+  absent, generic, based only on genre/topic, or never discusses the predicate
+  itself. Lack of contradiction is not evidence. Count explicit mentions even
+  when negated, qualified, quoted, or critical. Prefer UNCERTAIN over NO when
+  plausible condition-specific evidence exists.
+
+  Return one line per candidate as CANDIDATE_ID: YES, NO, or UNCERTAIN.
+  Do not include confidence, evidence, explanations, or prose.
+  Return every candidate exactly once and do not explain.
+
+  CANDIDATE_{candidate_id}:
+  Movie: {serialized movie row}
+  Review: {review text, truncated to 3500 characters}
+  ...
+
+  Decisions:
+
+Expensive batch prompt
+----------------------
+
+  Evaluate the explicit candidate pairs below.
+  Predicate: {semantic_question}
+
+  Act as the final recall-first semantic filter.
+
+  Answer YES for any concrete review-specific support, including direct wording,
+  synonyms, described examples, and reasonable implications. Give borderline
+  evidence the benefit of the doubt when it specifically bears on the predicate.
+  Answer NO when support is absent, generic, based only on genre/topic, or never
+  discusses the predicate itself. Lack of contradiction alone is not evidence.
+  This is evidence retrieval, not sentiment scoring: count explicit mentions even
+  when negated, qualified, quoted, or critical.
+
+  Return one line per candidate as PAIR_ID: YES or PAIR_ID: NO.
+  Do not include confidence, evidence, explanations, or prose.
+  Return every candidate exactly once. Do not add prose, JSON, or markdown.
+
+  PAIR_{candidate_id}:
+  Movie: {serialized movie row}
+  Review: {review text, truncated to 3500 characters}
+  ...
+
+  Decisions:
+
+Missing-decision retry suffix:
+
+  Reply with exactly PAIR_{candidate_id}: YES or PAIR_{candidate_id}: NO.
+
+
+THE SEMANTIC-OUTPUT PROBLEM
+===========================
+
+Semantic classification is the dominant quality bottleneck. The structured
+filters succeeded for both SUQL methods and Trummer V1 in q01, yet recall remained
+0.083, 0.083, and 0.250 respectively. Correct structured pruning therefore did
+not prevent severe semantic false negatives.
+
+Measured q01 results (one repetition, e2b -> e4b)
+-------------------------------------------------
+
+  Method                 Precision   Recall   F1      TP   FP   FN
+  SUQL baseline             0.500     0.083   0.143    1    1   11
+  SUQL V1                   0.500     0.083   0.143    1    1   11
+  Trummer baseline          0.125     0.083   0.100    1    7   11
+  Trummer V1                0.600     0.250   0.353    3    2    9
+
+All four methods had recall and F1 below 0.5. The best solution, Trummer V1,
+still missed 9 of 12 benchmark positives.
+
+Why the output is strongly model-dependent
+------------------------------------------
+
+1. Different models interpret the same natural-language condition differently.
+   A larger model may understand negation, sarcasm, references, and implied
+   evidence more accurately, while a smaller model may behave more like keyword
+   matching. Against lexical ground truth, better language understanding can
+   paradoxically score worse.
+
+2. Decision boundaries are not stable across model sizes or quantizations.
+   e2b, e4b, 12b, 26b, and 31b can disagree about indirect or borderline evidence.
+   Cascade routing is therefore also model-dependent: changing the cheap model
+   changes which candidates ever reach the final model.
+
+3. Output-format compliance differs by model. A model can omit IDs, add prose,
+   return invalid JSON/plain text, or stop early. The implementations retry and
+   parse several formats, but repeated malformed output ultimately becomes a
+   rejection, harming recall.
+
+4. Batch composition affects decisions. Trummer prompts contain several
+   candidates at once. A model can compare candidates implicitly, overlook an
+   item near the end, or behave differently when the same candidate is evaluated
+   alone. Thus batch size is not only a performance parameter; it may change
+   quality.
+
+5. Text truncation can hide evidence. SUQL V1's cheap stage sees 1800 characters,
+   Trummer V1 sees 3500 characters, and SUQL final stages see 6000 characters.
+   Evidence after those boundaries is invisible to that stage. Routing based on a
+   truncated cheap prompt can reject a candidate before the expensive model sees
+   more text.
+
+6. The learned cascade threshold treats the expensive model as its calibration
+   oracle. If that model is wrong or systematically conservative, calibration
+   reproduces its errors rather than correcting them.
+
+7. Fail-closed behavior protects precision but hurts recall. Empty reviews,
+   repeated malformed answers, request failures, and unresolved batch entries
+   become NO. This avoids accepting everything, but it can turn infrastructure or
+   formatting problems into false negatives.
+
+Why the benchmark ground truth creates an additional problem
+-------------------------------------------------------------
+
+The canonical semantic labels are generated by deterministic regular expressions,
+not by human semantic judgments. In q01, any occurrence of recommend/recommended,
+worth watching/seeing, or must-see is labeled positive. Consequently, the positive
+set includes examples such as:
+
+  "I would not recommend it."
+  "There is little to recommend this film."
+  "I don't recommend it."
+  "You must see her then."
+
+A model answering the literal semantic question may correctly decide that these
+reviews do not recommend the movie, but the evaluator records those decisions as
+false negatives. This semantic-versus-lexical mismatch was the largest cause of
+the awful q01 recall.
+
+The current prompts were revised after the reported run to say that explicit
+mentions count even when negated, qualified, quoted, or critical. This aligns the
+models more closely with the lexical annotation policy while retaining a minimum
+evidence requirement. The reported table predates that final revision, so the
+revision still requires a new benchmark run.
+
+Other important limitations
+---------------------------
+
+1. Trummer baseline has no deterministic structured pruning. The model must
+   jointly understand structured and semantic conditions, which contributed to
+   its seven false positives and precision of 0.125.
+
+2. SUQL baseline and SUQL V1 returned identical q01 predictions despite very
+   different execution costs. This indicates that the final semantic standard,
+   rather than SUQL's year filter, dominated quality in that run.
+
+3. One repetition is only a smoke test. Even temperature zero is not a guarantee
+   of identical output across model versions, server builds, hardware backends,
+   or changes in batching and prompt formatting.
+
+4. The Aker run used CPU fallback because its Ollama build did not make the Gemma
+   4 models GPU-resident. Its latency values must not be compared with GPU runs.
+
+
+INTERPRETATION AND NEXT VALIDATION
+==================================
+
+The current implementation establishes a recall-first decision rule without
+blindly accepting every review. However, prompts cannot make results independent
+of the model, and they cannot resolve an ambiguous definition of a positive label.
+Before treating the quality numbers as meaningful, the project should decide
+whether its objective is:
+
+A. semantic truth: the review actually asserts the requested property; or
+B. lexical evidence retrieval: the review merely contains a phrase associated
+   with that property, even under negation or in an unrelated context.
+
+The current benchmark evaluates B, while the earlier prompts mostly implemented
+A. The latest prompts intentionally move toward B to improve measured recall.
+
+The next meaningful experiment should rerun all four methods on several questions
+and several Gemma 4 sizes, with multiple repetitions. Reports should include:
+
+- structured candidate counts;
+- TP, FP, FN, precision, recall, and F1 per question;
+- malformed and retried response counts;
+- cheap accepts, cheap rejects, and expensive routes;
+- evidence position relative to every truncation boundary;
+- results separated by model pair and batch size.
+
+Only after that run can we determine whether the final prompts improve recall
+without lowering F1 through excessive acceptance.

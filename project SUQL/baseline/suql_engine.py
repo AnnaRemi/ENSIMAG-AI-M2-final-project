@@ -33,6 +33,7 @@ import pandas as pd
 import os
 import time
 import httpx
+from pathlib import Path
 from contextlib import contextmanager
 from contextvars import ContextVar
 from typing import Optional
@@ -55,9 +56,14 @@ EXPENSIVE_NUM_PREDICT = int(
 
 
 def _default_data_path() -> str:
-    local_data = os.path.join(os.path.dirname(__file__), "data", "imdb_joined.csv")
-    repo_data = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "imdb_joined.csv")
-    return local_data if os.path.exists(local_data) else repo_data
+    configured = os.environ.get("LAB_DATA_ROOT")
+    if configured:
+        return str(Path(configured) / "canonical" / "imdb_joined.csv")
+    for parent in Path(__file__).resolve().parents:
+        candidate = parent / "data" / "canonical" / "imdb_joined.csv"
+        if candidate.exists():
+            return str(candidate)
+    raise FileNotFoundError("Cannot find data/canonical/imdb_joined.csv")
 
 
 DATA_PATH = os.environ.get("SUQL_DATA_PATH", _default_data_path())
@@ -266,27 +272,24 @@ def _build_sqlite(df: pd.DataFrame) -> sqlite3.Connection:
 _answer_cache: dict[str, str] = {}
 
 ANSWER_SYSTEM = textwrap.dedent("""
-You are evaluating a single movie review to answer a question about it.
+You are a recall-first semantic filter for movie reviews.
 
-Determine whether the review contains credible evidence for the condition.
+Decide whether the review provides evidence that the movie satisfies the question.
 
-Maximize recall:
-- Answer YES if direct, indirect, synonymous, or reasonably implied evidence exists.
-- Answer NO only when the condition is clearly absent or contradicted.
-- If the evidence is genuinely ambiguous, answer UNCERTAIN.
-- Do not reject merely because the review uses different wording.
+Recall is the primary objective, but do not accept every review:
+- Answer YES when there is any concrete review-specific evidence: direct wording,
+  a synonym/paraphrase, a described example, or a reasonable implication.
+- Give borderline evidence the benefit of the doubt when it specifically bears on
+  the condition. The evidence need not use the question's exact words.
+- This is evidence retrieval, not sentiment scoring: an explicit mention still
+  counts when it is negated, qualified, quoted, or used critically.
+- Answer NO when there is no review-specific support, the connection is only the
+  movie's genre/topic, the text is generic praise or criticism, or the review
+  never discusses the condition itself.
+- Do not infer evidence merely because the condition is not contradicted.
 
-Return only the decision. Do not include reasoning or evidence.
+Return exactly YES or NO. Do not include reasoning, punctuation, or extra text.
 """).strip()
-
-DECISION_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "decision": {"type": "string", "enum": ["yes", "no", "uncertain"]},
-    },
-    "required": ["decision"],
-    "additionalProperties": False,
-}
 
 SUMMARY_SYSTEM = textwrap.dedent("""
 Summarize the following movie review in 1-2 concise sentences.
@@ -311,8 +314,9 @@ def answer_fn(review_text: str, question: str) -> str:
 
     if not review_text or len(review_text.strip()) < 10:
         result = "No"
+        raw_result = ""
     else:
-        prompt = f"Review:\n{review_text[:1500]}\n\nQuestion: {question}"
+        prompt = f"Review:\n{review_text[:6000]}\n\nQuestion: {question}"
         current_prompt_count = _llm_prompt_count.get()
         if current_prompt_count is not None:
             _llm_prompt_count.set(current_prompt_count + 1)
@@ -323,15 +327,14 @@ def answer_fn(review_text: str, question: str) -> str:
                 {"role": "user", "content": prompt},
             ],
             "stream": False,
-            "format": DECISION_SCHEMA,
             "think": EXPENSIVE_THINK,
             "options": {
                 "temperature": 0,
                 "num_predict": EXPENSIVE_NUM_PREDICT,
-                "num_ctx": 4096,
+                "num_ctx": 8192,
             },
         }
-        raw_result = ""
+        result = "No"
         for attempt in range(2):
             try:
                 response = httpx.post(
@@ -339,23 +342,35 @@ def answer_fn(review_text: str, question: str) -> str:
                 )
                 response.raise_for_status()
                 raw_result = str(response.json().get("message", {}).get("content", ""))
-                break
+                decision = _parse_decision(raw_result)
+                if decision in {"Yes", "No"}:
+                    result = decision
+                    break
+                payload["messages"][-1]["content"] = (
+                    prompt + "\n\nYour previous response was invalid. Reply with exactly YES or NO."
+                )
             except (httpx.HTTPError, ValueError):
-                if attempt == 1:
-                    raw_result = ""
+                pass
         if LOG_RAW_ANSWERS:
             print(f"    raw answer() response: {raw_result!r}")
-        try:
-            structured = json.loads(raw_result)
-            decision = str(structured["decision"]).strip().lower()
-            if decision not in {"yes", "no", "uncertain"}:
-                raise ValueError("invalid decision")
-            result = decision.capitalize()
-        except (json.JSONDecodeError, KeyError, TypeError, ValueError):
-            result = "Uncertain"
 
     _answer_cache[key] = result
     return result
+
+
+def _parse_decision(raw: str) -> str | None:
+    """Parse a model decision without relying on provider-side schemas."""
+    text = str(raw).strip()
+    try:
+        parsed = json.loads(text)
+        if isinstance(parsed, dict):
+            text = str(parsed.get("decision", parsed.get("answer", text)))
+    except (json.JSONDecodeError, TypeError, ValueError):
+        pass
+    match = re.search(r"\b(uncertain|yes|no)\b", text, re.IGNORECASE)
+    if not match or match.group(1).lower() == "uncertain":
+        return None
+    return match.group(1).capitalize()
 
 
 def summary_fn(review_text: str) -> str:
@@ -668,8 +683,6 @@ def _execute_suql_impl(
 
     if candidate_df.empty:
         return candidate_df
-    structural_candidates = candidate_df.copy()
-
     # --- Apply answer() predicates (LLM, cached) ---
     if answer_predicates:
         keep_mask = pd.Series([True] * len(candidate_df), index=candidate_df.index)
@@ -699,12 +712,6 @@ def _execute_suql_impl(
         _last_query_counts["semantic_rows"] = len(candidate_df)
     else:
         _last_query_counts["semantic_rows"] = len(candidate_df)
-
-    if candidate_df.empty and not structural_candidates.empty:
-        candidate_df = structural_candidates.head(1).copy()
-        _last_query_counts["nonempty_fallback_rows"] = 1
-        if verbose:
-            print("  [fallback] No semantic match; returning one structured candidate")
 
     if final_limit is not None:
         candidate_df = candidate_df.head(final_limit)

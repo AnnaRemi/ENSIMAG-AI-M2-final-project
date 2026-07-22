@@ -12,8 +12,9 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent / "10q"
 LAB_ROOT = ROOT.parents[1]
-SOURCE = LAB_ROOT / "project SUQL" / "data" / "imdb_joined.csv"
+SOURCE = LAB_ROOT / "data" / "canonical" / "imdb_joined.csv"
 QUESTION_ROOT = ROOT / "per_question"
+QUESTION_DATA_ROOT = LAB_ROOT / "data" / "subdatasets" / "10q"
 ROWS_PER_QUESTION = 100
 OUTPUT_COLUMNS = ["movie_id", "title", "director", "year", "runtime", "genres", "review"]
 
@@ -165,7 +166,7 @@ def write_question(spec: QuestionSpec, source: pd.DataFrame, used: set[str]) -> 
     selected["ground_truth"] = (selected["structured_match"] & selected["semantic_label"]).astype(int)
     selected = selected.sort_values(["structured_match", "movie_id"], ascending=[False, True])
     question_id = f"q_{spec.number:02d}"
-    data_dir = QUESTION_ROOT / question_id / "data"; data_dir.mkdir(parents=True, exist_ok=True)
+    data_dir = QUESTION_DATA_ROOT / question_id; data_dir.mkdir(parents=True, exist_ok=True)
     selected[OUTPUT_COLUMNS].to_csv(data_dir / "imdb_joined.csv", index=False)
     selected[["movie_id","title","director","year","runtime","genres"]].to_csv(data_dir / "imdb_structured_joined.csv", index=False)
     selected[["movie_id","review"]].rename(columns={"movie_id":"tconst"}).to_csv(data_dir / "imdb_reviews.csv", index=False)
@@ -187,7 +188,9 @@ def write_question(spec: QuestionSpec, source: pd.DataFrame, used: set[str]) -> 
         "row_count": ROWS_PER_QUESTION, "structured_candidate_count": int(selected.structured_match.sum()),
         "semantic_positive_count": int(selected.semantic_label.sum()), "ground_truth_movie_ids": truth_ids,
     }
-    (data_dir.parent / "benchmark.json").write_text(json.dumps(benchmark, indent=2) + "\n")
+    metadata_dir = QUESTION_ROOT / question_id
+    metadata_dir.mkdir(parents=True, exist_ok=True)
+    (metadata_dir / "benchmark.json").write_text(json.dumps(benchmark, indent=2) + "\n")
     return benchmark
 
 

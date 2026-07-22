@@ -11,12 +11,13 @@ OUTPUT_NAME=""
 WALLTIME="24:00:00"
 PARALLEL_WORKERS=4
 PULL_MODELS=0
+REQUIRE_GPU=1
 KRAKEN_GPU_MODEL="${KRAKEN_GPU_MODEL:-H200}"
 AKER_HOST="${AKER_HOST:-remizova@aker.imag.fr}"
 AKER_ROOT="${AKER_ROOT:-/home/daisy/remizova/lab_m2_benchmarks}"
 
 usage() {
-  echo "Usage: $0 --suite {10q|5q|3q|1q} [--repetitions N] [--methods '...'] [--cheap-model M] [--expensive-model M] [--output-name N] [--pull-models]"
+  echo "Usage: $0 --suite {10q|5q|3q|1q} [--repetitions N] [--methods '...'] [--cheap-model M] [--expensive-model M] [--output-name N] [--pull-models] [--allow-cpu]"
 }
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -29,6 +30,7 @@ while [[ $# -gt 0 ]]; do
     --walltime) WALLTIME="$2"; shift 2;;
     --parallel-workers) PARALLEL_WORKERS="$2"; shift 2;;
     --pull-models) PULL_MODELS=1; shift;;
+    --allow-cpu) REQUIRE_GPU=0; shift;;
     -h|--help) usage; exit 0;;
     *) echo "ERROR: unknown option $1" >&2; usage >&2; exit 2;;
   esac
@@ -59,6 +61,7 @@ ssh "$AKER_HOST" "
     'export RUN_STAMP=$STAMP' \
     'export PARALLEL_WORKERS=$PARALLEL_WORKERS' \
     'export PULL_MODELS=$PULL_MODELS' \
+    'export REQUIRE_GPU=$REQUIRE_GPU' \
     'exec bash $AKER_ROOT/benchmarks/shared/scripts/_aker_worker.sh' > \"\$WRAPPER\"
   chmod 700 \"\$WRAPPER\"
   if [[ '$AKER_HOST' == kraken* ]]; then

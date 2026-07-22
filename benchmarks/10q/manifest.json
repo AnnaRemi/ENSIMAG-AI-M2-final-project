@@ -1,7 +1,7 @@
 {
   "suite": "10q",
   "question_count": 10,
-  "source": "project SUQL/data/imdb_joined.csv",
+  "source": "data/canonical/imdb_joined.csv",
   "questions": [
     {
       "id": "q_01",

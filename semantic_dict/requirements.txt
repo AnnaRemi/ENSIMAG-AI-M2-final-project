@@ -1,0 +1,6 @@
+numpy>=1.24,<2
+sentence-transformers==5.1.2
+
+# Optional, only when reading Parquet input:
+pandas>=2.0
+pyarrow>=12

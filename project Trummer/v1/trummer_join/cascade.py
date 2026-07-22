@@ -12,13 +12,23 @@ from typing import Callable, Iterable
 PAIR_LABEL_RE = re.compile(r"\b(?:candidate|pair)[_ #:-]*(\d+)\b", re.IGNORECASE)
 PLAIN_NUMBER_RE = re.compile(r"^\s*(\d+)\s*$")
 
-RECALL_INSTRUCTIONS = """Determine whether the review contains credible evidence for the condition.
+CHEAP_EVIDENCE_INSTRUCTIONS = """Act as a high-recall first-pass semantic filter.
 
-Maximize recall:
-- Answer YES if direct, indirect, synonymous, or reasonably implied evidence exists.
-- Answer NO only when the condition is clearly absent or contradicted.
-- If the evidence is genuinely ambiguous, answer UNCERTAIN.
-- Do not reject merely because the review uses different wording."""
+Answer YES for direct evidence, synonyms, described examples, or reasonable
+implications. Answer UNCERTAIN when evidence is condition-specific but too weak or
+ambiguous for a reliable YES. Answer NO only when review-specific support is absent,
+generic, based only on genre/topic, or never discusses the predicate itself. Lack of contradiction is not
+evidence. Count explicit mentions even when negated, qualified, quoted, or critical.
+Prefer UNCERTAIN over NO when plausible condition-specific evidence exists."""
+
+EXPENSIVE_EVIDENCE_INSTRUCTIONS = """Act as the final recall-first semantic filter.
+
+Answer YES for any concrete review-specific support, including direct wording,
+synonyms, described examples, and reasonable implications. Give borderline evidence
+the benefit of the doubt when it specifically bears on the predicate. Answer NO when
+support is absent, generic, based only on genre/topic, or never discusses the predicate itself. Lack of
+contradiction alone is not evidence. This is evidence retrieval, not sentiment
+scoring: count explicit mentions even when negated, qualified, quoted, or critical."""
 
 EXPENSIVE_THINK = os.environ.get("EXPENSIVE_THINK", "0") == "1"
 EXPENSIVE_NUM_PREDICT = int(
@@ -54,7 +64,7 @@ class CascadeConfig:
     cheap_batch_size: int = 8
     expensive_batch_size: int = 32
     request_timeout: float = 600.0
-    max_review_chars: int = 1800
+    max_review_chars: int = 3500
 
     def validate(self) -> None:
         if not 0.0 < self.cascade_target <= 1.0:
@@ -111,7 +121,7 @@ class CascadeMetrics:
 class OllamaBatchBinaryScorer:
     """Classify one candidate batch in one cheap-model request.
 
-    Ollama's structured chat API returns hard binary decisions, represented as
+    The model's plain-text hard decisions are represented as
     -2/+2 so the cascade can derive proxy labels and confidence values.
     """
 
@@ -137,34 +147,10 @@ class OllamaBatchBinaryScorer:
             "messages": [{"role": "user", "content": prompt}],
             "stream": False,
             "think": False,
-            "format": {
-                "type": "object",
-                "properties": {
-                    "decisions": {
-                        "type": "array",
-                        "minItems": len(ids),
-                        "maxItems": len(ids),
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "candidate_id": {
-                                    "type": "integer",
-                                    "enum": ids,
-                                },
-                                "decision": {"type": "string", "enum": ["yes", "no", "uncertain"]},
-                            },
-                            "required": ["candidate_id", "decision"],
-                            "additionalProperties": False,
-                        },
-                    }
-                },
-                "required": ["decisions"],
-                "additionalProperties": False,
-            },
             "options": {
                 "temperature": 0,
                 "num_predict": max(128, 32 + 24 * len(ids)),
-                "num_ctx": 4096,
+            "num_ctx": 8192,
             },
         }
         trace = os.environ.get("PIPELINE_TRACE", "0") == "1"
@@ -201,31 +187,10 @@ class OllamaExpensiveClassifier:
             "messages": [{"role": "user", "content": prompt}],
             "stream": False,
             "think": EXPENSIVE_THINK,
-            "format": {
-                "type": "object",
-                "properties": {
-                    "decisions": {
-                        "type": "array",
-                        "minItems": len(valid),
-                        "maxItems": len(valid),
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "candidate_id": {"type": "integer", "enum": sorted(valid)},
-                                "decision": {"type": "string", "enum": ["yes", "no", "uncertain"]},
-                            },
-                            "required": ["candidate_id", "decision"],
-                            "additionalProperties": False,
-                        },
-                    }
-                },
-                "required": ["decisions"],
-                "additionalProperties": False,
-            },
             "options": {
                 "temperature": 0,
                 "num_predict": max(EXPENSIVE_NUM_PREDICT, 32 + 24 * len(valid)),
-                "num_ctx": 4096,
+                "num_ctx": 8192,
             },
         }
         trace = os.environ.get("PIPELINE_TRACE", "0") == "1"
@@ -239,12 +204,11 @@ class OllamaExpensiveClassifier:
         answer = str(payload.get("message", {}).get("content", ""))
         if trace:
             print(f"[TRACE V3_2 EXPENSIVE OUTPUT] {payload!r}", flush=True)
-        if not _has_complete_decision_coverage(answer, valid):
-            raise ValueError(
-                "expensive response did not contain exactly one valid decision "
-                "for every candidate: " + answer[:200]
-            )
-        return _parse_matching_ids(answer, candidates, valid)
+        decisions = _parse_expensive_decisions(answer, valid)
+        if set(decisions) != valid:
+            missing = sorted(valid - set(decisions))
+            raise ValueError(f"expensive batch response omitted candidate IDs: {missing}")
+        return {candidate_id for candidate_id, label in decisions.items() if label == "yes"}
 
 
 class CascadeJoin:
@@ -403,19 +367,6 @@ class CascadeJoin:
             )
             for candidate in accepted
         ]
-        if not rows and candidates:
-            scored_candidates = [
-                (score, candidate)
-                for candidate, score, _error in scored
-                if score is not None
-            ]
-            fallback = (
-                max(scored_candidates, key=lambda item: item[0])[1]
-                if scored_candidates
-                else candidates[0]
-            )
-            rows = [joined_row(fallback, "nonempty_fallback")]
-            metrics.nonempty_fallback_rows = 1
         return _deduplicate(rows), decisions, metrics
 
     def _learn_confidence_threshold(
@@ -571,8 +522,8 @@ def _cheap_batch_prompt(
     parts = [
         "Classify every explicit candidate pair below.",
         f"Predicate: {predicate}",
-        RECALL_INSTRUCTIONS,
-        "For each candidate return only candidate_id and decision.",
+        CHEAP_EVIDENCE_INSTRUCTIONS,
+        "Return one line per candidate as CANDIDATE_ID: YES, NO, or UNCERTAIN.",
         "Do not include confidence, evidence, explanations, or prose.",
         "Return every candidate exactly once and do not explain.",
         "",
@@ -586,7 +537,7 @@ def _cheap_batch_prompt(
                 "",
             ]
         )
-    parts.append("JSON decisions:")
+    parts.append("Decisions:")
     return "\n".join(parts)
 
 
@@ -598,10 +549,10 @@ def _expensive_batch_prompt(
     parts = [
         "Evaluate the explicit candidate pairs below.",
         f"Predicate: {predicate}",
-        RECALL_INSTRUCTIONS,
-        "For each candidate return only candidate_id and decision.",
+        EXPENSIVE_EVIDENCE_INSTRUCTIONS,
+        "Return one line per candidate as PAIR_ID: YES or PAIR_ID: NO.",
         "Do not include confidence, evidence, explanations, or prose.",
-        "Return every candidate exactly once and do not add prose outside the JSON.",
+        "Return every candidate exactly once. Do not add prose, JSON, or markdown.",
         "",
     ]
     for candidate in candidates:
@@ -613,7 +564,7 @@ def _expensive_batch_prompt(
                 "",
             ]
         )
-    parts.append("JSON decisions:")
+    parts.append("Decisions:")
     return "\n".join(parts)
 
 
@@ -622,10 +573,16 @@ def _parse_batch_scores(
     valid: set[int],
 ) -> dict[int, float]:
     answer = str(payload.get("message", {}).get("content", ""))
+    plain = _plain_decisions(answer, valid)
+    if set(plain) == valid:
+        return {
+            candidate_id: 2.0 if label == "yes" else (0.0 if label == "uncertain" else -2.0)
+            for candidate_id, label in plain.items()
+        }
     parsed = _extract_json(answer)
     if parsed is None:
         raise ValueError(
-            "cheap batch response was not valid JSON: " + answer[:200]
+            "cheap batch response omitted candidate decisions: " + answer[:200]
         )
     scores: dict[int, float] = {}
     decisions: object
@@ -659,7 +616,7 @@ def _parse_batch_scores(
             )
         )
         if candidate_id in valid and label is not None:
-            scores[candidate_id] = 2.0 if label == "1" else -2.0
+            scores[candidate_id] = 2.0 if label == "1" else (0.0 if label == "u" else -2.0)
     if set(scores) != valid:
         missing = sorted(valid - set(scores))
         raise ValueError(f"cheap batch response omitted candidate IDs: {missing}")
@@ -672,6 +629,12 @@ def _parse_matching_ids(
     valid: set[int],
 ) -> set[int]:
     accepted: set[int] = set()
+    plain = _plain_decisions(answer, valid)
+    accepted.update(
+        candidate_id
+        for candidate_id, label in plain.items()
+        if label in {"yes", "uncertain"}
+    )
     structured = _extract_json(answer)
     if isinstance(structured, dict):
         decisions = structured.get("decisions", [])
@@ -703,11 +666,12 @@ def _parse_matching_ids(
                         continue
                     if candidate_id in valid:
                         accepted.add(candidate_id)
-    accepted.update(
-        int(value)
-        for value in PAIR_LABEL_RE.findall(answer)
-        if int(value) in valid
-    )
+    if not plain:
+        accepted.update(
+            int(value)
+            for value in PAIR_LABEL_RE.findall(answer)
+            if int(value) in valid
+        )
     for token in answer.split(","):
         match = PLAIN_NUMBER_RE.match(token)
         if match and int(match.group(1)) in valid:
@@ -724,6 +688,49 @@ def _parse_matching_ids(
     return accepted
 
 
+def _parse_expensive_decisions(answer: str, valid: set[int]) -> dict[int, str]:
+    """Parse complete positive and negative decisions from any supported form."""
+    decisions = _plain_decisions(answer, valid)
+    structured = _extract_json(answer)
+    if isinstance(structured, dict) and isinstance(structured.get("decisions"), list):
+        for item in structured["decisions"]:
+            if not isinstance(item, dict):
+                continue
+            try:
+                candidate_id = int(item.get("candidate_id", item.get("pair_id")))
+            except (TypeError, ValueError):
+                continue
+            label = _binary_answer(item.get("decision", item.get("answer")))
+            if candidate_id in valid and label is not None:
+                decisions[candidate_id] = {"1": "yes", "0": "no", "u": "uncertain"}[label]
+    return {
+        candidate_id: label
+        for candidate_id, label in decisions.items()
+        if candidate_id in valid and label in {"yes", "no"}
+    }
+
+
+def _plain_decisions(answer: str, valid: set[int]) -> dict[int, str]:
+    """Read tolerant ``PAIR_7: YES`` / ``7, no`` plain-text decisions."""
+    decisions: dict[int, str] = {}
+    pattern = re.compile(
+        r"(?:candidate|pair)?[_ #:-]*(\d+)\s*(?:[:=,|\-]|\s)\s*"
+        r"(yes|no|uncertain|true|false|match|matched|not matched)\b",
+        re.IGNORECASE,
+    )
+    for raw_id, raw_label in pattern.findall(answer):
+        candidate_id = int(raw_id)
+        label = str(raw_label).strip().lower()
+        if candidate_id not in valid:
+            continue
+        if label in {"true", "match", "matched"}:
+            label = "yes"
+        elif label in {"false", "not matched"}:
+            label = "no"
+        decisions[candidate_id] = label
+    return decisions
+
+
 def _binary_answer(value: object) -> str | None:
     if isinstance(value, bool):
         return "1" if value else "0"
@@ -734,6 +741,8 @@ def _binary_answer(value: object) -> str | None:
         return "1"
     if text in {"0", "no", "false", "no match", "not matched"}:
         return "0"
+    if text in {"uncertain", "unknown", "maybe"}:
+        return "u"
     return None
 
 
