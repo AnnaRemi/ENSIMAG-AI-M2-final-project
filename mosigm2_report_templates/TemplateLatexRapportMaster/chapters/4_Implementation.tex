@@ -1,0 +1,40 @@
+\chapter{Implementation}
+\section{Four execution engines}
+The shared runner exposes four flags. \texttt{suql\_baseline} executes a supplied
+SUQL query, runs the structured SQL first, and calls the expensive model per
+surviving review. \texttt{suql\_v1} replaces that answer function with the row-wise
+log-odds cascade. \texttt{trummer\_baseline} sends blocks from both complete sources
+to one expensive model and adapts block sizes. \texttt{trummer\_v1} applies
+structured pruning, exact key restriction, and the batched cascade.
+
+The benchmark runner resets caches between repetitions, sets model and threshold
+configuration through environment variables, writes per-run metrics, and evaluates
+unique returned IDs against ground truth. Calls are separated into cheap,
+calibration-expensive, and fallback-expensive counts; wall and model times are
+recorded separately.
+
+\section{Routing and failure handling}
+SUQL caches by the MD5 hash of review and question. Empty reviews are rejected
+without a call. A cheap scoring exception escalates the row. Expensive requests
+retry transport errors; malformed output is reprompted once and then becomes NO.
+
+Trummer assigns stable candidate IDs after exact joining. A cheap response must
+cover every ID; otherwise the entire affected batch is treated as missing and
+escalated. Expensive responses must likewise cover every ID. An exception yields
+no accepted IDs for that batch. These fail-closed policies favor precision and
+availability but can create false negatives, and are visible in the metrics.
+
+\section{Data and reproducibility}
+The repository provides 1-, 3-, 5-, and 10-question suites. Each question directory
+contains structured movies, reviews, their joined form, annotations, ground truth,
+and a JSON specification containing the natural-language question, SUQL query,
+semantic predicate, and expected IDs. A single registry and evaluator prevent
+method-specific scoring code. Local and cluster launchers select cheap/expensive
+models and repetitions.
+
+\section{Engineering lessons}
+Three details strongly affected behavior. First, prompts must bind every decision
+to an input ID; free prose is difficult to parse and can hallucinate rows. Second,
+calibration calls are real costs and must not be hidden. Third, model-call count is
+insufficient: SUQL V1's one-token cheap requests were unexpectedly slow in the
+reported setup, so latency and tokens must be measured directly.

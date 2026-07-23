@@ -1,0 +1,30 @@
+\begin{thebibliography}{1}
+
+\bibitem{chen2023frugalgpt}
+Lingjiao Chen, Matei Zaharia, and James Zou.
+\newblock {FrugalGPT}: How to use large language models while reducing cost and
+  improving performance, 2023.
+
+\bibitem{cheng2023batch}
+Zhoujun Cheng, Jungo Kasai, and Tao Yu.
+\newblock Batch prompting: Efficient inference with large language model apis.
+\newblock In {\em EMNLP Industry Track}, pages 792--810, 2023.
+
+\bibitem{glenn2024blendsql}
+Parker~E. Glenn, Parag~Pravin Dakle, Liang Wang, and Yoon Kim.
+\newblock {BlendSQL}: A scalable dialect for unifying hybrid question answering
+  in relational algebra.
+\newblock In {\em Findings of ACL}, 2024.
+
+\bibitem{liu2024suql}
+Shicheng Liu, Jialiang Xu, Wesley Tjangnaka, Sina~J. Semnani, Chen~Jie Yu, and
+  Monica~S. Lam.
+\newblock {SUQL}: Conversational search over structured and unstructured data
+  with large language models.
+\newblock In {\em Findings of NAACL}, pages 4535--4555, 2024.
+
+\bibitem{trummer2025semanticjoins}
+Immanuel Trummer.
+\newblock Implementing semantic join operators efficiently, 2025.
+
+\end{thebibliography}

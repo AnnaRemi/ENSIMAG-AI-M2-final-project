@@ -1,3 +1,58 @@
-\appendix \chapter{Appendix} 
+\appendix\chapter{Exact Prompt Templates}
+\section{SUQL cheap row scorer}
+\begin{lstlisting}
+Act as a high-recall first-pass semantic filter. Decide whether this review
+contains review-specific evidence for a Yes answer. Count direct wording,
+synonyms, described examples, and reasonable implications as evidence. Give
+borderline but condition-specific evidence the benefit of the doubt. Do not
+discard an explicit mention because it is negated, qualified, quoted, or
+critical: this is evidence retrieval, not sentiment scoring. Do not count
+genre/topic alone, generic praise or criticism, or mere lack of contradiction.
+Return exactly one token: 1 for Yes, 0 for No.
+Question: {semantic_question}
+Review: {review[:1800]}
+Answer:
+\end{lstlisting}
 
-Appendix goes here...
+\section{Trummer cheap batch}
+\begin{lstlisting}
+Classify every explicit candidate pair below.
+Predicate: {semantic_predicate}
+Act as a high-recall first-pass semantic filter.
+Answer YES for direct evidence, synonyms, described examples, or reasonable
+implications. Answer UNCERTAIN when evidence is condition-specific but too weak
+or ambiguous for a reliable YES. Answer NO only when review-specific support is
+absent, generic, based only on genre/topic, or never discusses the predicate.
+Return one line per candidate as CANDIDATE_ID: YES, NO, or UNCERTAIN.
+Return every candidate exactly once and do not explain.
+CANDIDATE_{id}:
+Movie: {structured_movie_text}
+Review: {review[:3500]}
+Decisions:
+\end{lstlisting}
+
+\section{Trummer expensive fallback}
+\begin{lstlisting}
+Evaluate the explicit candidate pairs below.
+Predicate: {semantic_predicate}
+Act as the final recall-first semantic filter. Answer YES for any concrete
+review-specific support, including direct wording, synonyms, described examples,
+and reasonable implications. Give borderline evidence the benefit of the doubt.
+Answer NO when support is absent, generic, based only on genre/topic, or never
+discusses the predicate itself. Lack of contradiction alone is not evidence.
+Return one line per candidate as PAIR_ID: YES or PAIR_ID: NO.
+Return every candidate exactly once. Do not add prose, JSON, or markdown.
+PAIR_{id}:
+Movie: {structured_movie_text}
+Review: {review[:3500]}
+Decisions:
+\end{lstlisting}
+
+\chapter{Reproduction Commands}
+\begin{lstlisting}
+bash benchmarks/1q/run_local.sh --pull-models
+bash benchmarks/run_local.sh --suite 5q --cheap-model gemma4:e2b \
+  --expensive-model gemma4:26b
+bash benchmarks/run_aker.sh --suite 10q --repetitions 10 \
+  --methods "suql_baseline suql_v1 trummer_baseline trummer_v1"
+\end{lstlisting}

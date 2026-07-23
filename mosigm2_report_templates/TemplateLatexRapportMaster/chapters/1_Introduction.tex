@@ -1,2 +1,31 @@
 \chapter{Introduction}
-\lipsum[2-4]
+Modern data applications rarely store all useful information in one representation.
+A movie catalogue contains exact attributes such as year, runtime, director, and
+genre, while its reviews contain opinions that cannot be recovered reliably with
+SQL string matching. The motivating query therefore combines both: ``Which movies
+released in 2001 have reviews that explicitly recommend the movie?''
+
+The project objective was to produce machine-readable answer rows from such
+questions with three simultaneous goals: high precision and recall, low wall-clock
+latency, and few expensive model calls. The initial systems exposed a trade-off.
+SUQL produced relatively good answers by executing structured predicates before
+row-wise semantic calls, but was slow. A semantic block join placed many rows in a
+prompt and supported separate sources, but its answer quality and unnecessary work
+on structured mismatches were problematic.
+
+The work progressed from reproducing these baselines to adding two-level model
+cascades. SUQL V1 retains row-wise execution and routes uncertain log-odds scores to
+a strong model. Trummer V1 composes structured pruning, an exact key join, cheap
+batches, and coalesced strong-model batches. I also developed a canonical benchmark,
+ground-truth annotations, common runners, model-call instrumentation, and plots.
+
+The main research question is: \emph{Can relational pruning and batched heterogeneous
+model routing jointly improve the quality--latency--call trade-off of hybrid semantic
+queries?} Subsidiary questions concern how confidence should be defined, how a
+threshold can be selected without a labelled calibration set, and which failures
+must escalate or fail closed.
+
+The report first reviews related execution models, then formalizes the design,
+documents the implementation and prompts, evaluates four systems, and closes with
+limitations and a roadmap. All numerical claims identify the exact experiment from
+which they originate.

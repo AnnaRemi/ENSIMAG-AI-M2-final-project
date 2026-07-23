@@ -1,0 +1,97 @@
+\chapter{Formal Model and Architecture}
+\section{Query semantics}
+Let $M$ be structured movie rows and $R$ review rows. Their keys are $k_M$ and
+$k_R$. A question is decomposed into a deterministic predicate $p_s$ and a semantic
+predicate $p_u$. The answer is
+\[
+A=\{k_M(m)\mid m\in M,\ p_s(m),\ \exists r\in R:
+k_M(m)=k_R(r)\land p_u(r)\}.
+\]
+Precision, recall and F1 are computed over unique movie identifiers, not joined
+review rows. Deduplication is therefore part of the output semantics.
+
+\section{Architecture}
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[node distance=4.5mm and 12mm,>=Latex,
+every node/.style={font=\small,inner xsep=4pt,inner ysep=2.5pt},
+b/.style={draw,rounded corners,align=center,minimum width=29mm,minimum height=7mm,fill=blue!6},
+m/.style={draw,rounded corners,align=center,minimum width=29mm,minimum height=7mm,fill=orange!15},
+g/.style={draw,diamond,aspect=2.2,align=center,fill=green!10}]
+\node[b](q){NL question};
+\node[m,below=of q](p){SUQL parser};
+\node[b,below=of p](s){SQL pruning};
+\node[b,below=of s](j){Exact ID join};
+\node[m,below=of j](c){Cheap batches ($b_c$)};
+\node[g,below=of c](gate){$|s_i|\ge\tau$?};
+\node[b,below left=6mm and 10mm of gate](d){Cheap decision};
+\node[m,below right=6mm and 10mm of gate](e){Strong batches ($b_e$)};
+\node[b,below=13mm of gate](o){Deduplicate $\rightarrow$ JSON};
+\draw[->](q)--(p);\draw[->](p)--(s);\draw[->](s)--(j);
+\draw[->](j)--(c);\draw[->](c)--(gate);
+\draw[->](gate)--node[above,sloped,font=\scriptsize]{yes}(d);
+\draw[->](gate)--node[above,sloped,font=\scriptsize]{no}(e);
+\draw[->](d.south)|-(o.west);
+\draw[->](e.south)|-(o.east);
+\end{tikzpicture}
+\caption{Current Trummer V1 physical architecture.}
+\end{figure}
+
+The parser is conservative. It removes semantic \texttt{answer()} clauses and
+executes the remaining SQL in SQLite. If model parsing fails, regular expressions
+extract supported year, runtime, genre, director, and title constraints. Applying
+an unsafe predicate would cause irrecoverable false negatives, so unsupported
+constraints are left to the semantic stage.
+
+\section{Cascade mathematics}
+For SUQL V1 the cheap-model score is ideally
+\[
+s_i=\log\frac{P_c(\mathrm{YES}\mid x_i,q)}{P_c(\mathrm{NO}\mid x_i,q)},
+\quad \hat y_i=\mathbf1[s_i\ge0],\quad c_i=|s_i|.
+\]
+The implementation extracts both token log-probabilities where available. When
+only one emitted label exists, it derives a signed logit from that probability;
+without probability metadata it uses magnitude 2.
+
+Trummer V1 returns categories and maps YES, UNCERTAIN, NO to $+2,0,-2$. Therefore
+$c_i\in\{0,2\}$. This is not a probability and currently permits only a coarse
+gate. A continuous per-pair score is an important future improvement.
+
+Let $S$ contain at most $B$ candidates sampled approximately uniformly over the
+ranked confidence range. The strong model supplies labels $y_i^e$. At threshold
+$t$, empirical conditional agreement is
+\[
+\widehat a(t)=\frac{\sum_{i\in S}\mathbf1[c_i\ge t]\mathbf1[\hat y_i=y_i^e]}
+{\sum_{i\in S}\mathbf1[c_i\ge t]}.
+\]
+The algorithm scans observed $t$ values from low to high and returns the first
+with $\widehat a(t)\ge\alpha$ (default $\alpha=.9$). If no value qualifies,
+$\tau=\bot$ and no cheap decision is trusted. This is an empirical agreement
+constraint with no finite-sample confidence bound.
+
+For $n$ exact candidate pairs, cheap batch size $b_c$, expensive batch size $b_e$,
+calibration size $m$, and $u(\tau)$ fallback candidates, Trummer V1 uses
+\[
+C=\lceil n/b_c\rceil+\lceil m/b_e\rceil+\lceil u(\tau)/b_e\rceil.
+\]
+SUQL V1 is row-wise: its corresponding terms are $n+m+u(\tau)$ calls. This explains
+why fewer large-model calls do not necessarily imply lower latency.
+
+\section{Pseudocode}
+\begin{lstlisting}[language=Python]
+def structured_batched_cascade(question, movies, reviews):
+    ps, pu = parse_question_conservatively(question)
+    movies = relational_select(movies, ps)
+    X = exact_key_join(movies, reviews)
+    scores = {}
+    for batch in blocks(X, cheap_batch_size):
+        try: scores.update(cheap_model(batch, pu))
+        except InvalidResponse: mark_missing(batch)
+    S = confidence_stratified_sample(scores, budget)
+    oracle = strong_model_in_batches(S, pu)
+    tau = least_threshold_with_agreement(scores, oracle, 0.9)
+    accepted, uncertain = route(scores, missing, tau)
+    for batch in blocks(uncertain, expensive_batch_size):
+        accepted += strong_model(batch, pu).positive_rows
+    return deduplicate_by_movie_id(accepted)
+\end{lstlisting}

@@ -1,151 +1,71 @@
-\documentclass[12pt, a4paper]{memoir} % for a short document
+\documentclass[12pt,a4paper]{memoir}
 \usepackage[french,english]{babel}
-
-\usepackage [vscale=0.76,includehead]{geometry}                % See geometry.pdf to learn the layout options. There are lots.
-%\geometry{a4paper}                   % ... or a4paper or a5paper or ... 
-%\geometry{landscape}                % Activate for for rotated page geometry
-%\OnehalfSpacing
-% \setSingleSpace{1.05}
-%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
-
-
-%===================================== packages
-\usepackage{lipsum}
-\usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{fullpage}
-\usepackage{mathptmx} % font = times
-\usepackage{helvet} % font sf = helvetica
-\usepackage[latin1]{inputenc}
-\usepackage{relsize}
+\usepackage[vscale=0.76,includehead]{geometry}
+\usepackage{graphicx,amsmath,amssymb,booktabs,multirow,url,xcolor,listings}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
 \usepackage{tikz}
-\usepackage{booktabs}
-\usepackage{textcomp}%textquotesingle
-\usepackage{multirow}
-\usepackage{pgfplots}
-\usepackage{url}
-\usepackage{footnote}
-%============================================
-\usetikzlibrary{arrows,shapes,positioning,shadows,trees}
-\makesavenoteenv{tabular}
-\makesavenoteenv{table}
-%==============================================
-\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
-%Style des têtes de section, headings, chapitre
-\headstyles{komalike}
-\nouppercaseheads
-\chapterstyle{dash}
-\makeevenhead{headings}{\sffamily\thepage}{}{\sffamily\leftmark} 
+\usetikzlibrary{arrows.meta,shapes.geometric,positioning,fit}
+\headstyles{komalike}\nouppercaseheads\chapterstyle{dash}
+\makeevenhead{headings}{\sffamily\thepage}{}{\sffamily\leftmark}
 \makeoddhead{headings}{\sffamily\rightmark}{}{\sffamily\thepage}
-\makeoddfoot{plain}{}{}{} % Pages chapitre. 
-\makeheadrule{headings}{\textwidth}{\normalrulethickness}
-%\renewcommand{\leftmark}{\thechapter ---}
+\makeoddfoot{plain}{}{}{}\makeheadrule{headings}{\textwidth}{\normalrulethickness}
 \renewcommand{\chaptername}{\relax}
-\renewcommand{\chaptitlefont}{ \sffamily\bfseries \LARGE}
-\renewcommand{\chapnumfont}{ \sffamily\bfseries \LARGE}
-\setsecnumdepth{subsection}
-
-
-% Title page formatting -- do not change!
-\pretitle{\HUGE\sffamily \bfseries\begin{center}} 
-\posttitle{\end{center}}
-\preauthor{\LARGE  \sffamily \bfseries\begin{center}}
-\postauthor{\par\end{center}}
-\newcommand{\jury}[1]{% 
-\gdef\juryB{#1}} 
-\newcommand{\juryB}{} 
-\newcommand{\session}[1]{% 
-\gdef\sessionB{#1}} 
-\newcommand{\sessionB}{} 
-\newcommand{\option}[1]{% 
-\gdef\optionB{#1}} 
-\newcommand{\optionB} {}
-
-\renewcommand{\maketitlehookd}{% 
-\vfill{}  \large\par\noindent  
-\begin{center}\juryB \bigskip\sessionB\end{center}
-\vspace{-1.5cm}}
-\renewcommand{\maketitlehooka}{% 
-\vspace{-1.5cm}\noindent\includegraphics[height=12ex]{pics/logo-uga.png}\hfill\raisebox{2ex}{\includegraphics[height=14ex]{pics/logoINP.png}}\\
-\bigskip
-\begin{center} \large
-Master of Science in Informatics at Grenoble \\
-Master Informatique \\ 
-Specialization \optionB  \end{center}\vfill}
-% =======================End of title page formatting
-
-\option{Type your Option Here} 
-\title{Your Title} %\\\vspace{-1ex}\rule{10ex}{0.5pt} \\sub-title} 
-\author{Your Name}
-\date{Defense Date, 2017} % Delete this line to display the current date
-\jury{
-Research project performed at YOUR LAB \\\medskip
-Under the supervision of:\\
-Your Supervisor\\\medskip
-Defended before a jury composed of:\\
-Head of the jury\\
-Jury member 1\\
-Jury member 2\\
-}
-\session{Month \hfill 2017}
-\setcounter{tocdepth}{4}
-\setcounter{secnumdepth}{4}
-
-%%% BEGIN DOCUMENT
-\begin{document}
-\selectlanguage{English} % french si rapport en français
-\frontmatter
-\begin{titlingpage}
-\maketitle
-\end{titlingpage}
-
-%\small
-\setlength{\parskip}{-1pt plus 1pt}
-
-\renewcommand{\abstracttextfont}{\normalfont}
-\abstractintoc
-\begin{abstract} 
-Your abstract goes here... 
-\end{abstract}
-\abstractintoc
-
-\renewcommand\abstractname{Acknowledgement}
+\renewcommand{\chaptitlefont}{\sffamily\bfseries\LARGE}
+\renewcommand{\chapnumfont}{\sffamily\bfseries\LARGE}
+\pretitle{\HUGE\sffamily\bfseries\begin{center}}\posttitle{\end{center}}
+\preauthor{\LARGE\sffamily\bfseries\begin{center}}\postauthor{\par\end{center}}
+\newcommand{\jury}[1]{\gdef\juryB{#1}}\newcommand{\juryB}{}
+\newcommand{\session}[1]{\gdef\sessionB{#1}}\newcommand{\sessionB}{}
+\newcommand{\option}[1]{\gdef\optionB{#1}}\newcommand{\optionB}{}
+\renewcommand{\maketitlehookd}{\vfill{}\large\par\noindent\begin{center}\juryB\bigskip\sessionB\end{center}\vspace{-1.5cm}}
+\renewcommand{\maketitlehooka}{\vspace{-1.5cm}\noindent\includegraphics[height=12ex]{pics/logo-uga.png}\hfill\raisebox{2ex}{\includegraphics[height=14ex]{pics/logoINP.png}}\\\bigskip\begin{center}\large Master of Science in Informatics at Grenoble\\Master Informatique\\Specialization \optionB\end{center}\vfill}
+\option{MoSIG M2}
+\title{Efficient Hybrid Query Processing with Structured Pruning and LLM Cascades}
+\author{Ann Remizova}
+\date{Academic year 2025--2026}
+\jury{Research project performed at LIG\\\medskip Under the supervision of: TODO\\\medskip Defended before a jury composed of: TODO}
+\session{2026}
+\setcounter{tocdepth}{3}\setcounter{secnumdepth}{3}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,columns=fullflexible}
+\begin{document}\selectlanguage{English}\frontmatter
+\begin{titlingpage}\maketitle\end{titlingpage}
+\renewcommand{\abstracttextfont}{\normalfont}\abstractintoc
 \begin{abstract}
-I would like to express my sincere gratitude to .. for his invaluable assistance and comments in reviewing this report... 
-Good luck :) 
+This report studies natural-language queries over heterogeneous sources containing
+relational movie metadata and free-text reviews. The objective is to retain answer
+quality while reducing the latency and number of large-language-model calls. I
+reimplemented two baselines---a SUQL structured-first executor and a Trummer-style
+adaptive semantic block join---and developed two cheap-to-expensive cascades. The
+most effective system first evaluates structured predicates, joins movies and
+reviews by exact identifiers, classifies candidate pairs in cheap-model batches,
+and coalesces uncertain candidates into larger strong-model batches. I formalize
+the routing and online threshold selection, document the prompts and failure
+semantics, and build an auditable IMDb benchmark. In a preliminary five-query run,
+the batched cascade reaches macro F1 0.701 at 21.84 seconds and 10 model calls per
+question. This is the best quality and efficiency point among the four tested
+systems, but the single run and lexical ground truth limit the conclusion.
 \end{abstract}
-
-
 \renewcommand\abstractname{R\'esum\'e}
-\begin{abstract} \selectlanguage{French}
-Your abstract in French goes here... 
-\end{abstract}
-\selectlanguage{English}
-
-\cleardoublepage
-
-\tableofcontents* % the asterisk means that the table of contents itself isn't put into the ToC
-\normalsize
-
-\mainmatter
-\SingleSpace
-%==============================CHAPTERS==================
-\include{./chapters/1_Introduction}
-\include{./chapters/2_Chapter2}
-\include{./chapters/6_Conclusion}
-\include{./chapters/7_Appendix}
-%=========================================================
-
-
-%=========================================================
-\backmatter
-
-\bibliographystyle{plain} % plain-fr si rapport en français 
-\bibliography{bibfile.bib}
-
-%\cleardoublepage % Goes to an odd page
-%\pagestyle{empty} % no page number
-%~\newpage % goes to a new even page
-
+\begin{abstract}\selectlanguage{French}
+Ce rapport traite des requ\^etes en langue naturelle sur des donn\'ees h\'et\'erog\`enes:
+m\'etadonn\'ees relationnelles de films et critiques textuelles. Deux baselines
+(SUQL et jointure s\'emantique adaptative) et deux cascades de mod\`eles sont
+impl\'ement\'ees. La meilleure approche filtre d'abord les attributs structur\'es,
+effectue une jointure exacte par identifiant, puis combine des lots trait\'es par
+un petit mod\`ele et un repli vers un mod\`ele plus puissant. Sur cinq requ\^etes,
+elle obtient un F1 macro de 0,701 en 21,84 secondes et 10 appels par requ\^ete.
+Ces r\'esultats restent pr\'eliminaires car l'exp\'erience ne comporte qu'une
+r\'ep\'etition et la v\'erit\'e terrain est lexicale.
+\end{abstract}\selectlanguage{English}
+\tableofcontents*\mainmatter\SingleSpace
+\include{chapters/1_Introduction}
+\include{chapters/2_Chapter2}
+\include{chapters/3_Design}
+\include{chapters/4_Implementation}
+\include{chapters/5_Evaluation}
+\include{chapters/6_Conclusion}
+\include{chapters/7_Appendix}
+\backmatter\bibliographystyle{plain}\bibliography{bibfile}
 \end{document}

@@ -1,9 +1,31 @@
-\chapter{State-of-the-Art}
-\lipsum[1-2] 
+\chapter{State of the Art}
+\section{Hybrid semantic query languages}
+SUQL extends SQL with \textsc{Answer} and \textsc{Summary} functions over free-text
+columns and translates conversational input using in-context learning
+\cite{liu2024suql}. Its representation is expressive, but a physical executor can
+still invoke an NLP model once per tuple. BlendSQL similarly embeds external
+reasoning in relational algebra \cite{glenn2024blendsql}. This project operates at
+the physical-plan level: it does not propose a new language.
 
-\section{Section (1)}
-\lipsum[2-5] \cite{book2011ahad_1} \cite{oneata2013action_13}
+\section{Semantic joins and batch prompting}
+Trummer's semantic block join is inspired by block nested-loop join and includes
+multiple rows from both inputs in one prompt \cite{trummer2025semanticjoins}. Batch
+prompting amortizes fixed instructions and request overhead and can reduce time and
+token cost, but large batches risk omitted identifiers and interference
+\cite{cheng2023batch}. Our join key is not semantic: movie and review identifiers
+must be exactly equal. Only the residual review predicate belongs in the LLM.
 
+\section{Model cascades}
+Model cascades let a cheap model answer easy cases and escalate difficult cases.
+FrugalGPT demonstrates that learned cascades can reduce inference cost while
+maintaining quality \cite{chen2023frugalgpt}. In this project, a large model labels
+an online calibration sample because no per-predicate labelled training set is
+available at execution time. This estimates agreement with the large model, not
+ground-truth correctness; the distinction is central to the limitations.
 
-\section{Section (2)}
-\lipsum[2-5] \cite{usha2014motion}
+\section{Positioning}
+The proposed plan composes three orthogonal ideas. Relational selection reduces the
+candidate cardinality, batching reduces requests per candidate, and cascading
+reduces the fraction handled by the large model. The comparison includes complete
+end-to-end systems, so a future factorial ablation is needed to attribute gains
+causally to individual components.

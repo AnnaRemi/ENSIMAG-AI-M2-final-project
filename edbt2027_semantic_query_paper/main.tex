@@ -118,24 +118,27 @@ identifier equality, never by an LLM.
 
 \begin{figure*}[t]
 \centering
-\begin{tikzpicture}[node distance=6mm and 8mm,>=Latex,every node/.style={font=\small},
- box/.style={draw,rounded corners,align=center,minimum height=8mm,fill=blue!5},
- model/.style={draw,rounded corners,align=center,minimum height=8mm,fill=orange!12},
- gate/.style={draw,diamond,aspect=2,align=center,fill=green!10}]
-\node[box] (q) {natural-language\\question};
-\node[model,right=of q] (parse) {SUQL parser\\(cheap model)};
-\node[box,right=of parse] (sql) {structured SQL\\$\sigma_{p_s}(M)$};
-\node[box,right=of sql] (join) {exact ID join\\with $R$};
-\node[model,right=of join] (cheap) {cheap model\\batches $b_c$};
+\resizebox{.94\textwidth}{!}{%
+\begin{tikzpicture}[node distance=4mm and 5mm,>=Latex,
+ every node/.style={font=\footnotesize,inner xsep=3pt,inner ysep=2pt},
+ box/.style={draw,rounded corners,align=center,minimum height=7mm,fill=blue!5},
+ model/.style={draw,rounded corners,align=center,minimum height=7mm,fill=orange!12},
+ gate/.style={draw,diamond,aspect=2.2,align=center,fill=green!10}]
+\node[box] (q) {NL question};
+\node[model,right=of q] (parse) {SUQL parser};
+\node[box,right=of parse] (sql) {SQL pruning\\$\sigma_{p_s}(M)$};
+\node[box,right=of sql] (join) {exact ID join};
+\node[model,right=of join] (cheap) {cheap batches\\size $b_c$};
 \node[gate,right=of cheap] (gate) {$|s_i|\geq\tau$?};
-\node[box,above right=5mm and 8mm of gate] (emit) {accept/reject\\cheap label};
-\node[model,below right=5mm and 8mm of gate] (strong) {strong model\\coalesced batches $b_e$};
-\node[box,right=17mm of gate] (json) {deduplicate IDs\\and emit rows/JSON};
+\node[box,above right=4mm and 5mm of gate] (emit) {cheap\\decision};
+\node[model,below right=4mm and 5mm of gate] (strong) {strong batches\\size $b_e$};
+\node[box,right=13mm of gate] (json) {deduplicate\\and emit JSON};
 \draw[->] (q)--(parse);\draw[->] (parse)--(sql);\draw[->] (sql)--(join);
 \draw[->] (join)--(cheap);\draw[->] (cheap)--(gate);
 \draw[->] (gate)--node[above,sloped]{yes}(emit);\draw[->] (gate)--node[below,sloped]{no}(strong);
 \draw[->] (emit.east)-| (json.north);\draw[->] (strong.east)-| (json.south);
-\end{tikzpicture}
+\end{tikzpicture}%
+}
 \caption{Trummer V1 architecture. Calibration (omitted for clarity) samples cheap scores, queries the strong model, and supplies $\tau$ to the gate.}
 \label{fig:architecture}
 \end{figure*}

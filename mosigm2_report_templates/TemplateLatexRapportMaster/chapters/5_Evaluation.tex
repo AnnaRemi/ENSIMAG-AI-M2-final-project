@@ -1,0 +1,58 @@
+\chapter{Experimental Evaluation}
+\section{Workload and protocol}
+The main snapshot contains five IMDb-derived queries: recommendation in 2001;
+fear in Horror films under 100 minutes; visual praise in Fantasy; slow/boring
+pacing for directors containing ``John''; and originality for titles containing
+``The''. Each question has 100 movies, 40 structured matches, and 12 ground-truth
+answers. Ground truth is produced by deterministic lexical patterns and audited
+with evidence excerpts and rationales. The compared models are Gemma 4 e2b and
+Gemma 4 26b at temperature zero. Default batch sizes are 8 and 32, calibration
+budget 20, and agreement target .9.
+
+The presented snapshot has one repetition. Quality values are macro averages over
+the five questions; time and calls are means per question. This is useful for
+implementation validation, not statistical significance.
+
+\begin{table}[ht]\centering
+\caption{Five-query preliminary result.}\small
+\begin{tabular}{lrrrrr}\toprule
+Method&Precision&Recall&F1&Seconds&Calls\\\midrule
+SUQL baseline&.537&.567&.520&93.39&137.8\\
+SUQL V1&.617&.717&.638&419.12&68.0\\
+Trummer baseline&.606&.333&.396&40.41&100.4\\
+Trummer V1&\textbf{.786}&.667&\textbf{.701}&\textbf{21.84}&\textbf{10.0}\\\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Interpretation}
+Against SUQL baseline, Trummer V1 is 4.28 times faster, uses 13.78 times fewer
+calls, improves precision by 46.4\% relative, recall by 17.6\%, and F1 by 34.8\%.
+Against Trummer baseline, its F1 improves by 77.0\%, time falls by 46.0\%, and
+calls by 90.0\%. These are ratios of the displayed macro/mean values.
+
+SUQL V1 demonstrates the value and cost of routing separately: its F1 rises 22.7\%
+relative to SUQL, but latency increases 4.49 times. It performs 40 row-wise cheap
+calls and 28 strong calls on average. Trummer V1 performs five cheap batches and
+five strong batches. The result supports the combined plan, not the proposition
+that every cascade is faster.
+
+Per-query Trummer V1 F1 ranges from .25 to .88. The originality query remains a
+clear weakness, while the visual and pacing predicates perform well. Aggregate
+scores therefore conceal predicate sensitivity.
+
+\section{Threats to validity}
+The single repetition provides no variance estimate. The ground truth favors
+lexical evidence and may not represent human semantic judgments. All data comes
+from IMDb, model versions and serving hardware affect latency, and mean call count
+does not measure prompt tokens, energy, or monetary cost. The large model used for
+routing calibration is not an oracle. Finally, the methods differ in more than one
+component, so causal attribution requires ablations.
+
+\section{Required confirmatory study}
+A publication-grade study should run at least ten repetitions, report per-question
+distributions and paired bootstrap confidence intervals, freeze model digests and
+software commit, record input/output tokens and hardware utilization, and use
+independent dual annotation with adjudication. Ablations should independently
+toggle structured pruning, exact joining, cheap batching, strong coalescing, and
+online calibration. Threshold sweeps should report Pareto frontiers instead of one
+operating point.

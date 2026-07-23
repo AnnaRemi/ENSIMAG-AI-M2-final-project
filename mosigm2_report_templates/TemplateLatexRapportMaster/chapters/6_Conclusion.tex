@@ -1,2 +1,18 @@
-\chapter{Conclusion}
-\lipsum[2-4]
+\chapter{Conclusion and Perspectives}
+This project produced a reproducible framework for hybrid queries over tables and
+reviews, two baseline implementations, and two cascaded variants. The main lesson
+is architectural: relational pruning, batch prompting, and heterogeneous routing
+optimize different cost factors and are most effective together. The preliminary
+Trummer V1 result simultaneously improves macro F1 and reduces latency and calls.
+
+The mathematical analysis also identifies a design debt. Trummer V1's categorical
+scores have confidence magnitudes only zero and two, making threshold calibration
+coarse. The next implementation should request or derive continuous per-candidate
+log-odds, calibrate them on held-out labelled data, and include uncertainty bounds.
+Other priorities are asynchronous batches, token-aware batch sizing, recall-safe
+retry policies, and a query optimizer that estimates candidate cardinality and
+chooses among row-wise, block-join, and cascaded plans.
+
+The results are encouraging but preliminary. Confirmatory experiments with repeated
+runs, independent annotation, multiple domains, model families, and true resource
+measurements are necessary before making general performance claims.
