@@ -56,6 +56,19 @@ benchmarks/*/outputs/**
 !benchmarks/*/outputs/*/per_question/*/plots/
 !benchmarks/*/outputs/*/per_question/*/plots/*.png
 
+# Amazon experiment runs keep only summary tables and plots in version control
+data_amazon/outputs/**
+!data_amazon/outputs/*/
+!data_amazon/outputs/*/aggregate.csv
+!data_amazon/outputs/*/comparison.csv
+!data_amazon/outputs/*/plots/
+!data_amazon/outputs/*/plots/*.png
+!data_amazon/outputs/*/paper_plots/
+!data_amazon/outputs/*/paper_plots/*.png
+!data_amazon/outputs/*/q_*/
+!data_amazon/outputs/*/q_*/plots/
+!data_amazon/outputs/*/q_*/plots/*.png
+
 # Local model/server state
 .ollama/
 

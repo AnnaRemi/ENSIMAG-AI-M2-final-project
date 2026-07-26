@@ -1,0 +1,14 @@
+{
+  "release": "McAuley Amazon Reviews 2018",
+  "category": "AMAZON_FASHION",
+  "review_subset": "complete category",
+  "reviews_source": "/Users/annremizova/Desktop/lab m2/data_amazon/AMAZON_FASHION.json.gz",
+  "metadata_source": "/Users/annremizova/Desktop/lab m2/data_amazon/meta_AMAZON_FASHION.json.gz",
+  "reviews_url": "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_v2/categoryFiles/AMAZON_FASHION.json.gz",
+  "metadata_url": "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_v2/metaFiles2/meta_AMAZON_FASHION.json.gz",
+  "reviews_sha256": "35e8febf1d641358e8e0573b37e7e292c23741e5a7fcc6f105caf627f7f9f710",
+  "metadata_sha256": "bb5c52bfea9caed555e974645ec02a0a9dd6a142cb5aa73d177b3a156dfa1f2c",
+  "products": 186105,
+  "reviews_with_text": 882321,
+  "metadata_missing_products_removed": 0
+}
