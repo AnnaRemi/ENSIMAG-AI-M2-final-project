@@ -15,6 +15,20 @@ suites share one implementation registry, runner, evaluator, and plotting code.
 Every question has 100 candidate movies, 40 structured candidates, and 12
 ground-truth movies.
 
+## Results and analysis (this branch)
+
+See [`benchmarks/README.md`](benchmarks/README.md) for the full write-up:
+experiment details for all 16 versioned 1q/3q/10q runs, per-suite results
+tables with plot embeds, and a conclusions section.
+
+**Headline result:** `trummer_v1` wins outright on the primary 10q canonical
+benchmark (highest F1, ~3x faster, ~10x fewer calls than `suql_baseline`),
+but it collapses alongside `trummer_baseline` on the smaller, more selective
+3q suite where SUQL stays robust — the cascade's advantage is
+workload-dependent, not universal. `trummer_baseline` (no structured
+pruning) is the consistently weakest method across every suite and model
+pair tested.
+
 ## Run locally after cloning
 
 Install [Ollama](https://ollama.com/), start it with `ollama serve`, then run
