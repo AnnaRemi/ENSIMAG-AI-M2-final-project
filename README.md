@@ -15,6 +15,20 @@ suites share one implementation registry, runner, evaluator, and plotting code.
 Every question has 100 candidate movies, 40 structured candidates, and 12
 ground-truth movies.
 
+## Amazon Fashion cross-domain results (this branch)
+
+This branch extends the same four-method comparison to a second, unrelated
+domain — Amazon Fashion product reviews — to test whether the IMDb results
+generalize. See [`data_amazon/README.md`](data_amazon/README.md) for the full
+write-up: dataset, methodology, tables, and plots under
+[`data_amazon/outputs/`](data_amazon/outputs/).
+
+**Headline result:** `trummer_v1` (structured pruning + calibrated cascade)
+remains the best cost/quality trade-off on Amazon Fashion across both Gemma
+and Qwen model families, while `trummer_baseline` (no structured pruning)
+collapses to ~0.36 precision on both — the IMDb conclusion is not an
+artifact of one dataset.
+
 ## Run locally after cloning
 
 Install [Ollama](https://ollama.com/), start it with `ollama serve`, then run
@@ -61,6 +75,7 @@ expensive model; cascade implementations use both configured models.
 ├── benchmarks/              # all datasets, experiment runners, tables, and plots
 │   ├── {10q,5q,3q,1q}/      # canonical benchmark suites
 │   └── shared/scripts/      # four-method runner and evaluator
+├── data_amazon/             # Amazon Fashion cross-domain benchmark + analysis
 ├── project SUQL/
 │   ├── baseline/            # SUQL baseline
 │   └── v1/                  # SUQL two-level cascade
@@ -73,4 +88,6 @@ expensive model; cascade implementations use both configured models.
 ```
 
 See [`benchmarks/README.md`](benchmarks/README.md) for suite contents and output
-details. Each implementation directory contains its own focused README.
+details, and [`data_amazon/README.md`](data_amazon/README.md) for the Amazon
+Fashion cross-domain results. Each implementation directory contains its own
+focused README.
