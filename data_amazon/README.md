@@ -79,20 +79,40 @@ and per-question level.
 
 ## Plots
 
-Aggregate plots live under `outputs/<run>/plots/`:
+Aggregate plots live under `outputs/<run>/plots/`, and per-question versions
+of the same six plots live under `outputs/<run>/q_XX/plots/`. Below are the
+aggregate plots for the primary Gemma run (full 10q suite,
+[`outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/plots/`](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/plots/)):
 
-- `01_quality.png` — precision / recall / F1 per method
-- `02_time.png` — wall-clock time per method
-- `03_calls.png` — cheap vs. expensive LLM call counts
-- `04_best_solution.png` — quality/cost Pareto view
-- `05_cost_by_approach.png` — modeled dollar cost per method
-- `06_cost_vs_f1.png` — cost/quality trade-off scatter
+![Precision, recall, and F1 per method](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/plots/01_quality.png)
 
-Per-question versions of the same plots live under `outputs/<run>/q_XX/plots/`.
+![Wall-clock time per method](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/plots/02_time.png)
+
+![Cheap vs. expensive LLM call counts per method](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/plots/03_calls.png)
+
+![Quality/cost Pareto view across methods](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/plots/04_best_solution.png)
+
+![Modeled dollar cost per method](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/plots/05_cost_by_approach.png)
+
+![Cost/quality trade-off scatter](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/plots/06_cost_vs_f1.png)
+
+The Qwen run's own aggregate plots (5q subset) are under
+[`outputs/amazon_fashion_5q_10rep_qwen3.6_27b_qwen3.6_35b_20260725_232456/plots/`](outputs/amazon_fashion_5q_10rep_qwen3.6_27b_qwen3.6_35b_20260725_232456/plots/).
+
+### Paper-ready figures
+
 The Gemma run additionally has paper-ready figures under
 [`outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/paper_plots/`](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/paper_plots/):
-calibration agreement, routing breakdown, an F1 heatmap, a precision/recall
-scatter, and cost savings vs. `n`.
+
+![Calibration agreement between cheap and expensive models](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/paper_plots/01_calibration_agreement.png)
+
+![Routing breakdown between cheap and expensive models](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/paper_plots/02_routing_breakdown.png)
+
+![F1 heatmap across methods and questions](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/paper_plots/03_f1_heatmap.png)
+
+![Precision/recall scatter across methods](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/paper_plots/04_precision_recall_scatter.png)
+
+![Cost savings vs. n](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/paper_plots/05_cost_savings_vs_n.png)
 
 ## Analysis: Gemma vs. Qwen
 
@@ -109,10 +129,20 @@ Restricted to the shared `q_01`–`q_05` questions, 10 reps each (400 rows / mod
 | `trummer_v1` | Gemma | 0.861 | 0.908 | **0.883** | **11.4** | **12.4** | 8.6 / 3.8 |
 | `trummer_v1` | Qwen | 0.850 | 0.908 | 0.865 | **17.4** | **9.4** | 7.2 / 2.2 |
 
-(Full 10-question Gemma aggregate, for reference:
-`trummer_v1` F1 0.799 at 11.8s/13.0 calls, `suql_baseline` F1 0.835 at
-19.7s/49.2 calls — driven down slightly by the harder `q_06`–`q_10`
-questions not yet run on Qwen.)
+For reference, the full 10-question Gemma aggregate (all four methods, all
+10 questions, 10 reps — [`aggregate.csv`](outputs/amazon_fashion_10q_10rep_gemma4_e2b_gemma4_26b_20260724_223605/aggregate.csv)):
+
+| Method | Precision | Recall | F1 | Wall (s) | LLM calls | cheap / expensive |
+|---|---:|---:|---:|---:|---:|---:|
+| `suql_baseline` | 0.789 | 0.927 | 0.835 | 19.7 | 49.2 | 0 / 49.2 |
+| `suql_v1` | 0.764 | 0.833 | 0.776 | 48.7 | 78.3 | 50.0 / 28.3 |
+| `trummer_baseline` | 0.330 | 0.967 | 0.488 | 36.8 | 38.0 | 0 / 38.0 |
+| **`trummer_v1`** | 0.753 | 0.878 | **0.799** | **11.8** | **13.0** | 8.8 / 4.2 |
+
+F1 is slightly lower here than on the shared `q_01`–`q_05` subset above,
+driven down by the harder `q_06`–`q_10` questions (watches, bags, socks,
+sandals, costumes) not yet run on Qwen — but the method ranking is
+unchanged: `trummer_v1` wins on F1, wall time, and call count.
 
 Observations:
 
