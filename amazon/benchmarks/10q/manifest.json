@@ -1,0 +1,66 @@
+{
+  "suite": "10q",
+  "question_count": 10,
+  "questions": [
+    {
+      "id": "q_01",
+      "directory": "q_01",
+      "semantic_concept": "tarnishing_necklace",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_02",
+      "directory": "q_02",
+      "semantic_concept": "adjustable_bracelet",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_03",
+      "directory": "q_03",
+      "semantic_concept": "damaged_on_arrival_sunglasses",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_04",
+      "directory": "q_04",
+      "semantic_concept": "itchy_sweater",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_05",
+      "directory": "q_05",
+      "semantic_concept": "poor_wash_durability_hoodie",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_06",
+      "directory": "q_06",
+      "semantic_concept": "slim_wallet",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_07",
+      "directory": "q_07",
+      "semantic_concept": "inaccurate_sizing_jeans",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_08",
+      "directory": "q_08",
+      "semantic_concept": "colour_mismatch_scarf",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_09",
+      "directory": "q_09",
+      "semantic_concept": "supportive_swimsuit",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_10",
+      "directory": "q_10",
+      "semantic_concept": "sheer_leggings",
+      "ground_truth_count": 15
+    }
+  ]
+}

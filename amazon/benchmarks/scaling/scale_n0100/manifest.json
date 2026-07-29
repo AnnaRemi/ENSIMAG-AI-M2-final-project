@@ -1,0 +1,12 @@
+{
+  "suite": "scale_n0100",
+  "question_count": 1,
+  "questions": [
+    {
+      "id": "q_01",
+      "directory": "q_01",
+      "semantic_concept": "comfortable_dress",
+      "ground_truth_count": 15
+    }
+  ]
+}

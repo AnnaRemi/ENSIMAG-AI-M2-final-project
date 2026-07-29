@@ -1,0 +1,2 @@
+implementation,method,precision,recall,f1,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds,cheap_cost_usd,expensive_cost_usd,total_cost_usd,cheap_cost_per_call_usd,expensive_cost_per_call_usd
+trummer_baseline_adaptive_block_join,Trummer baseline,0.125,0.0833333333333333,0.1,495.46387877641246,30.0,0.0,30.0,0.0,495.46387877641246,0.0,0.41288656564701043,0.41288656564701043,0.0,0.013762885521567014

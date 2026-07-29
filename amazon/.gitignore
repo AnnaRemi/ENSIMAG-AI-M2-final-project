@@ -1,0 +1,7 @@
+products.csv
+reviews.json
+AMAZON_FASHION*.json.gz
+meta_AMAZON_FASHION.json.gz
+*.json.gz
+*.csv.gz
+work/

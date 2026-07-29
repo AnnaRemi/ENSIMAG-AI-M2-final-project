@@ -1,0 +1,77 @@
+{
+  "_comment": "Ten held-out Amazon Fashion questions, independent of questions_10q.json. Product categories are disjoint from the original ten (dress, shoe, shirt, jacket, hat, watch, bag, sock, sandal, costume) and the semantic predicates deliberately span different axes -- durability, adjustability, optical function, tactile comfort, laundering, dimension, sizing accuracy, colour fidelity, support and opacity -- with a mix of positive and negative polarity. Structured candidate counts in the evaluation split were validated against work/canonical/structured.csv; the smallest is 314, well above structured_candidate_pool_size (50).",
+  "questions": [
+    {
+      "question": "Which necklaces do reviewers say tarnish or discolour after a short time?",
+      "semantic_question": "Do the reviews say the item tarnished, discoloured, turned the skin green, or lost its finish after a short period of use?",
+      "semantic_concept": "tarnishing_necklace",
+      "structured_predicates": [{"column": "title", "op": "contains", "value": "necklace"}]
+    },
+    {
+      "question": "Which bracelets are described by reviewers as adjustable enough to fit different wrist sizes?",
+      "semantic_question": "Do the reviews say the item is adjustable, resizable, or fits a range of wrist sizes?",
+      "semantic_concept": "adjustable_bracelet",
+      "structured_predicates": [{"column": "title", "op": "contains", "value": "bracelet"}]
+    },
+    {
+      "question": "Which sunglasses do reviewers say arrived scratched, bent, or broken?",
+      "semantic_question": "Do the reviews say the item arrived scratched, bent, cracked, broken, or otherwise damaged?",
+      "semantic_concept": "damaged_on_arrival_sunglasses",
+      "structured_predicates": [{"column": "title", "op": "contains", "value": "sunglass"}]
+    },
+    {
+      "question": "Which women's sweaters do reviewers describe as itchy or scratchy against the skin?",
+      "semantic_question": "Do the reviews describe the item as itchy, scratchy, or irritating against the skin?",
+      "semantic_concept": "itchy_sweater",
+      "structured_predicates": [
+        {"column": "title", "op": "contains", "value": "sweater"},
+        {"column": "title", "op": "contains", "value": "women"}
+      ]
+    },
+    {
+      "question": "Which hoodies do reviewers say shrank or faded after washing?",
+      "semantic_question": "Do the reviews say the item shrank, faded, stretched out, or otherwise degraded after being washed?",
+      "semantic_concept": "poor_wash_durability_hoodie",
+      "structured_predicates": [{"column": "title", "op": "contains", "value": "hoodie"}]
+    },
+    {
+      "question": "Which leather wallets do reviewers describe as slim enough to carry in a pocket?",
+      "semantic_question": "Do the reviews describe the item as slim, thin, or compact enough to carry comfortably in a pocket?",
+      "semantic_concept": "slim_wallet",
+      "structured_predicates": [
+        {"column": "title", "op": "contains", "value": "wallet"},
+        {"column": "title", "op": "contains", "value": "leather"}
+      ]
+    },
+    {
+      "question": "Which men's jeans do reviewers say run larger or smaller than the labelled size?",
+      "semantic_question": "Do the reviews say the item runs larger or smaller than the labelled size, or that buyers should size up or down?",
+      "semantic_concept": "inaccurate_sizing_jeans",
+      "structured_predicates": [
+        {"column": "title", "op": "contains", "value": "jean"},
+        {"column": "title", "op": "contains", "value": "men"}
+      ]
+    },
+    {
+      "question": "Which scarves do reviewers say arrived in a colour different from the pictures?",
+      "semantic_question": "Do the reviews say the item's colour differed from the photographs or the product description?",
+      "semantic_concept": "colour_mismatch_scarf",
+      "structured_predicates": [{"column": "title", "op": "contains", "value": "scarf"}]
+    },
+    {
+      "question": "Which women's swimsuits do reviewers say provide good support or coverage?",
+      "semantic_question": "Do the reviews say the item provides good support, coverage, or stays securely in place?",
+      "semantic_concept": "supportive_swimsuit",
+      "structured_predicates": [
+        {"column": "title", "op": "contains", "value": "swimsuit"},
+        {"column": "title", "op": "contains", "value": "women"}
+      ]
+    },
+    {
+      "question": "Which leggings do reviewers say are sheer or see-through when stretched?",
+      "semantic_question": "Do the reviews say the item is sheer, see-through, or too thin when stretched or worn?",
+      "semantic_concept": "sheer_leggings",
+      "structured_predicates": [{"column": "title", "op": "contains", "value": "legging"}]
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+q_01: Which dresses are described by reviewers as comfortable to wear?
+q_02: Which shoes are described by reviewers as fitting true to size?
+q_03: Which shirts are praised by reviewers for soft or pleasant fabric?

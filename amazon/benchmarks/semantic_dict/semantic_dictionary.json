@@ -1,0 +1,949 @@
+{
+  "provenance": {
+    "split": "dictionary",
+    "seed": 42,
+    "method": "deterministic_regex_local (mirrors benchmarks/build_catalog.py's approach for IMDb)"
+  },
+  "concepts": {
+    "comfortable_dress": {
+      "semantic_question": "Do the reviews describe the product as comfortable to wear?",
+      "positive_examples": [
+        {
+          "id": "B00MUN1TOQ",
+          "text": "This sweater is ok. It smells like a factory. It is very itchy too. I think I'm done buying sweaters from oversees on here. None of them are really wearable. I do not recommend this product if you like soft comfy clothes.\n\nVery cute. Lots of compliments. matches everything.",
+          "evidence": "comfy"
+        },
+        {
+          "id": "B00OACNB32",
+          "text": "My husband loves this shirt! It's really soft and comfortable. Thanks for a great product and a smooth transaction.\n\nGreat shirt! Fit as expected!",
+          "evidence": "comfortable"
+        },
+        {
+          "id": "B00LC88K2Y",
+          "text": "attractive shorts for my girl. and they fit perfectly\n\nReally soft. Nice and stretchy. Definitely just planning on wearing them as \"housepants\"(which is wwhy I bought them) as the elastic waistband shifts around freely and folds up on itself, making it kind of awkward and lumpy. Also the tag on the inside is on the front of the pants instead of the back? I can deal :)\n\nIt's comfy and fits true to size. I like the pattern but i wish there were more colours",
+          "evidence": "comfy"
+        },
+        {
+          "id": "B00CXMYWZC",
+          "text": "My son has accused me of giving him things too girly (a suede jacket last Christmas). He was very pleasantly surprised with this jacket and liked it a lot. It's just right for South Carolina winters.\n\nNice Jacket. Cut far too small for an XXL Be warned, if you purchase the jacket go up one size.\n\nThe X Large was too large, so I re-ordered the Large and will return the X Large! Everything else was just as expected, good service, good delivery. Good experience with Amazon, as usual\n\nIt good. The fabric is too hard. It is warm. Color is alright. It is comfortable. Thank you. It is ok.\n\nI was expecting a more robust & good looking jacket, however this looks a bit cheap, has lots of wrinkles.\n\nSleeves are so long.\n\nvery fine\n\nnice\n\nVery nice but a touch small across the back.\n\nexcelent\n\nI had already bought this in brown, and after that I got the black one. They fit great and are great for the cool days. I Would definitely recommend this especially with all of the colors that are offered\n\nThe quality is excellent. The sizing is a problem. I ordered a large and it was way tight.\n\nNice jacket. Quite tight and high waste.\n\nSmall\n\nGreat Jacket. I read the reviews before i purchase it, and ordered one size up, and fits just right, if you like to wear a sweater under the jacket, maybe 2 sizes up will fit you better.\n\nWas ok but the material didn't help much in the sleeves. These got stained easily and now it's really hard to take the stains off\n\nBought as a gift for my father. Good quality and warm! Great for cool days or nights... Does run small in my opinion. Ordered a size up and glad I did because regular size would of been too tight. Great buy!!! Delivery was fast!\n\nBought as a gift for my dad, he likes it a lot. He wears it when golfing during the colder one, has a windbreaker Polo jacket he wears during warmer weather. He lovessss how warm it is. It can get pretty cold during the colder months here, and he wears it everyday in the winter. He typically wears a large, and",
+          "evidence": "comfortable"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D9YTEDW",
+          "text": "It felt like a sausage casing. I wear a 1x in most brands but decided to order 3x since I like my tee shirts roomy and I wasn't familiar with this brand's sizing.",
+          "evidence": ""
+        },
+        {
+          "id": "B00UM05C4W",
+          "text": "One of my favorite shirts!\n\nI love this shirt so much that I bought the dress in this pattern too!",
+          "evidence": ""
+        },
+        {
+          "id": "B01ABREUMU",
+          "text": "I bought one of these suits and I ordered a medium as I read other reviews that it ran small.. I got it and it was huge. Not only That, the top is so poorly made it looks ridiculous. Meanwhile I got back on and ordered a small. That was too small. The top again was so awkward and poorly made there was no working with it. I am typically a size small. 5'4 110 pounds. A size c cup and no matter what Both tops appeared to \"fit\" but the material makes for a gap in the cup between the material and your breast. I wouldn't recommend, unfortunately! I sent both back and found one at Target!\n\nIts super cute but im a 34D and i got the M. Its just not flattering in the boob section. I have more boob coming out of the side then the front",
+          "evidence": ""
+        },
+        {
+          "id": "B01FPMVGEG",
+          "text": "fit's great, washes great, love it",
+          "evidence": ""
+        }
+      ]
+    },
+    "true_to_size_shoes": {
+      "semantic_question": "Do the reviews say the product fits true to size?",
+      "positive_examples": [
+        {
+          "id": "B00LC88K2Y",
+          "text": "attractive shorts for my girl. and they fit perfectly\n\nReally soft. Nice and stretchy. Definitely just planning on wearing them as \"housepants\"(which is wwhy I bought them) as the elastic waistband shifts around freely and folds up on itself, making it kind of awkward and lumpy. Also the tag on the inside is on the front of the pants instead of the back? I can deal :)\n\nIt's comfy and fits true to size. I like the pattern but i wish there were more colours",
+          "evidence": "fits true to size"
+        },
+        {
+          "id": "B019H6U8KE",
+          "text": "This item is not true to size according to the size chart. Very cute though! It be nice to be shown to purchase top and bottom as separate sizes. *Disclaimer* I purchased this item at discount\n\nThe bottom fits loosly, while the top fits small. There is hardly any padding or cushion on the swim top. I was hoping for a better outcome.\n\nNot impressed with material and fits smaller\n\n5\"4 154lbs. XL was a little too big should have gone with the Large. Also the bottom is extra full coverage. If that's what you're looking for this is perfect but I was hoping for something a little more revealing in the tush area. Overall good fit vibrant colors. Wish I would have chosen another pattern. These flowers are dated.\n\nThis is perfect for the ladies/moms out there that wanna cover the pooch or stretch marks. It's a beautiful print and made of nice material. Very good coverage for bottoms. The top could be a little more supportive but all in all I would certainly buy this again in another print!",
+          "evidence": "true to size"
+        },
+        {
+          "id": "B017S1DN98",
+          "text": "Comfy and a great fit\n\nA bit too wide especially the sleeves Im petite and like them snug - so if you like extra space for your arms you'll be happy. The color is nice. it's overall ok but could be better\n\nThis is probably cut for juniors. I ordered a large expecting it to be a little oversized. Instead, it's too tight in the hips, and too short. I don't like the overly stretchy material either. It seems to be good quality with nice seams and zipper...and the color is good though.\n\nPerfect\n\nSizing: 5'5, 120 pounds and small fit perfectly. Review: I wanted a simple but inexpensive jacket that was thin but could keep me warm and this is just perfect for the price! It's pretty form fitting and easy to move in. For me its comfortably true to size but if you want a looser fit or are afraid of it being too small I would probably go a size up. Over all I'm pleased with this purchase and would buy from this company again!",
+          "evidence": "true to size"
+        },
+        {
+          "id": "B013AYAGC4",
+          "text": "Bought this for my daughter who usually wears a Petite small/medium. It was too big in the CHEST area. Too plunging. We gave it to a friend who is older and about the same size. I only paid about $5 for it but the overall look didn't match \"prom\" type events. It was OK, just less dressy and more 'sultry' as my grandmother would say. Not flattering of all figure types - definitely would flatter more of a curvy, voluptuous type of woman, not my young lady.\n\nFor the price it's just waooou I like the dresse the material it's more than I expected\n\nI was so beyond impressed when I received this beautiful dress! I find it hard to tell when I order clothing online whether it is going to be true to size or how it is ultimately going to look when I finally try it on, so I was very happy that when I received the dress, it fit perfectly. Before ordering I carefully read the size chart and chose a size 8. The chart gave me exactly the measurements I needed, so I didn't have to guess what to order. The dress is flattering from every angle and it isn't tight or binding anywhere ~ including the bust or waist. The construction of the dress is beautiful in every way. There is a matching slip underneath the lace that is sewn into the dress itself. My complaint with most dresses like this is that the lace will ride up when you sit or bend over exposing the slip, but this dress actually has the slip sewn strategically into the lace over it (including about an inch from the bottom hem), so it will always stay where right where it is supposed to and move naturally with me. The lace and the beading are gorgeous - intricate and elegant without being gaudy. Everything is sewn so nicely too - no loose threads and no loose beads anywhere. The entire dress is lightweight to wear as well and it comes to just above the knee so it can be worn for a variety occasions. The design is flattering for so many body types. I feel elegant and feminine when I wear this and I would not hesitate to buy anothe",
+          "evidence": "true to size"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D9YTEDW",
+          "text": "It felt like a sausage casing. I wear a 1x in most brands but decided to order 3x since I like my tee shirts roomy and I wasn't familiar with this brand's sizing.",
+          "evidence": ""
+        },
+        {
+          "id": "B00UM05C4W",
+          "text": "One of my favorite shirts!\n\nI love this shirt so much that I bought the dress in this pattern too!",
+          "evidence": ""
+        },
+        {
+          "id": "B01ABREUMU",
+          "text": "I bought one of these suits and I ordered a medium as I read other reviews that it ran small.. I got it and it was huge. Not only That, the top is so poorly made it looks ridiculous. Meanwhile I got back on and ordered a small. That was too small. The top again was so awkward and poorly made there was no working with it. I am typically a size small. 5'4 110 pounds. A size c cup and no matter what Both tops appeared to \"fit\" but the material makes for a gap in the cup between the material and your breast. I wouldn't recommend, unfortunately! I sent both back and found one at Target!\n\nIts super cute but im a 34D and i got the M. Its just not flattering in the boob section. I have more boob coming out of the side then the front",
+          "evidence": ""
+        },
+        {
+          "id": "B01FPMVGEG",
+          "text": "fit's great, washes great, love it",
+          "evidence": ""
+        }
+      ]
+    },
+    "soft_fabric_shirt": {
+      "semantic_question": "Do the reviews praise the fabric as soft or pleasant against the skin?",
+      "positive_examples": [
+        {
+          "id": "B00MUN1TOQ",
+          "text": "This sweater is ok. It smells like a factory. It is very itchy too. I think I'm done buying sweaters from oversees on here. None of them are really wearable. I do not recommend this product if you like soft comfy clothes.\n\nVery cute. Lots of compliments. matches everything.",
+          "evidence": "soft"
+        },
+        {
+          "id": "B00OACNB32",
+          "text": "My husband loves this shirt! It's really soft and comfortable. Thanks for a great product and a smooth transaction.\n\nGreat shirt! Fit as expected!",
+          "evidence": "soft"
+        },
+        {
+          "id": "B00LC88K2Y",
+          "text": "attractive shorts for my girl. and they fit perfectly\n\nReally soft. Nice and stretchy. Definitely just planning on wearing them as \"housepants\"(which is wwhy I bought them) as the elastic waistband shifts around freely and folds up on itself, making it kind of awkward and lumpy. Also the tag on the inside is on the front of the pants instead of the back? I can deal :)\n\nIt's comfy and fits true to size. I like the pattern but i wish there were more colours",
+          "evidence": "soft"
+        },
+        {
+          "id": "B01FXLEUGK",
+          "text": "Wife likes it but since she is petite it was a bit long on her\n\nDon't like it\n\nLooks great on my daughter\n\nReally cute top! love the racer back.. great for summer in my state\n\nPretty top just too small. I usually wear a medium. So i got one. I'm a 36DD. Fit everywhere but getting in it was a pain and it was kinda shorter than I expected. Its also a silky material. Cute but just not for me.",
+          "evidence": "silky"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D9YTEDW",
+          "text": "It felt like a sausage casing. I wear a 1x in most brands but decided to order 3x since I like my tee shirts roomy and I wasn't familiar with this brand's sizing.",
+          "evidence": ""
+        },
+        {
+          "id": "B00UM05C4W",
+          "text": "One of my favorite shirts!\n\nI love this shirt so much that I bought the dress in this pattern too!",
+          "evidence": ""
+        },
+        {
+          "id": "B01ABREUMU",
+          "text": "I bought one of these suits and I ordered a medium as I read other reviews that it ran small.. I got it and it was huge. Not only That, the top is so poorly made it looks ridiculous. Meanwhile I got back on and ordered a small. That was too small. The top again was so awkward and poorly made there was no working with it. I am typically a size small. 5'4 110 pounds. A size c cup and no matter what Both tops appeared to \"fit\" but the material makes for a gap in the cup between the material and your breast. I wouldn't recommend, unfortunately! I sent both back and found one at Target!\n\nIts super cute but im a 34D and i got the M. Its just not flattering in the boob section. I have more boob coming out of the side then the front",
+          "evidence": ""
+        },
+        {
+          "id": "B01FPMVGEG",
+          "text": "fit's great, washes great, love it",
+          "evidence": ""
+        }
+      ]
+    },
+    "warm_jacket": {
+      "semantic_question": "Do the reviews describe the product as warm enough for cool or cold weather?",
+      "positive_examples": [
+        {
+          "id": "B00GN5T5NY",
+          "text": "So funny! I bought this and love it! Plus, it keeps your head and face warm!",
+          "evidence": "warm"
+        },
+        {
+          "id": "B00CXMYWZC",
+          "text": "My son has accused me of giving him things too girly (a suede jacket last Christmas). He was very pleasantly surprised with this jacket and liked it a lot. It's just right for South Carolina winters.\n\nNice Jacket. Cut far too small for an XXL Be warned, if you purchase the jacket go up one size.\n\nThe X Large was too large, so I re-ordered the Large and will return the X Large! Everything else was just as expected, good service, good delivery. Good experience with Amazon, as usual\n\nIt good. The fabric is too hard. It is warm. Color is alright. It is comfortable. Thank you. It is ok.\n\nI was expecting a more robust & good looking jacket, however this looks a bit cheap, has lots of wrinkles.\n\nSleeves are so long.\n\nvery fine\n\nnice\n\nVery nice but a touch small across the back.\n\nexcelent\n\nI had already bought this in brown, and after that I got the black one. They fit great and are great for the cool days. I Would definitely recommend this especially with all of the colors that are offered\n\nThe quality is excellent. The sizing is a problem. I ordered a large and it was way tight.\n\nNice jacket. Quite tight and high waste.\n\nSmall\n\nGreat Jacket. I read the reviews before i purchase it, and ordered one size up, and fits just right, if you like to wear a sweater under the jacket, maybe 2 sizes up will fit you better.\n\nWas ok but the material didn't help much in the sleeves. These got stained easily and now it's really hard to take the stains off\n\nBought as a gift for my father. Good quality and warm! Great for cool days or nights... Does run small in my opinion. Ordered a size up and glad I did because regular size would of been too tight. Great buy!!! Delivery was fast!\n\nBought as a gift for my dad, he likes it a lot. He wears it when golfing during the colder one, has a windbreaker Polo jacket he wears during warmer weather. He lovessss how warm it is. It can get pretty cold during the colder months here, and he wears it everyday in the winter. He typically wears a large, and",
+          "evidence": "warm"
+        },
+        {
+          "id": "B00AM1BY3O",
+          "text": "Not for big leg women -- gave to House of Mercy\n\nSo comfortable and warm\n\nI gave these 5 stars because they are nice and thick & warm!!! But, order one size up if you can!! ;)\n\nI am very satisfied with these leggings. They are super warm! I went a little larger and they fit great. Very comfortable. I wear them often!\n\nI have trouble finding a good pair of leggings that aren't too thin or too thick and that fit nicely in all places. These leggings are nice however within the first few times of wearing them there's stretching in the material in the crotch area which I've never had before in other leggings...maybe because it's terry cloth. But definitely wash them because they are itchy. I tried them on as soon as they got here and I had to rip them off quickly because I was so itchy. I had read awful reviews on other plus sized leggings on here but this one seemed to have the best reviews. I would recommend them to others.\n\nThese are the best thing I've purchased all year. Perfect fit, warm, comfortable, well made. Thank you for a really good product. Would recommend to any one.\n\nOrdered these for a recent trip to Lake Tahoe and they were amazingly warm!!!!! I love that they are super warm in cold extremely cold weather and nice in Southern California winter.",
+          "evidence": "warm"
+        },
+        {
+          "id": "B009K7HDK4",
+          "text": "A little short,but as expected with a bomber style jacket. Very nice and warm. Very pleased with wall brand in the past. Have not laundered yet,hopefully will hold up.\n\nGreat\n\nFit is good. it's warm. Time will tell if it wears as durable as a Carhartt.\n\nVery good\n\nThe picture of this jacket depicts exactly what I expected. It is a short jacket that has that elastic band on the bottom and fits tight at the waste. Great for working especially if you do a lot of bending over. The jacket is nice and warm with elastic at the wrists also. When working outside in the cold the elastic at the wrists and waste helps keep the cold air out!\n\nWay to short!",
+          "evidence": "warm"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D9YTEDW",
+          "text": "It felt like a sausage casing. I wear a 1x in most brands but decided to order 3x since I like my tee shirts roomy and I wasn't familiar with this brand's sizing.",
+          "evidence": ""
+        },
+        {
+          "id": "B00UM05C4W",
+          "text": "One of my favorite shirts!\n\nI love this shirt so much that I bought the dress in this pattern too!",
+          "evidence": ""
+        },
+        {
+          "id": "B01ABREUMU",
+          "text": "I bought one of these suits and I ordered a medium as I read other reviews that it ran small.. I got it and it was huge. Not only That, the top is so poorly made it looks ridiculous. Meanwhile I got back on and ordered a small. That was too small. The top again was so awkward and poorly made there was no working with it. I am typically a size small. 5'4 110 pounds. A size c cup and no matter what Both tops appeared to \"fit\" but the material makes for a gap in the cup between the material and your breast. I wouldn't recommend, unfortunately! I sent both back and found one at Target!\n\nIts super cute but im a 34D and i got the M. Its just not flattering in the boob section. I have more boob coming out of the side then the front",
+          "evidence": ""
+        },
+        {
+          "id": "B01FPMVGEG",
+          "text": "fit's great, washes great, love it",
+          "evidence": ""
+        }
+      ]
+    },
+    "sun_protective_hat": {
+      "semantic_question": "Do the reviews say the product provides useful protection from the sun?",
+      "positive_examples": [
+        {
+          "id": "B00PUYVFUU",
+          "text": "Bought two of these for my young adult nephews for a once in a lifetime trip to the Barrier Reef. They were happy to have them to prevent sunburn, which they did perfectly. I could tell they also thought they looked \"cool\" enough that they were not just wearing them to appease their worry-wart old auntie.\n\nIt came just as described.\n\nStretched out in just 3 weeks - trashed it.\n\nperfect\n\nAwesome\n\ngreat\n\nVery good fits perfect,I'm happy with it\n\nLove it! Comfortable to wear even if not in the water. Dries quickly.\n\nfits as expected and kept me warm in the ocean\n\nThey just need to make several more color combinations now. I do however thing they are a little over priced at 40 bucks. 25-30 would encourage me to by several more!\n\nNice on.",
+          "evidence": "sunburn"
+        },
+        {
+          "id": "B0017T15U2",
+          "text": "if you like them get them, they're super cheap so don't count on the greatest quality, but they do the job.\n\nShipment was delayed, plus the product THAT I PAID FOR, I never even received. To top that off, customer service was rude and made me feel incompetent. As though it was my fault for not receiving the shades. I do not recommend buying from this company! Ordered on Oct 5, 2008 now Oct 21, 2008 and still no product!\n\nVery excellent sunglasses. I use them specifically for bike riding and the curving arms and tight fit enable the glasses to stay snug and provide constant shade from the sun. These glasses shipped surprisingly fast and came w/ a handy little soft case too. Both thumbs up on this one.",
+          "evidence": "shade from the sun"
+        },
+        {
+          "id": "B01FX1A9BU",
+          "text": "Purchased this rash-guard for my daughter to use during the summer months in swim club. Alas, it provided too much restriction while she trains but that was our mistake - we tried to use it for additional sun protection. It is well constructed, did not chafe, fit her as expected and will be used for other warm weather outdoor activities.",
+          "evidence": "sun protection"
+        },
+        {
+          "id": "B00XNUBI4G",
+          "text": "Great sun protection, great fit. Great color if you are an Auburn fan. I am so its one of my favorite sport fishing shirts.",
+          "evidence": "sun protection"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D9YTEDW",
+          "text": "It felt like a sausage casing. I wear a 1x in most brands but decided to order 3x since I like my tee shirts roomy and I wasn't familiar with this brand's sizing.",
+          "evidence": ""
+        },
+        {
+          "id": "B00UM05C4W",
+          "text": "One of my favorite shirts!\n\nI love this shirt so much that I bought the dress in this pattern too!",
+          "evidence": ""
+        },
+        {
+          "id": "B01ABREUMU",
+          "text": "I bought one of these suits and I ordered a medium as I read other reviews that it ran small.. I got it and it was huge. Not only That, the top is so poorly made it looks ridiculous. Meanwhile I got back on and ordered a small. That was too small. The top again was so awkward and poorly made there was no working with it. I am typically a size small. 5'4 110 pounds. A size c cup and no matter what Both tops appeared to \"fit\" but the material makes for a gap in the cup between the material and your breast. I wouldn't recommend, unfortunately! I sent both back and found one at Target!\n\nIts super cute but im a 34D and i got the M. Its just not flattering in the boob section. I have more boob coming out of the side then the front",
+          "evidence": ""
+        },
+        {
+          "id": "B01FPMVGEG",
+          "text": "fit's great, washes great, love it",
+          "evidence": ""
+        }
+      ]
+    },
+    "stylish_watch": {
+      "semantic_question": "Do the reviews describe the product as stylish, attractive, or good-looking?",
+      "positive_examples": [
+        {
+          "id": "B00LC88K2Y",
+          "text": "attractive shorts for my girl. and they fit perfectly\n\nReally soft. Nice and stretchy. Definitely just planning on wearing them as \"housepants\"(which is wwhy I bought them) as the elastic waistband shifts around freely and folds up on itself, making it kind of awkward and lumpy. Also the tag on the inside is on the front of the pants instead of the back? I can deal :)\n\nIt's comfy and fits true to size. I like the pattern but i wish there were more colours",
+          "evidence": "attractive"
+        },
+        {
+          "id": "B00CXMYWZC",
+          "text": "My son has accused me of giving him things too girly (a suede jacket last Christmas). He was very pleasantly surprised with this jacket and liked it a lot. It's just right for South Carolina winters.\n\nNice Jacket. Cut far too small for an XXL Be warned, if you purchase the jacket go up one size.\n\nThe X Large was too large, so I re-ordered the Large and will return the X Large! Everything else was just as expected, good service, good delivery. Good experience with Amazon, as usual\n\nIt good. The fabric is too hard. It is warm. Color is alright. It is comfortable. Thank you. It is ok.\n\nI was expecting a more robust & good looking jacket, however this looks a bit cheap, has lots of wrinkles.\n\nSleeves are so long.\n\nvery fine\n\nnice\n\nVery nice but a touch small across the back.\n\nexcelent\n\nI had already bought this in brown, and after that I got the black one. They fit great and are great for the cool days. I Would definitely recommend this especially with all of the colors that are offered\n\nThe quality is excellent. The sizing is a problem. I ordered a large and it was way tight.\n\nNice jacket. Quite tight and high waste.\n\nSmall\n\nGreat Jacket. I read the reviews before i purchase it, and ordered one size up, and fits just right, if you like to wear a sweater under the jacket, maybe 2 sizes up will fit you better.\n\nWas ok but the material didn't help much in the sleeves. These got stained easily and now it's really hard to take the stains off\n\nBought as a gift for my father. Good quality and warm! Great for cool days or nights... Does run small in my opinion. Ordered a size up and glad I did because regular size would of been too tight. Great buy!!! Delivery was fast!\n\nBought as a gift for my dad, he likes it a lot. He wears it when golfing during the colder one, has a windbreaker Polo jacket he wears during warmer weather. He lovessss how warm it is. It can get pretty cold during the colder months here, and he wears it everyday in the winter. He typically wears a large, and",
+          "evidence": "good looking"
+        },
+        {
+          "id": "B00FPILKLU",
+          "text": "When this package arrived I was pleasantly surprised. It was beautiful and was as pictured only better. I only wish they has it in white.\n\nVery stylish and great material!\n\nLove it!!! Warm n cozy\n\nI love it!\n\nGreat for everyday use and for going out in style. Universal item. A must have.\n\nwas to small and lousy knitting and cheep looking and to thin\n\nVery flimsy, very small.....wouldn't order from them again. I feel it is mis-advertised\n\nMaterial little too thin for a gift. Needed something a little better quality\n\nGood quality for the price!\n\nGreat!\n\nI absolutely love this poncho. It's super cute.",
+          "evidence": "stylish"
+        },
+        {
+          "id": "B015SWNFU6",
+          "text": "6 inch wrist, fis perfect! I LOVE THIS!\n\nThis is really beautiful! I love the vibrant color of the malachite and the contrast created by the addition of the tiger eye. Absolutely love it!\n\nLove it. Much much much nicer than shown\n\nGood energy, good quality\n\ngotten for my sister..she loves it and states it is very nice and well done\n\nExactly what I was expecting. I was wanting to give my wife a tiger eye to wear and she loves this.\n\nI received this product fairly fast. It was in a nice/elegant package. I bought this based on the healing description. I like the weight of the bracelet. It does not feel flimsy or cheap.",
+          "evidence": "elegant"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D9YTEDW",
+          "text": "It felt like a sausage casing. I wear a 1x in most brands but decided to order 3x since I like my tee shirts roomy and I wasn't familiar with this brand's sizing.",
+          "evidence": ""
+        },
+        {
+          "id": "B00UM05C4W",
+          "text": "One of my favorite shirts!\n\nI love this shirt so much that I bought the dress in this pattern too!",
+          "evidence": ""
+        },
+        {
+          "id": "B01ABREUMU",
+          "text": "I bought one of these suits and I ordered a medium as I read other reviews that it ran small.. I got it and it was huge. Not only That, the top is so poorly made it looks ridiculous. Meanwhile I got back on and ordered a small. That was too small. The top again was so awkward and poorly made there was no working with it. I am typically a size small. 5'4 110 pounds. A size c cup and no matter what Both tops appeared to \"fit\" but the material makes for a gap in the cup between the material and your breast. I wouldn't recommend, unfortunately! I sent both back and found one at Target!\n\nIts super cute but im a 34D and i got the M. Its just not flattering in the boob section. I have more boob coming out of the side then the front",
+          "evidence": ""
+        },
+        {
+          "id": "B01FPMVGEG",
+          "text": "fit's great, washes great, love it",
+          "evidence": ""
+        }
+      ]
+    },
+    "roomy_bag": {
+      "semantic_question": "Do the reviews describe the product as roomy, spacious, or able to hold a lot?",
+      "positive_examples": [
+        {
+          "id": "B01D9YTEDW",
+          "text": "It felt like a sausage casing. I wear a 1x in most brands but decided to order 3x since I like my tee shirts roomy and I wasn't familiar with this brand's sizing.",
+          "evidence": "roomy"
+        },
+        {
+          "id": "B00L3YF4V2",
+          "text": "This dress is very pretty but considerably shorter than advertised in the chart in the item slideshow: 35\" rather than 43\". It isn't worth it to send the dress all the way back to China, so I'll find some pink or blue trim at a fabric store to add some of the length that I wanted. It's fine in the bust area and a little roomy in the waist, but the built-in sash disguises that.",
+          "evidence": "roomy"
+        },
+        {
+          "id": "B00Q03XUWQ",
+          "text": "This purse was much better than I expected. Very well made and just the right size for what I need. I love it!\n\nVery satisfied with this purse. Roomy enough for what I need to carry but not so large I carry lots of extra stuff. Appears to be well-made.\n\nNice denim bag for casual wear.\n\nDon't order it the zip broke after 2 days it is cheap made\n\nI Love it, it is perfect",
+          "evidence": "Roomy"
+        },
+        {
+          "id": "B019N4IQ3Q",
+          "text": "I love this purse! It's nice and has lots of room I also have the matching wallet. Great quality.",
+          "evidence": "lots of room"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B00UM05C4W",
+          "text": "One of my favorite shirts!\n\nI love this shirt so much that I bought the dress in this pattern too!",
+          "evidence": ""
+        },
+        {
+          "id": "B01ABREUMU",
+          "text": "I bought one of these suits and I ordered a medium as I read other reviews that it ran small.. I got it and it was huge. Not only That, the top is so poorly made it looks ridiculous. Meanwhile I got back on and ordered a small. That was too small. The top again was so awkward and poorly made there was no working with it. I am typically a size small. 5'4 110 pounds. A size c cup and no matter what Both tops appeared to \"fit\" but the material makes for a gap in the cup between the material and your breast. I wouldn't recommend, unfortunately! I sent both back and found one at Target!\n\nIts super cute but im a 34D and i got the M. Its just not flattering in the boob section. I have more boob coming out of the side then the front",
+          "evidence": ""
+        },
+        {
+          "id": "B01FPMVGEG",
+          "text": "fit's great, washes great, love it",
+          "evidence": ""
+        },
+        {
+          "id": "B01CJH05NS",
+          "text": "So disappointing that it didn't fit. It was super cute, seemed well made, my daughter loved it, and it was huge! Return was very easy.",
+          "evidence": ""
+        }
+      ]
+    },
+    "durable_socks": {
+      "semantic_question": "Do the reviews describe the product as durable or holding up well after repeated use?",
+      "positive_examples": [
+        {
+          "id": "B017VTQE5M",
+          "text": "It is a bit small. This is a plus and a minus as it fits better and takes up less space. However it could be just a little bit bigger and it would accommodate everything I need. Other bags I have had zip from both sides. This only has a single zipper.\n\nThe bag is very nice and useful! It is sturdy and durable as well. I prepare to take it when traveling. I think it is a fantastic bag!",
+          "evidence": "durable"
+        },
+        {
+          "id": "B009K7HDK4",
+          "text": "A little short,but as expected with a bomber style jacket. Very nice and warm. Very pleased with wall brand in the past. Have not laundered yet,hopefully will hold up.\n\nGreat\n\nFit is good. it's warm. Time will tell if it wears as durable as a Carhartt.\n\nVery good\n\nThe picture of this jacket depicts exactly what I expected. It is a short jacket that has that elastic band on the bottom and fits tight at the waste. Great for working especially if you do a lot of bending over. The jacket is nice and warm with elastic at the wrists also. When working outside in the cold the elastic at the wrists and waste helps keep the cold air out!\n\nWay to short!",
+          "evidence": "durable"
+        },
+        {
+          "id": "B01BDBQ06W",
+          "text": "Really cute. Doesn't look cheap. Zipper is easy to use. Good pockets. Holds ALOT of stuff! Love it.\n\nMy mom wanted this purse for her birthday, I told her I didn't care for it. I purchased it for her, and was quite surprised!!! This purse was really nice quality, even came in a plastic purse bag. The material was thick, the colors were vibrant, the stitching looked good! She was surprised when she opened it and I told her she had picked out a cute it purse after all\n\nLove this bag! Great handles & shoulder strap, great colors, and size!\n\nI love the colors on this bag. I won't have to change purses all winter long.\n\nThe day after I received this bag my family was evacuated from our home due to fire. I shoved so much stuff in the bag it should have exploded but it held up great! Plus I love the colors and textures. I'll always love this bag. (our house was ok.)\n\nIt has no structure really, and the straps make it look really cheap. Other than that I like the colors and will keep.\n\nGreat casual bag! I really like that it has a zippered pocket inside. The only negative is the strange smell it had. I used fabric spray on it which worked to get rid of the smell.\n\nThis is the second Snug Star Canvas Bag that I've bought. My first one is still doing great and I still use it everyday for my purse. (It's the same color stripes but it's the bucket bag) I wanted another bag that was a bit bigger to use for my stuff that I take with me when I babysit. This was perfect for that! They are very well made and hold up well. After I get them I spray them really good with Scotch Guard Fabric Spray.\n\nGreat quality for the price!\n\nRECEIVED MY CANVAS BAG TODAY, IT IS AWESOME, EASY TO CARRY AND ROOM ENOUGH FOR IPAD AND YOUR PERSONAL ITEMS CARRIED I LOVE IT ALSO COULD BE USED FOR A CARRY ON FOR TRIPS GREATBAG\n\nLove the purse, just wish it had a little more pockets",
+          "evidence": "hold up well"
+        },
+        {
+          "id": "B00ODQ09T4",
+          "text": "Looks good. Not very durable though.",
+          "evidence": "durable"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D9YTEDW",
+          "text": "It felt like a sausage casing. I wear a 1x in most brands but decided to order 3x since I like my tee shirts roomy and I wasn't familiar with this brand's sizing.",
+          "evidence": ""
+        },
+        {
+          "id": "B00UM05C4W",
+          "text": "One of my favorite shirts!\n\nI love this shirt so much that I bought the dress in this pattern too!",
+          "evidence": ""
+        },
+        {
+          "id": "B01ABREUMU",
+          "text": "I bought one of these suits and I ordered a medium as I read other reviews that it ran small.. I got it and it was huge. Not only That, the top is so poorly made it looks ridiculous. Meanwhile I got back on and ordered a small. That was too small. The top again was so awkward and poorly made there was no working with it. I am typically a size small. 5'4 110 pounds. A size c cup and no matter what Both tops appeared to \"fit\" but the material makes for a gap in the cup between the material and your breast. I wouldn't recommend, unfortunately! I sent both back and found one at Target!\n\nIts super cute but im a 34D and i got the M. Its just not flattering in the boob section. I have more boob coming out of the side then the front",
+          "evidence": ""
+        },
+        {
+          "id": "B01FPMVGEG",
+          "text": "fit's great, washes great, love it",
+          "evidence": ""
+        }
+      ]
+    },
+    "walking_comfort_sandals": {
+      "semantic_question": "Do the reviews describe the product as comfortable for walking or extended wear?",
+      "positive_examples": [
+        {
+          "id": "B00MUN1TOQ",
+          "text": "This sweater is ok. It smells like a factory. It is very itchy too. I think I'm done buying sweaters from oversees on here. None of them are really wearable. I do not recommend this product if you like soft comfy clothes.\n\nVery cute. Lots of compliments. matches everything.",
+          "evidence": "comfy"
+        },
+        {
+          "id": "B00OACNB32",
+          "text": "My husband loves this shirt! It's really soft and comfortable. Thanks for a great product and a smooth transaction.\n\nGreat shirt! Fit as expected!",
+          "evidence": "comfortable"
+        },
+        {
+          "id": "B00LC88K2Y",
+          "text": "attractive shorts for my girl. and they fit perfectly\n\nReally soft. Nice and stretchy. Definitely just planning on wearing them as \"housepants\"(which is wwhy I bought them) as the elastic waistband shifts around freely and folds up on itself, making it kind of awkward and lumpy. Also the tag on the inside is on the front of the pants instead of the back? I can deal :)\n\nIt's comfy and fits true to size. I like the pattern but i wish there were more colours",
+          "evidence": "comfy"
+        },
+        {
+          "id": "B00CXMYWZC",
+          "text": "My son has accused me of giving him things too girly (a suede jacket last Christmas). He was very pleasantly surprised with this jacket and liked it a lot. It's just right for South Carolina winters.\n\nNice Jacket. Cut far too small for an XXL Be warned, if you purchase the jacket go up one size.\n\nThe X Large was too large, so I re-ordered the Large and will return the X Large! Everything else was just as expected, good service, good delivery. Good experience with Amazon, as usual\n\nIt good. The fabric is too hard. It is warm. Color is alright. It is comfortable. Thank you. It is ok.\n\nI was expecting a more robust & good looking jacket, however this looks a bit cheap, has lots of wrinkles.\n\nSleeves are so long.\n\nvery fine\n\nnice\n\nVery nice but a touch small across the back.\n\nexcelent\n\nI had already bought this in brown, and after that I got the black one. They fit great and are great for the cool days. I Would definitely recommend this especially with all of the colors that are offered\n\nThe quality is excellent. The sizing is a problem. I ordered a large and it was way tight.\n\nNice jacket. Quite tight and high waste.\n\nSmall\n\nGreat Jacket. I read the reviews before i purchase it, and ordered one size up, and fits just right, if you like to wear a sweater under the jacket, maybe 2 sizes up will fit you better.\n\nWas ok but the material didn't help much in the sleeves. These got stained easily and now it's really hard to take the stains off\n\nBought as a gift for my father. Good quality and warm! Great for cool days or nights... Does run small in my opinion. Ordered a size up and glad I did because regular size would of been too tight. Great buy!!! Delivery was fast!\n\nBought as a gift for my dad, he likes it a lot. He wears it when golfing during the colder one, has a windbreaker Polo jacket he wears during warmer weather. He lovessss how warm it is. It can get pretty cold during the colder months here, and he wears it everyday in the winter. He typically wears a large, and",
+          "evidence": "comfortable"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D9YTEDW",
+          "text": "It felt like a sausage casing. I wear a 1x in most brands but decided to order 3x since I like my tee shirts roomy and I wasn't familiar with this brand's sizing.",
+          "evidence": ""
+        },
+        {
+          "id": "B00UM05C4W",
+          "text": "One of my favorite shirts!\n\nI love this shirt so much that I bought the dress in this pattern too!",
+          "evidence": ""
+        },
+        {
+          "id": "B01ABREUMU",
+          "text": "I bought one of these suits and I ordered a medium as I read other reviews that it ran small.. I got it and it was huge. Not only That, the top is so poorly made it looks ridiculous. Meanwhile I got back on and ordered a small. That was too small. The top again was so awkward and poorly made there was no working with it. I am typically a size small. 5'4 110 pounds. A size c cup and no matter what Both tops appeared to \"fit\" but the material makes for a gap in the cup between the material and your breast. I wouldn't recommend, unfortunately! I sent both back and found one at Target!\n\nIts super cute but im a 34D and i got the M. Its just not flattering in the boob section. I have more boob coming out of the side then the front",
+          "evidence": ""
+        },
+        {
+          "id": "B01FPMVGEG",
+          "text": "fit's great, washes great, love it",
+          "evidence": ""
+        }
+      ]
+    },
+    "well_made_costume": {
+      "semantic_question": "Do the reviews describe the product as well made or good quality?",
+      "positive_examples": [
+        {
+          "id": "B01CJH05NS",
+          "text": "So disappointing that it didn't fit. It was super cute, seemed well made, my daughter loved it, and it was huge! Return was very easy.",
+          "evidence": "well made"
+        },
+        {
+          "id": "B017VTQE5M",
+          "text": "It is a bit small. This is a plus and a minus as it fits better and takes up less space. However it could be just a little bit bigger and it would accommodate everything I need. Other bags I have had zip from both sides. This only has a single zipper.\n\nThe bag is very nice and useful! It is sturdy and durable as well. I prepare to take it when traveling. I think it is a fantastic bag!",
+          "evidence": "sturdy"
+        },
+        {
+          "id": "B00CXMYWZC",
+          "text": "My son has accused me of giving him things too girly (a suede jacket last Christmas). He was very pleasantly surprised with this jacket and liked it a lot. It's just right for South Carolina winters.\n\nNice Jacket. Cut far too small for an XXL Be warned, if you purchase the jacket go up one size.\n\nThe X Large was too large, so I re-ordered the Large and will return the X Large! Everything else was just as expected, good service, good delivery. Good experience with Amazon, as usual\n\nIt good. The fabric is too hard. It is warm. Color is alright. It is comfortable. Thank you. It is ok.\n\nI was expecting a more robust & good looking jacket, however this looks a bit cheap, has lots of wrinkles.\n\nSleeves are so long.\n\nvery fine\n\nnice\n\nVery nice but a touch small across the back.\n\nexcelent\n\nI had already bought this in brown, and after that I got the black one. They fit great and are great for the cool days. I Would definitely recommend this especially with all of the colors that are offered\n\nThe quality is excellent. The sizing is a problem. I ordered a large and it was way tight.\n\nNice jacket. Quite tight and high waste.\n\nSmall\n\nGreat Jacket. I read the reviews before i purchase it, and ordered one size up, and fits just right, if you like to wear a sweater under the jacket, maybe 2 sizes up will fit you better.\n\nWas ok but the material didn't help much in the sleeves. These got stained easily and now it's really hard to take the stains off\n\nBought as a gift for my father. Good quality and warm! Great for cool days or nights... Does run small in my opinion. Ordered a size up and glad I did because regular size would of been too tight. Great buy!!! Delivery was fast!\n\nBought as a gift for my dad, he likes it a lot. He wears it when golfing during the colder one, has a windbreaker Polo jacket he wears during warmer weather. He lovessss how warm it is. It can get pretty cold during the colder months here, and he wears it everyday in the winter. He typically wears a large, and",
+          "evidence": "Good quality"
+        },
+        {
+          "id": "B0186YFYWU",
+          "text": "Nice quality. Washes well. Fits as expected.\n\nI was looking for a gift to send to my college freshman to just cheer her up during finals week and this was perfect since she is a biochemistry major.\n\nMy son loves it!!\n\nI got this for my daughter who is a chemistry major and everybody wants to know where she got it!\n\nDaughter loved it!\n\nLove this shirt! My husband & I are huge chemistry nerds and needed this shirt. I have a long-sleeved version and the short-sleeved one. Short sleeves are great for wearing under lab coats!\n\nIt was such a perfect gift for my boyfriend! There are a lot of these shirts on here but Im glad I got this one. My boyfriend is yall with long arms so fit can be weird but this fits perfect. Really comfy and looks so good.\n\nKids loved it! I was the coolest science teacher in the building. Fit good. Nice material. Didnt shrink when I washed it.\n\nI wore it to school for my science classes in December. I used Theodore Grays element cards to make a chemistree on the wall outside the science lab.\n\nGreat novelty shirt I got my daughter. Fits her perfectly. Seems nice and sturdy.\n\nCute\n\nGot what was expected!\n\nGave this to my daughter who has a chemistry degree. She was very excited.\n\nAmazing-so many asked where to get this!!\n\nLove the shirt! I read product reviews and bought a bit large. Do not do it! Mine was way too large. Buy your size.\n\nI bought the long-sleeve version of this shirt for my sister who is a chemist. I decided on a Men's XXL and hoped it didn't run small like so many t-shirts do. It fit her perfectly, and she is somewhere around a women's 18/20. The color is accurate, and the letters stand out against the green background. Would recommend!",
+          "evidence": "sturdy"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D9YTEDW",
+          "text": "It felt like a sausage casing. I wear a 1x in most brands but decided to order 3x since I like my tee shirts roomy and I wasn't familiar with this brand's sizing.",
+          "evidence": ""
+        },
+        {
+          "id": "B00UM05C4W",
+          "text": "One of my favorite shirts!\n\nI love this shirt so much that I bought the dress in this pattern too!",
+          "evidence": ""
+        },
+        {
+          "id": "B01ABREUMU",
+          "text": "I bought one of these suits and I ordered a medium as I read other reviews that it ran small.. I got it and it was huge. Not only That, the top is so poorly made it looks ridiculous. Meanwhile I got back on and ordered a small. That was too small. The top again was so awkward and poorly made there was no working with it. I am typically a size small. 5'4 110 pounds. A size c cup and no matter what Both tops appeared to \"fit\" but the material makes for a gap in the cup between the material and your breast. I wouldn't recommend, unfortunately! I sent both back and found one at Target!\n\nIts super cute but im a 34D and i got the M. Its just not flattering in the boob section. I have more boob coming out of the side then the front",
+          "evidence": ""
+        },
+        {
+          "id": "B01FPMVGEG",
+          "text": "fit's great, washes great, love it",
+          "evidence": ""
+        }
+      ]
+    },
+    "tarnishing_necklace": {
+      "semantic_question": "Do the reviews say the item tarnished, discoloured, turned the skin green, or lost its finish after a short period of use?",
+      "positive_examples": [
+        {
+          "id": "B00N2B7S7W",
+          "text": "Beautiful!\n\nI know that this is a cheap ring but I didn't expect it to look like something out of a quarter machine. I do have to say that it did feel very sturdy and felt like a real ring. My problem was the look of it. I do not recommend.\n\nVery happy with the product. The price can't be beat and it looks fantastic for fashion jewelry.\n\nVery very pretty but the size was a little bigger than it should have been, thats ok i gave it to my mother in law. She really liked it.\n\nGemstone was loose when delivered. Wasn't worth the money to ship back.\n\nNice\n\nI thought the ring was Ok. I was not blown away. It Will go well with blue jeans.\n\nso brilliant! This jewelry is so beautiful, I am so pleased with every piece of jewelry i've ordered .\n\nIt is a very beautiful ring. It's large and very bright. I was amazed at it's brilliance.\n\nAbsolutely beautiful !!\n\nThis is very pretty and I recieved many complaiments on it.\n\nVery gawdy--not what I expected!\n\nThe ring is gorgeous! The size was correct and there were no flaws.\n\nLove this ring...especially for the price\n\nPretty.\n\nBEAUTIFUL RING GOES WITH EVERYTHING\n\nObnoxiously large.\n\nThis ring is beautiful, eye catching! It sits high on your finger, I've never seen anything like it. I have gotten many compliments on this ring.\n\nLove it stone is big and bright\n\nLots of compliments but super huge and leaves a mark on your hand. For the price, go for it. Costume jewelry only.\n\nBeautiful ring.....many complements\n\nVery pretty and sparkly. Would be so worth it if it was made in solid sterling silver or even stainless steel, as much jewelry is these days. I'd pay the price for the upgrade. The stone is a nice size and the ring size was true. A perfect addition to your jewelry wardrobe.\n\nPretty ring I like it\n\nturns my finger green after a little bit of wearing it\n\nVery, very beautiful! I love mystic topaz and the rock on this guy is hugeeee. Looks very expensive and elegant on the hand.\n\nI have always loved things that change color dependin",
+          "evidence": "turns my finger green"
+        },
+        {
+          "id": "B006565ZC6",
+          "text": "They are very pretty but the threading is honestly a little sharp but otherwise they are cute.\n\nAwesome tunnels, look great. No problems with threading chipping or anything and had these for 6 months, buy them.\n\nBuying another set. This is my third purchase from this seller. Ships fast and great price.\n\nWell one was missing a jewel and the other day they cross threaded when I was trying to take them out and I had to use a pair of vice grips just to loosen them but they are great for the price\n\nRhinestone strips fell out of gauges and/or some rhinestones fell out after very little time.\n\nThey're really easy to put on and look really good, but one of the little studs on the black tunnels fell off. Good set of steel tunnels for 17$.\n\nThese are the first tunnels I have ever bought, and they are perfect. I found these at the last minute, and i'm glad I did. It's a great deal. Everything else is one or two pairs for this price. The crystals were all intact and, they are easy to take on and off. The only thing is it's winter, and it gets really cold, so I don't want to freeze my earlobes from the metal, but I still love them.\n\nThese are great quality for the price of the set, much cheaper than going to a retail store. One of the silver plugs is a little hard to screw on, but its not really a problem for me. Love them!",
+          "evidence": "chipping"
+        },
+        {
+          "id": "B01HDQRV6E",
+          "text": "The item arrived on time had a beautiful shine. I love the length as well. But after a couple of weeks the copper necklace lost its shine. I would have given this item a 5 but the shine is completely gone.\n\nVery nice chain.\n\nNeed a chain for a copper pendant I was given as a gift. This is perfect. I love that it will resist tarnishing.\n\nChain is pretty copper color and seller said copper is treated to prevent color change. It is too soon for me to rate it as time will tell.",
+          "evidence": "tarnishing"
+        },
+        {
+          "id": "B00ESAKMT2",
+          "text": "It is too tiny.\n\nbeautiful ring. looks better live.\n\nI really like the ring. It looks not cheap looking at all.\n\nPretty at first and then the band turned pink. I was disappointed, but the price was good while it lasted....which was not even a month.\n\nExcellent\n\nThis ring runs small. It's made of cheap metal that bent when I removed the tag. Don't waste your money. the jewels themselves are pretty but that's about it.\n\nI seriously doubt that this ring is 18K White Gold. I've only had is for about 3 days and my finger has turned green.... I know I only paid a little for this ring, but I expect it to be what it says... Extremely disappointed...\n\nThis is a great quality for the price. It makes a simple statement and is just heavy enough to feel the quality.",
+          "evidence": "turned green"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D51MRPQ",
+          "text": "Love it!!!! Going to use it with my gypsy costume for Halloween this year, but can see me wearing it all the time. Price was great and it came quicker than I thought it would. Well made!!!",
+          "evidence": ""
+        },
+        {
+          "id": "B00INH5PF2",
+          "text": "great product..fast shipping",
+          "evidence": ""
+        },
+        {
+          "id": "B005P1GN7S",
+          "text": "Horrible quality. Color came off and was rigid.\n\nThis belt is too thick and hard to flex around the wrist. Color is okay it is a decent green. The quality is generally good but the belt is way too thick. Go with the DaLuca brand instead.\n\nI got this band in black and liked it enough to order the green. The holes were not cut cleanly enough to get the post through. Return was quick and efficient. The black one works but is probably not built to last. I now use a two piece made by Maratac. I like and reccomend that brand for this style watch strap.",
+          "evidence": ""
+        },
+        {
+          "id": "B00F4RLFXU",
+          "text": "Great comfortable shoe field operations. On base and off military base foot wear for pros.",
+          "evidence": ""
+        }
+      ]
+    },
+    "adjustable_bracelet": {
+      "semantic_question": "Do the reviews say the item is adjustable, resizable, or fits a range of wrist sizes?",
+      "positive_examples": [
+        {
+          "id": "B015PNHPZO",
+          "text": "The coat has a \"suit jacket\" fit rather than a casual fit. My husband needed to adjust his expectations, but once he did he loved it. The only other negative is that it had only one inside pocket as opposed to the two advertised. Also, the zipper is on the left, which bugs him a bit.",
+          "evidence": "adjust"
+        },
+        {
+          "id": "B01CJ8ZVV8",
+          "text": "The top is perfect. The bottom is really tight on my butt. :/\n\nOrdered a large and my 34C/D boobs barely fit. And im pretty small around the torso area. And the bottoms fit me like a small might. I usually wear a medium on the bottom but ordered up for my boobs. I'll still wear the bottoms.\n\nOrder up a size, and don't expect full coverage. Suit around middle is non-adjustable. I'm 5'5, 138lbs. I ordered a Large and it fits well enough for the price, but is pretty slinky and not real snug. Vegas/poolside-yes, swimming-no.\n\nBottoms fit perfect but the top didn't fit well.\n\nSuper cute, but the material is a little thin. Overall the price is great for this cute swimsuit.\n\nOrdered a size Large and was disappointed with actual fit. This bikini is cute, but runs VERY small. The large was more like a XXS. I realize the seller mentioned this, and I took a gamble. I ended up giving it away to a friend.",
+          "evidence": "adjustable"
+        },
+        {
+          "id": "B01E6KKHF2",
+          "text": "56 YO female with small frame face - these fit perfectly! They're \"mirrored\" so the \"looker\" can't see in. I like and will order more pairs.\n\nPoor quality. My daughters got 4 months out of these before the lenses popped out. Cheaply made. Ok the positive side, they do fit well and look cute.\n\nlenses pop out too easily.\n\nLove them! I bought them for my three year old who has a head on the bigger side and they're a little big still but I'd rather have room for growth than too little. She feels like a star getting to have aviators like mama.\n\nMy daughter loves these. Rayban replicas that look and feel great.\n\nAwesome kids sunglasses! They fit my 8 year old daughter prefect and are comfortable so she loves wearing them. I'm ordering my 6 year old a pair as well! They also come with a cute car case for protection while not wearing:)\n\nFit my petite face just fine. I bought them for myself, a small stature 30 something. I wish I could adjust the nose piece, that's my only concern about them.\n\nFit well, well -made, reccommend\n\nThese are very cute and my pre-teen is thrilled with them! They even come with a cute case",
+          "evidence": "adjust"
+        },
+        {
+          "id": "B01AS4ZFH0",
+          "text": "I made America great again just by buying this hat.\n\nGot these for my wedding for the groomsmen and my husband to wear. They loved them and everyone who saw the pictures thought they were hilarious! Got them over night like I asked. Great buy!\n\nVery nice\n\nHope it works\n\nGreat quality! Didn't want to wait weeks for a real one, but this one is nearly identical. Text is stamped not sewn. Definitely would recommend to any of my other Trump supporters out there. I'm sure it'll rustle the jimmies of many liberals as I wear it.\n\nCAN'T STUMP THE TRUMP.\n\nThe hat is pretty much exactly as pictured and if you are a trump fan then it's probably a must have. I just thought it was silly and a good way to make fun of trump personally, but a fan would probably like it too. The hat is actually decently made and looks just like a trucker hat when worn. The writing is easily read and done well on the hat. It is a little big for me but I generally wear a small hat or a kids hat or helmet so it doesn't surprise me that is it is a little big. Overall quality wise I'm pleased and can say this would make a good gift for a trump fan. I received this product at a discount in exchange for my honest review.\n\nGood\n\nI thought this was a good quality hat, its pretty thick and durable. The back is mesh and adjusts with a snap so it can pretty much fit anyone. This hat has Donald Trumps slogan of \"Make America Great Again\" on the front. Whether you get the hat to support him or whether you get it as a joke gift its worth the price, and definitely a conversation piece. My husband brought it to work for his desk and everyday he comes home and says someone asked where he got and that it was a great hat. I would recommend it! (I received this in exchange for my honest review)\n\nThis hat looks exactly as pictured. While it's not the type of hat I'd typically wear, the foam/trucker style is decently made. It is adjustable so it is able to fit multiple head sizes and can accommodate a ponytail. The hat is ",
+          "evidence": "adjusts"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D51MRPQ",
+          "text": "Love it!!!! Going to use it with my gypsy costume for Halloween this year, but can see me wearing it all the time. Price was great and it came quicker than I thought it would. Well made!!!",
+          "evidence": ""
+        },
+        {
+          "id": "B00INH5PF2",
+          "text": "great product..fast shipping",
+          "evidence": ""
+        },
+        {
+          "id": "B005P1GN7S",
+          "text": "Horrible quality. Color came off and was rigid.\n\nThis belt is too thick and hard to flex around the wrist. Color is okay it is a decent green. The quality is generally good but the belt is way too thick. Go with the DaLuca brand instead.\n\nI got this band in black and liked it enough to order the green. The holes were not cut cleanly enough to get the post through. Return was quick and efficient. The black one works but is probably not built to last. I now use a two piece made by Maratac. I like and reccomend that brand for this style watch strap.",
+          "evidence": ""
+        },
+        {
+          "id": "B00F4RLFXU",
+          "text": "Great comfortable shoe field operations. On base and off military base foot wear for pros.",
+          "evidence": ""
+        }
+      ]
+    },
+    "damaged_on_arrival_sunglasses": {
+      "semantic_question": "Do the reviews say the item arrived scratched, bent, cracked, broken, or otherwise damaged?",
+      "positive_examples": [
+        {
+          "id": "B00HH973ZM",
+          "text": "Did not like the way it sits on my neck. The red stone looks as fake as it gets. I will not be wearing this anywhere.\n\nI ordered this necklace as a gift for someone,she love red, and it's her kind of style, so this is a perfect gift for her!\n\nKinda disappointed with the appearance and looked cheaply made and would not buy it again. The other ones were great that I bought just not this one\n\nWill be great for Halloween!\n\nthe lace break of to eayly\n\nCrap. I opened the package and the metal piece with the stone had come off. No problem, I was going to fix that. But when I went to find something to fix it with, the red stone fell off.\n\nThis is awesome\n\nit broke first time she wore it!\n\nJewel fell off before I EVER wore it\n\nIf this could be made with cheaper materials I'd be very, very surprised. Flimsy at best. If I tried to wear it I'm sure it would fall apart as I was putting it on. I will return it.\n\nI like this design. It is good for the cheap price. My only complaint is that it runs a bit small so I had issues putting it on my neck. I wore this to an event and got compliments on it. It was a costume event though so I wouldn't suggest these for a \"high class\" kind of event. They would work great for costumes and casual use though.\n\nClip broke the first time I opened it. Not worth it.\n\nFell apart the first day I tried to wear it\n\nThis is an elegant and lovely necklace. It's smaller than I expected, but that just makes it more elegant. Dainty yet sturdy somehow. Also it came a month before I expected it to, and the customer service was absolutely lovely. Very kind people.\n\nCustomer service is nice . but the product is NOT great. The clasp was upside down and the chain broke. I have to fix it since I did not want to throw it away. It could have been just one of a kind that was not a good piece. The price was good and the rest, it looks like what it is shown in picture..\n\nHave bought several pieces from YAZILIND JEWELRY LTD and love everyone.\n\nVery Pretty.\n\nThis is a bea",
+          "evidence": "arrived broken"
+        },
+        {
+          "id": "B000I06Z1K",
+          "text": "I got these for my girlfriend for her birthday. They fit her perfectly. The only complaint I have is how they were packaged for shipping. By the time they got to me, the box they were in was very badly damaged and not very presentable for a gift. I had to find another box to put them in and wrap them for her birthday.",
+          "evidence": "damaged"
+        },
+        {
+          "id": "B00KHNDKNO",
+          "text": "I got so many compliments on this skirt!! I love it! This has become my favorite piece of clothing! Fits my body perfect!\n\nFits perfectly! I got a lot of compliments when I work this.\n\nhad to return it...:(\n\nI am size six normally-a large in your sizing. This is flattering. I am glad that I made this purchase. The sizing chart at the bottom saved the returns process. Thanks.\n\nCute skirt but order two sizes up!\n\nGorgeous and great quakity, but super small. Have it as a great gift!\n\nAfter having used it for a few times, the zipper on the back side of the skirt barely works. The skirt is really long, I am about 5' 8'' and need heels so that the back end of the skirt does not touch the floor.\n\nI love the skirt, but it is too small. I normally wear a size 6, so I ordered a large, but it was squeezing me in two!\n\nThe measurements are spot on. Very flattering. I get compliments every time I wear it. Young, old, woman, man. They all love it.\n\nI purchased a large at first but ended up having to return it and get the next size up cause sizing runs a little small but I received the new one in the mail today and I LOVE it!!! It is such a pretty skirt and I love the versatile casual to fancy looks you can style it! It is a gorgeous skirt and well made!\n\nCute but the zipper came broken and overall not the best quality for the price.\n\nI'm 5'1\" and size 6-8US. I bought this skirt according to the sizing scale. Fits well and hugs in all the right places. Denim is stretchy and color is great. So far it has not faded or run onto shoes. Sized and looks as pictured.\n\nVery pretty, nice fit, but issues with the ziper. Loved it so much though that I fixed it and wear it with cropped tops. Quick shipping too.\n\nEveryone comments on this skirt. It's stunning. A work of art! I feel amazing in this and you won't be sorry for buying. So flattering to your body shape too.\n\nLoved it but I read all the reviews that said watch the fit and so I got a 6. I wish I would have just stayed with a size 4. ",
+          "evidence": "broken"
+        },
+        {
+          "id": "B00T9YU8SW",
+          "text": "Super impressed with this company and product. Stumbled across fuse lenses when looking to replace my sunglasses with the exact same style due to scratched lenses. Not only are the lenses a perfect fit in the frames but to my eyes seem a better quality lens than the originals. Fuse lenses will be on the tip of my tongue from now on when ever I spot a pair of expensive sunglasses with scratched lenses.\n\nAwesome lenses. Make my glasses look just like they did when i first purchased them. Great product.",
+          "evidence": "scratched"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D51MRPQ",
+          "text": "Love it!!!! Going to use it with my gypsy costume for Halloween this year, but can see me wearing it all the time. Price was great and it came quicker than I thought it would. Well made!!!",
+          "evidence": ""
+        },
+        {
+          "id": "B00INH5PF2",
+          "text": "great product..fast shipping",
+          "evidence": ""
+        },
+        {
+          "id": "B005P1GN7S",
+          "text": "Horrible quality. Color came off and was rigid.\n\nThis belt is too thick and hard to flex around the wrist. Color is okay it is a decent green. The quality is generally good but the belt is way too thick. Go with the DaLuca brand instead.\n\nI got this band in black and liked it enough to order the green. The holes were not cut cleanly enough to get the post through. Return was quick and efficient. The black one works but is probably not built to last. I now use a two piece made by Maratac. I like and reccomend that brand for this style watch strap.",
+          "evidence": ""
+        },
+        {
+          "id": "B00F4RLFXU",
+          "text": "Great comfortable shoe field operations. On base and off military base foot wear for pros.",
+          "evidence": ""
+        }
+      ]
+    },
+    "itchy_sweater": {
+      "semantic_question": "Do the reviews describe the item as itchy, scratchy, or irritating against the skin?",
+      "positive_examples": [
+        {
+          "id": "B0156D3CEQ",
+          "text": "item was frayed\n\nItchy, small, boxy, nothing like the picture. It just looked like a normal vneck sweater.\n\nCute sweater",
+          "evidence": "Itchy"
+        },
+        {
+          "id": "B012GZSQQQ",
+          "text": "Ordered a size up and it was still way too small (would've fit my 12 y.o. and would've given to her if material wasn't so scratchy). Returned and had to pay for shipping for them to accept back. Not worth the money for purchase or return I should've just gave it away...very frustrating considering I have purchased other Boxercraft items (not through Amazon) and they have been true to size and soft material. Would NOT recommend!",
+          "evidence": "scratchy"
+        },
+        {
+          "id": "B00EVIA8B8",
+          "text": "Great buy perfect\n\nWas looking for well fitting non bulky underwear. These fit the bill.\n\nPerfect! I ordered a large (40-42 waist) and I am actually a 34 waist and this fits perfectly. Medium would have been too tight. Perfect fit on the legs too. Love the material -- comfortable and smooth. I will order more as needed.\n\nGood Stuff!!!\n\nGreat fit. I love when these guys are at the top of the underwear stack. Two caveats: 1. This product comes with more packaging than any product ever needs to. You will get 1 box, inside of that box 4 smaller boxes, each with one pair of underwear in them. Each pair of underwear has a few tags on it, which you need to remove. I swear I threw away half of the product's weight in packaging. 2. The white color with the gold waistband: the gold is VERY GOLD. It's not yellow. It's shiny, shiny gold. Otherwise, this is some fantastic underwear for the price.\n\nExcelent. I wish they have black.\n\nAs described\n\nJust what I expected\n\nI usually wear a medium because I like the snug fit as well as showing off my upper legs. Had to order these in large and the fit as expected. I have 20 pair of these in different colors and I love them. I have a few pair of CK and I will grab these before those.\n\nThe best underwear ever! Arrived very quickly, each one in its own plastic package.\n\nI love those boxers. Every one who sees me wearing them asks about the brand and where I got them from.\n\nVery comfortable\n\nGreat product. Almost as comfortable as wearing nothing at all.\n\nVery nice fabric. Only four stars because the elastic waist is a little tight for the size.\n\nFit & feel is awesome!!!\n\nLike these but you have to cut the tag off VERY carefully because otherwise it's scratchy. Will buy again.\n\nVery confortable\n\nThey are very nice and comfortable , but they run small .\n\nGood fit\n\nThese are incredibly comfortable. I have a 34\" waist and purchased a Large; they fit perfectly.",
+          "evidence": "scratchy"
+        },
+        {
+          "id": "B00PSHSAZM",
+          "text": "the touchscreen patch is hit and miss...does not work perfectly everytime\n\nVery warm and comfortable gloves\n\nThe product keeps my hands warm but the material on the fingers (for phone use) is a bit difficult to use. The patch of material never stays centered correctly on my fingers, so when I try to touch the screen I have to twist my hand a little for it to work. Also, the gloves have decorative buttons on them...one of them fell off during my THIRD (3rd) time wearing the gloves. In general, they work as advertised. My hands stay warm and I can use my phone while wearing them.\n\nThis glove is a woman's fit. My husband could not pull it onto his hand and we got the large size. The cashmere is stiff and scratchy.",
+          "evidence": "scratchy"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D51MRPQ",
+          "text": "Love it!!!! Going to use it with my gypsy costume for Halloween this year, but can see me wearing it all the time. Price was great and it came quicker than I thought it would. Well made!!!",
+          "evidence": ""
+        },
+        {
+          "id": "B00INH5PF2",
+          "text": "great product..fast shipping",
+          "evidence": ""
+        },
+        {
+          "id": "B005P1GN7S",
+          "text": "Horrible quality. Color came off and was rigid.\n\nThis belt is too thick and hard to flex around the wrist. Color is okay it is a decent green. The quality is generally good but the belt is way too thick. Go with the DaLuca brand instead.\n\nI got this band in black and liked it enough to order the green. The holes were not cut cleanly enough to get the post through. Return was quick and efficient. The black one works but is probably not built to last. I now use a two piece made by Maratac. I like and reccomend that brand for this style watch strap.",
+          "evidence": ""
+        },
+        {
+          "id": "B00F4RLFXU",
+          "text": "Great comfortable shoe field operations. On base and off military base foot wear for pros.",
+          "evidence": ""
+        }
+      ]
+    },
+    "poor_wash_durability_hoodie": {
+      "semantic_question": "Do the reviews say the item shrank, faded, stretched out, or otherwise degraded after being washed?",
+      "positive_examples": [
+        {
+          "id": "B013LA2RQ0",
+          "text": "My son loves this shirt. He wears it every week. After a few washings, the lettering has faded somewhat, but it still looks great. The material is very nice. It's the kind that doesn't wrinkle too easily. Smooth material and a great fit are the most you can ask for in a tshirt and this shirt has it! Also, my son was apprehensive about wearing a v neck, but the v in this shirt is not too deep so he is still comfortable in it.",
+          "evidence": "faded"
+        },
+        {
+          "id": "B00HH973ZM",
+          "text": "Did not like the way it sits on my neck. The red stone looks as fake as it gets. I will not be wearing this anywhere.\n\nI ordered this necklace as a gift for someone,she love red, and it's her kind of style, so this is a perfect gift for her!\n\nKinda disappointed with the appearance and looked cheaply made and would not buy it again. The other ones were great that I bought just not this one\n\nWill be great for Halloween!\n\nthe lace break of to eayly\n\nCrap. I opened the package and the metal piece with the stone had come off. No problem, I was going to fix that. But when I went to find something to fix it with, the red stone fell off.\n\nThis is awesome\n\nit broke first time she wore it!\n\nJewel fell off before I EVER wore it\n\nIf this could be made with cheaper materials I'd be very, very surprised. Flimsy at best. If I tried to wear it I'm sure it would fall apart as I was putting it on. I will return it.\n\nI like this design. It is good for the cheap price. My only complaint is that it runs a bit small so I had issues putting it on my neck. I wore this to an event and got compliments on it. It was a costume event though so I wouldn't suggest these for a \"high class\" kind of event. They would work great for costumes and casual use though.\n\nClip broke the first time I opened it. Not worth it.\n\nFell apart the first day I tried to wear it\n\nThis is an elegant and lovely necklace. It's smaller than I expected, but that just makes it more elegant. Dainty yet sturdy somehow. Also it came a month before I expected it to, and the customer service was absolutely lovely. Very kind people.\n\nCustomer service is nice . but the product is NOT great. The clasp was upside down and the chain broke. I have to fix it since I did not want to throw it away. It could have been just one of a kind that was not a good piece. The price was good and the rest, it looks like what it is shown in picture..\n\nHave bought several pieces from YAZILIND JEWELRY LTD and love everyone.\n\nVery Pretty.\n\nThis is a bea",
+          "evidence": "Fell apart"
+        },
+        {
+          "id": "B01G1DXPPQ",
+          "text": "love the fit!\n\nGot this for my mother, she said it's way too short in the back, otherwise it's a fine fit.\n\nLove the fit of this swimsuit top because it fits so well, and gives great support to my bust area, I'm very comfortable in it.\n\nCOMPLETELY SATISFIED\n\nFaded really fast from the chlorine in the pool.\n\nExpected the top to be a little less tight than it is.\n\nDid not fit as expected.",
+          "evidence": "Faded"
+        },
+        {
+          "id": "B01BLVDAOE",
+          "text": "I ordered a large based on the size chart and after washing them for the first time they are snug esp in the hips, butt and thighs. I am normally a size 8 and usu wear a medium. I ordered up so I could have extra room and be comfy, def don't have that in the pants. So these def run small.",
+          "evidence": "after wash"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D51MRPQ",
+          "text": "Love it!!!! Going to use it with my gypsy costume for Halloween this year, but can see me wearing it all the time. Price was great and it came quicker than I thought it would. Well made!!!",
+          "evidence": ""
+        },
+        {
+          "id": "B00INH5PF2",
+          "text": "great product..fast shipping",
+          "evidence": ""
+        },
+        {
+          "id": "B005P1GN7S",
+          "text": "Horrible quality. Color came off and was rigid.\n\nThis belt is too thick and hard to flex around the wrist. Color is okay it is a decent green. The quality is generally good but the belt is way too thick. Go with the DaLuca brand instead.\n\nI got this band in black and liked it enough to order the green. The holes were not cut cleanly enough to get the post through. Return was quick and efficient. The black one works but is probably not built to last. I now use a two piece made by Maratac. I like and reccomend that brand for this style watch strap.",
+          "evidence": ""
+        },
+        {
+          "id": "B00F4RLFXU",
+          "text": "Great comfortable shoe field operations. On base and off military base foot wear for pros.",
+          "evidence": ""
+        }
+      ]
+    },
+    "slim_wallet": {
+      "semantic_question": "Do the reviews describe the item as slim, thin, or compact enough to carry comfortably in a pocket?",
+      "positive_examples": [
+        {
+          "id": "B00VKYCTA4",
+          "text": "This top is cozy and cute with a pair of leggings. It fits just like on the model and is great quality, the material is SO soft.\n\nCute shirt but if you have a long torso like me you should get a size bigger.\n\nI live in this shirt. The quality is outstanding for the price. Super slouchy and relaxed. Great fit that hides mommy tummy. I love the edgy plaid pocket/elbow accents. I will be ordering more. It is quite soft and washes wonderfully. Great affordable brand!\n\nThis shirt is super comfy and cute!\n\nThis shirt is cute but it is a little thin. I can wear a grey bra with it and it is fine. It isn't super warm because of the thinness but it's fine. The elbow patches also are a little low on the arm. Overall, I like this shirt.\n\nI LOVE THIS SHIRT! It is the perfect fit, and the material is good quality. Plus it came right on time too!",
+          "evidence": "thin"
+        },
+        {
+          "id": "B017AQN1X4",
+          "text": "Little cushion, extremely thin material\n\nas described...\n\nI'm wearing these after Achilles surgery. Fit is very good. Not too tight. They are thinner then other crew socks which I like. As I'm wearing them in a Achilles boot. I would purchase these again. I have washed them and they are still good.",
+          "evidence": "thin"
+        },
+        {
+          "id": "B015OCN500",
+          "text": "Do not get this product if you have long legs the leggings are capris on me.\n\nMaterial too thin..cheap..laces are not good quality and you have to lace the legging..not good fabric..waste\n\nI had to thread the laces through myself, which was extremely time consuming. They also don't stay up that well, so don't take them dancing. And don't expect a ton of stretch! There's some stretch, but not like regular leggings. Not really worth the money.\n\nThey look good and are cute. Just fit slightly smaller than expected.",
+          "evidence": "thin"
+        },
+        {
+          "id": "B01DA30EW2",
+          "text": "nice product but runs big. if you are between a small and a medium, I would buy the small. following my own advice, I did buy a small but it was the exact same length as the medium. Returning it.\n\nThe belt arrived in it's own little cloth bag inside it's own little gift box. And it even has a metal hole punch with it. Very nice quality! Beautiful buckle. I would definitely recommend this to everyone!\n\nPart of the belt fell off the second time I wore it. Feels very cheap. The only reason I'm giving it 2 stars is because it held my pants up.\n\nFor the money it's good, I wear it for my jeans.\n\ni love my belt because it is made of good quality leather and i don't have to worry about it falling apart like my other belts\n\nThis isn't leather at all. If I wanted plastic I could go to the big box store down the street. It's not what I'm looking for.\n\nLoved it! Just as described and true to size.\n\nI was expecting a broad belt. I'm was so disappointed when I opened the box. I wasn't what I was expecting. My day was ruined and I felt like I threw away my money. It is leather however and the color is nice\n\nIt is a pretty burnished brown color, and has a nice looking buckle but the product description is misleading. It is only 7/8 of an inch wide, and not 1 1/8 as stated. It already had 5 pre-punched holes, and no hole puncher was included. The belt was very flimsy and thin and I am finding it very hard to believe it is real leather! No wonder the price was too good to be true, considering a good leather belt can be easily $40 or more! I am immediately returning it.\n\nGreat Quality",
+          "evidence": "thin"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D51MRPQ",
+          "text": "Love it!!!! Going to use it with my gypsy costume for Halloween this year, but can see me wearing it all the time. Price was great and it came quicker than I thought it would. Well made!!!",
+          "evidence": ""
+        },
+        {
+          "id": "B00INH5PF2",
+          "text": "great product..fast shipping",
+          "evidence": ""
+        },
+        {
+          "id": "B005P1GN7S",
+          "text": "Horrible quality. Color came off and was rigid.\n\nThis belt is too thick and hard to flex around the wrist. Color is okay it is a decent green. The quality is generally good but the belt is way too thick. Go with the DaLuca brand instead.\n\nI got this band in black and liked it enough to order the green. The holes were not cut cleanly enough to get the post through. Return was quick and efficient. The black one works but is probably not built to last. I now use a two piece made by Maratac. I like and reccomend that brand for this style watch strap.",
+          "evidence": ""
+        },
+        {
+          "id": "B00F4RLFXU",
+          "text": "Great comfortable shoe field operations. On base and off military base foot wear for pros.",
+          "evidence": ""
+        }
+      ]
+    },
+    "inaccurate_sizing_jeans": {
+      "semantic_question": "Do the reviews say the item runs larger or smaller than the labelled size, or that buyers should size up or down?",
+      "positive_examples": [
+        {
+          "id": "B00G9YJYDU",
+          "text": "This dress has been one of my better purchases on amazon. It fits perfectly, the material is great, and I got tons of compliments on this dress. Definitely recommend!\n\nthe dress is nice. i usually wear a size 8 in my dresses but this one was too large...a size 6 or maybe even a 4 would have been better for me...the bottom of the dress a bit too flared for my liking and it is the material makes it heavy...but its not a bad dress",
+          "evidence": "too large"
+        },
+        {
+          "id": "B00P8NSTRA",
+          "text": "When you get it in the mail and give it to your wife it does not look like it did in the picture and it's a really cheap looking coat in real life and the buttons on it fall off very easily and they also did not look like the ones in the add\n\nCute but runs small\n\nPlease I will have to send this back. It's just too small for me. Did not fit at all. I will love to exchange to a much bigger size .",
+          "evidence": "runs small"
+        },
+        {
+          "id": "B00MVJIOWY",
+          "text": "Way, way, way, way too small. Hilarious. Had to send it to Goodwill.",
+          "evidence": "too small"
+        },
+        {
+          "id": "B00HH973ZM",
+          "text": "Did not like the way it sits on my neck. The red stone looks as fake as it gets. I will not be wearing this anywhere.\n\nI ordered this necklace as a gift for someone,she love red, and it's her kind of style, so this is a perfect gift for her!\n\nKinda disappointed with the appearance and looked cheaply made and would not buy it again. The other ones were great that I bought just not this one\n\nWill be great for Halloween!\n\nthe lace break of to eayly\n\nCrap. I opened the package and the metal piece with the stone had come off. No problem, I was going to fix that. But when I went to find something to fix it with, the red stone fell off.\n\nThis is awesome\n\nit broke first time she wore it!\n\nJewel fell off before I EVER wore it\n\nIf this could be made with cheaper materials I'd be very, very surprised. Flimsy at best. If I tried to wear it I'm sure it would fall apart as I was putting it on. I will return it.\n\nI like this design. It is good for the cheap price. My only complaint is that it runs a bit small so I had issues putting it on my neck. I wore this to an event and got compliments on it. It was a costume event though so I wouldn't suggest these for a \"high class\" kind of event. They would work great for costumes and casual use though.\n\nClip broke the first time I opened it. Not worth it.\n\nFell apart the first day I tried to wear it\n\nThis is an elegant and lovely necklace. It's smaller than I expected, but that just makes it more elegant. Dainty yet sturdy somehow. Also it came a month before I expected it to, and the customer service was absolutely lovely. Very kind people.\n\nCustomer service is nice . but the product is NOT great. The clasp was upside down and the chain broke. I have to fix it since I did not want to throw it away. It could have been just one of a kind that was not a good piece. The price was good and the rest, it looks like what it is shown in picture..\n\nHave bought several pieces from YAZILIND JEWELRY LTD and love everyone.\n\nVery Pretty.\n\nThis is a bea",
+          "evidence": "runs a bit small"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D51MRPQ",
+          "text": "Love it!!!! Going to use it with my gypsy costume for Halloween this year, but can see me wearing it all the time. Price was great and it came quicker than I thought it would. Well made!!!",
+          "evidence": ""
+        },
+        {
+          "id": "B00INH5PF2",
+          "text": "great product..fast shipping",
+          "evidence": ""
+        },
+        {
+          "id": "B005P1GN7S",
+          "text": "Horrible quality. Color came off and was rigid.\n\nThis belt is too thick and hard to flex around the wrist. Color is okay it is a decent green. The quality is generally good but the belt is way too thick. Go with the DaLuca brand instead.\n\nI got this band in black and liked it enough to order the green. The holes were not cut cleanly enough to get the post through. Return was quick and efficient. The black one works but is probably not built to last. I now use a two piece made by Maratac. I like and reccomend that brand for this style watch strap.",
+          "evidence": ""
+        },
+        {
+          "id": "B00F4RLFXU",
+          "text": "Great comfortable shoe field operations. On base and off military base foot wear for pros.",
+          "evidence": ""
+        }
+      ]
+    },
+    "colour_mismatch_scarf": {
+      "semantic_question": "Do the reviews say the item's colour differed from the photographs or the product description?",
+      "positive_examples": [
+        {
+          "id": "B0156D3CEQ",
+          "text": "item was frayed\n\nItchy, small, boxy, nothing like the picture. It just looked like a normal vneck sweater.\n\nCute sweater",
+          "evidence": "nothing like the picture"
+        },
+        {
+          "id": "B00E0I7L7S",
+          "text": "IT CAME TOO SMALL FOR ME :'(, AND I DIDNT REALLY LIKE THE CLOTH AND ITS FINISH, THE MIGH BE MORE CARFULLY OR MORE DESCRIPTIVE ABOUT WHAT THEY SELL\n\nThis material so is cheap and looks nothing like the picture. It's polyester and will not keep you warm. It's just a long blouse that doesn't fit well. Do not buy it.\n\nTHIS COAT DOES NOT LOOK NOTHING LIKE THE PICTURE, POOR QUALITY, POOR FABRIC, I GOT A LARGE IN THIS COAT AND IT FEELS LIKE A SMALL. ITS NOT EVEN WORTH $1.00.",
+          "evidence": "nothing like the picture"
+        },
+        {
+          "id": "B0002UQASO",
+          "text": "very nice shirt. Just really billowy. I had to bring i to a tailor to get it fitted. Measurements are all accurate, just know it's not going to be a tight fit.\n\ngreat looking shirt - fits very well - will order other colors\n\nReally nice shirt for the price\n\nI've been buying these shirts for years. Excellent quality and fit.\n\nGreat buy\n\nExcellent shirt Made to exacting detail. Fits perfectly\n\nHe loved it!\n\nI ordered it monogrammed but it did not come with it on the shirt. Other than that great shirt.\n\nI nave several Paul fredrick shirts and I love them!\n\nexcellent\n\nhad better expectation!((\n\nI am pleased with my selection.\n\nA very handsome dress shirt that I enjoy wearing often.\n\nFinally, a good quality shirt that fits as it should fit.\n\nPerfect fit, great fabric.\n\nVery nice shirts. Good cloth and workmanship.\n\nFit is always perfect and quality crafmanship. This brand is a staple in my closet\n\nI like the fit and quality of the material. But the tie is not the color in the picture not even close.\n\nshirts were were well made with elegant stiching the fit was very good long tails things you find on shirts costing much more will have to see how they hold up under ware but very happy with purchase\n\nThe most well made pinpoint oxford French cuff!! It is beautiful and my husband loves it\n\nLooks and feels like a luxury shirt without the luxury price!\n\nThe shirt is comfortable and fits very well per size chart. I dress for work and my only issue is even under medium starch at dry cleaner the shirt wrinkles VERY easily. Good for price but I would pay more for less wrinkles\n\nGreat shirts. I bought 2... love them.\n\nThanks\n\nNice!",
+          "evidence": "not the color"
+        },
+        {
+          "id": "B00EK5ZRU4",
+          "text": "Good tnhk\n\nRan very small and was very short in length, more like a crop top. Also the color was not a bright yellow as pictured, more of a darker/dull yellow.\n\nBaggy, fits great, got compliments, nice color, no complaints.\n\nIt is a little uncomfortable\n\nlove it\n\nIt fits sort of small. Beautiful color. Nice design. The problem is this: The stitching is not secure. I had to re-stitch the sweater because the sides came apart. The must have sewn the sweater with yarn... which is not good. Glad I had a tank top underneath the sweater.\n\nThe sweater fit but the sleeves were different than those displayed in the picture and it did not include a necklace. i still kept the sweater.",
+          "evidence": "color was not"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D51MRPQ",
+          "text": "Love it!!!! Going to use it with my gypsy costume for Halloween this year, but can see me wearing it all the time. Price was great and it came quicker than I thought it would. Well made!!!",
+          "evidence": ""
+        },
+        {
+          "id": "B00INH5PF2",
+          "text": "great product..fast shipping",
+          "evidence": ""
+        },
+        {
+          "id": "B005P1GN7S",
+          "text": "Horrible quality. Color came off and was rigid.\n\nThis belt is too thick and hard to flex around the wrist. Color is okay it is a decent green. The quality is generally good but the belt is way too thick. Go with the DaLuca brand instead.\n\nI got this band in black and liked it enough to order the green. The holes were not cut cleanly enough to get the post through. Return was quick and efficient. The black one works but is probably not built to last. I now use a two piece made by Maratac. I like and reccomend that brand for this style watch strap.",
+          "evidence": ""
+        },
+        {
+          "id": "B00F4RLFXU",
+          "text": "Great comfortable shoe field operations. On base and off military base foot wear for pros.",
+          "evidence": ""
+        }
+      ]
+    },
+    "supportive_swimsuit": {
+      "semantic_question": "Do the reviews say the item provides good support, coverage, or stays securely in place?",
+      "positive_examples": [
+        {
+          "id": "B01G1DXPPQ",
+          "text": "love the fit!\n\nGot this for my mother, she said it's way too short in the back, otherwise it's a fine fit.\n\nLove the fit of this swimsuit top because it fits so well, and gives great support to my bust area, I'm very comfortable in it.\n\nCOMPLETELY SATISFIED\n\nFaded really fast from the chlorine in the pool.\n\nExpected the top to be a little less tight than it is.\n\nDid not fit as expected.",
+          "evidence": "support"
+        },
+        {
+          "id": "B00ONDS7UA",
+          "text": "I really liked this item, but it was too small. I ordered a 32DD but it was a bit tight around, so I would order a size up next time. There is no padding, but the under-wire gives excellent support!",
+          "evidence": "support"
+        },
+        {
+          "id": "B00SKQPDWQ",
+          "text": "very nice bathing suit not the best choice for big boobs.\n\nvery cute Bikini fits perfect\n\nThe bottoms sucks I threw them away. Half my butt showed and they were strangely shaped. The top is small. I wear a B cup still kinda small.\n\nA little bit cheap looking. But overall, I really love it. So flattering!\n\nLove this swimsuit....I have a large chest so I was worried about the top fitting and it fit perfectly.\n\nIt holds up well.\n\nNot the best quality but it is great for the price\n\nFeels super cheap. I've never worn it out. I can't stand the way the fabric feels. Too bad.\n\nShould of read reviews carefully. The material is so cheap that I'll never weir it. Waste of money\n\nCheaply made but it's pretty cute. The tassels aren't as long as they look in the picture. Overall it was good for the price. Love the red color.\n\nThis is a my new fav bathing suite. And it is the cheapest one by far lol I am very curvy. I am about 5'6.5, 36DD/34DDD, with a 34 waist and 44 inch hips. I have a very hard time finding bottoms that don't show my crack and fit my butt cheeks well and this suit makes me feel like a model. My only complaint is the fabric may be slightly see through - kinda cheap fabric but the price is cheap!\n\nCheap material the bra pads were all wrinkled\n\nFast delivery but poor quality, the fringe wasn't all the same size as in some pieces had to be cut to look like the rest.. Very cheap looking but you get what you pay for. Also the color was a nice red, it looked more dull than the picture so over all really wasn't worth buying.\n\nso cute! im just not crazy about the rings on the bottom, personally. it fits right on the hip bone. but the top is great\n\nCheaply made, Top fits a bit odd\n\npretty decent quality for the price. got a large, I'm 34D and it covers well. I think the red color is true to the picture got back on to order it in black",
+          "evidence": "covers well"
+        },
+        {
+          "id": "B00WY6XRGC",
+          "text": "I wear my vans with an orthotic arch support and I can wear them all day. Without my support I can't wear them very long but that is true with any shoe for me. I love the style though and the shoe is very cute.\n\nI love these shoes! They look awesome, they fit well, I get compliments on them all the time, they keep my toes warm. Best pair of Vans I have ever had, hands down.\n\nMy daughter loves these classic Vans. The light pattern is cool and other kids like the shoes as well.",
+          "evidence": "support"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D51MRPQ",
+          "text": "Love it!!!! Going to use it with my gypsy costume for Halloween this year, but can see me wearing it all the time. Price was great and it came quicker than I thought it would. Well made!!!",
+          "evidence": ""
+        },
+        {
+          "id": "B00INH5PF2",
+          "text": "great product..fast shipping",
+          "evidence": ""
+        },
+        {
+          "id": "B005P1GN7S",
+          "text": "Horrible quality. Color came off and was rigid.\n\nThis belt is too thick and hard to flex around the wrist. Color is okay it is a decent green. The quality is generally good but the belt is way too thick. Go with the DaLuca brand instead.\n\nI got this band in black and liked it enough to order the green. The holes were not cut cleanly enough to get the post through. Return was quick and efficient. The black one works but is probably not built to last. I now use a two piece made by Maratac. I like and reccomend that brand for this style watch strap.",
+          "evidence": ""
+        },
+        {
+          "id": "B00F4RLFXU",
+          "text": "Great comfortable shoe field operations. On base and off military base foot wear for pros.",
+          "evidence": ""
+        }
+      ]
+    },
+    "sheer_leggings": {
+      "semantic_question": "Do the reviews say the item is sheer, see-through, or too thin when stretched or worn?",
+      "positive_examples": [
+        {
+          "id": "B00SKQPDWQ",
+          "text": "very nice bathing suit not the best choice for big boobs.\n\nvery cute Bikini fits perfect\n\nThe bottoms sucks I threw them away. Half my butt showed and they were strangely shaped. The top is small. I wear a B cup still kinda small.\n\nA little bit cheap looking. But overall, I really love it. So flattering!\n\nLove this swimsuit....I have a large chest so I was worried about the top fitting and it fit perfectly.\n\nIt holds up well.\n\nNot the best quality but it is great for the price\n\nFeels super cheap. I've never worn it out. I can't stand the way the fabric feels. Too bad.\n\nShould of read reviews carefully. The material is so cheap that I'll never weir it. Waste of money\n\nCheaply made but it's pretty cute. The tassels aren't as long as they look in the picture. Overall it was good for the price. Love the red color.\n\nThis is a my new fav bathing suite. And it is the cheapest one by far lol I am very curvy. I am about 5'6.5, 36DD/34DDD, with a 34 waist and 44 inch hips. I have a very hard time finding bottoms that don't show my crack and fit my butt cheeks well and this suit makes me feel like a model. My only complaint is the fabric may be slightly see through - kinda cheap fabric but the price is cheap!\n\nCheap material the bra pads were all wrinkled\n\nFast delivery but poor quality, the fringe wasn't all the same size as in some pieces had to be cut to look like the rest.. Very cheap looking but you get what you pay for. Also the color was a nice red, it looked more dull than the picture so over all really wasn't worth buying.\n\nso cute! im just not crazy about the rings on the bottom, personally. it fits right on the hip bone. but the top is great\n\nCheaply made, Top fits a bit odd\n\npretty decent quality for the price. got a large, I'm 34D and it covers well. I think the red color is true to the picture got back on to order it in black",
+          "evidence": "see through"
+        },
+        {
+          "id": "B015OCN500",
+          "text": "Do not get this product if you have long legs the leggings are capris on me.\n\nMaterial too thin..cheap..laces are not good quality and you have to lace the legging..not good fabric..waste\n\nI had to thread the laces through myself, which was extremely time consuming. They also don't stay up that well, so don't take them dancing. And don't expect a ton of stretch! There's some stretch, but not like regular leggings. Not really worth the money.\n\nThey look good and are cute. Just fit slightly smaller than expected.",
+          "evidence": "too thin"
+        },
+        {
+          "id": "B01EYTG8ZI",
+          "text": "Good Quality / FOr my Great God Daughter so I did not try it on myself. : ) K\n\nWas a gift but she loved it!!! It's is solo cute!!\n\nFit my 5 year old niece perfectly - not too big or too small. I'm always worried that pajama bottoms will be too long, but these were just right and they look really cute in-person. Can't go wrong with the Minions!\n\nNice fabric and quality, my daughter doesn't want to take it off\n\nWas a donation so just guessing.\n\nWe have a happy granddaughter ,with a smile on her minion face\n\nVery cute. Soft\n\nShirt too thin\n\nI purchased this as a gift for a co-worker's daughter because her one-year-old birthday party theme was \"Despicable Me\"! Her parents absolutely loved it!! Especially the pink!! And the fleece pajamas are very cozy and comfortable and perfect for a little girl!\n\nComfy, cozy, soft and warm. My kiddo loves it!\n\nDaughter loves these pjs\n\nSo soft and cozy and fits true to size. My little always chooses these pj's over any of her others!\n\nThe pajamas fit perfect my granddaughter really likes them and the colors are amazing thank you so much\n\n3T was slightly large for my 2.5 yar old.. so perfect sizing. Very soft, great value\n\nGot this for my daughter as one of her Christmas presents since she loves minions!,, she & I both loved it, it's soft and comfortable and does not shrink or fade after washing,, I always buy a size up, it fit her perfect with room to grow\n\nCute, to big for my girl yet but she loves minions and will grow into it",
+          "evidence": "too thin"
+        },
+        {
+          "id": "B01AR9F9UE",
+          "text": "super cute skirt!! I love it!! Now I may be getting a little old to wear a batman skirt but it's a batman skirt so who cares. It's soft & silky & doesn't'' cling. The skirt moves with you when you move & I just love it. I'm 32 & wore it to work at my office job but on a more casual day & I didn't think it was too bad. It's just so comfortable & I have a thing for batman. This was not a mini skirt on me but I was hoping it wouldn't be so I lucked out with that one. I'm ok with the face that its made out of completely synthetic material too but it is a little disappointing that the inside of the skirt is completely white. Other than that I don't have a bad thing to say about this skirt, 5 stars, I love it! I did received this skirt at a discounted rate in exchange for my honest review but that has in no way altered my opinion of the skirt.\n\nMy husband and I are huge batman geeks, so when I saw this I geeked OUT. I HAD TO HAVE IT. Where will I wear these? Well, to save Gotham...of course. Or most likely just to the next batman movie I see in theaters :). This looks really cute with a plain white tee/black tee and some converse or flats. The fit is really giving. I got a large and it fit perfectly, it is a very VERY soft and stretchy material. Very thick, no worry about it being see through or anything. My batman panties will be hidden perfectly. It is A-line and flows away from the body in a very lovely way. I highly recommend this for any other bat-lovers out there! I was sent this at a discount in exchange for my honest and unbiased review. This in no way affects my opinion as I am obsessed with this. Just ask my husband...",
+          "evidence": "see through"
+        }
+      ],
+      "negative_examples": [
+        {
+          "id": "B01D51MRPQ",
+          "text": "Love it!!!! Going to use it with my gypsy costume for Halloween this year, but can see me wearing it all the time. Price was great and it came quicker than I thought it would. Well made!!!",
+          "evidence": ""
+        },
+        {
+          "id": "B00INH5PF2",
+          "text": "great product..fast shipping",
+          "evidence": ""
+        },
+        {
+          "id": "B005P1GN7S",
+          "text": "Horrible quality. Color came off and was rigid.\n\nThis belt is too thick and hard to flex around the wrist. Color is okay it is a decent green. The quality is generally good but the belt is way too thick. Go with the DaLuca brand instead.\n\nI got this band in black and liked it enough to order the green. The holes were not cut cleanly enough to get the post through. Return was quick and efficient. The black one works but is probably not built to last. I now use a two piece made by Maratac. I like and reccomend that brand for this style watch strap.",
+          "evidence": ""
+        },
+        {
+          "id": "B00F4RLFXU",
+          "text": "Great comfortable shoe field operations. On base and off military base foot wear for pros.",
+          "evidence": ""
+        }
+      ]
+    }
+  }
+}

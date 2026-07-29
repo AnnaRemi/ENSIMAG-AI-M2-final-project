@@ -1,0 +1,48 @@
+{
+  "question": "Which dresses are described by reviewers as comfortable to wear?",
+  "semantic_question": "Do the reviews describe the product as comfortable to wear?",
+  "semantic_concept": "comfortable_dress",
+  "structured_predicates": [
+    {
+      "column": "title",
+      "op": "contains",
+      "value": "dress"
+    }
+  ],
+  "candidate_ids": [
+    "B01A0SRMJI",
+    "B00IZ7ZFYG",
+    "B01DOKD9Y6",
+    "B01F1Q3MWK",
+    "B01GW6X1O2",
+    "B01AHUVBSC",
+    "B01DTLCY5K",
+    "B00MNZGLP8",
+    "B01GKKKCKG",
+    "B010S6CL9I",
+    "B00VN22FQQ",
+    "B01EC81U8G",
+    "B00GRVH1NA",
+    "B00RDBBT22",
+    "B00D3Q77JU",
+    "B01DMVK3EG",
+    "B01ESBNA9O",
+    "B0124CVSIE",
+    "B01258WIF4",
+    "B017IAXDQC",
+    "B01G5PO73Y",
+    "B00XYDXXT0",
+    "B016Q8B6R0",
+    "B01EEZ9CX2",
+    "B0076LJEIA"
+  ],
+  "candidate_count": 25,
+  "ground_truth_ids": [
+    "B00IZ7ZFYG",
+    "B01A0SRMJI",
+    "B01DOKD9Y6",
+    "B01F1Q3MWK"
+  ],
+  "ground_truth_count": 4,
+  "id": "q_01"
+}

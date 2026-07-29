@@ -23,16 +23,14 @@ __pycache__/
 .mplconfig/
 **/.mplconfig/
 
-# Raw IMDb datasets and generated samples
-project SUQL/data/*
-!project SUQL/data/README.md
-project SUQL/data_samples/
-project SUQL/Stage_1/benchmarks/data_sample_*/
-project SUQL/Stage_2/benchmarks/data_sample_*/
-# The runnable benchmark subdatasets are versioned under data/subdatasets.
-# Full source snapshots and reconstructed canonical tables are local build products.
-data/sources/
-data/canonical/*.csv
+# Raw IMDb/Amazon source snapshots and reconstructed canonical tables.
+# The runnable benchmark subdatasets are versioned under <dataset>/data/subdatasets
+# instead. These are local build products, regenerable via restore_original_data.py /
+# build_local_catalog.py, and too large for version control (raw sources alone are
+# ~600MB; amazon/canonical/texts.csv is ~220MB, over GitHub's 100MB push limit).
+imdb/data/sources/
+imdb/data/canonical/*.csv
+amazon/canonical/*.csv
 
 # Runtime logs and cluster scheduler artifacts
 *.log
@@ -45,29 +43,22 @@ OAR.*
 **/jobs/
 
 # Benchmark runs keep only summary tables and plots in version control
-benchmarks/*/outputs/**
-!benchmarks/*/outputs/*/
-!benchmarks/*/outputs/*/aggregate.csv
-!benchmarks/*/outputs/*/comparison.csv
-!benchmarks/*/outputs/*/plots/
-!benchmarks/*/outputs/*/plots/*.png
-!benchmarks/*/outputs/*/per_question/
-!benchmarks/*/outputs/*/per_question/*/
-!benchmarks/*/outputs/*/per_question/*/plots/
-!benchmarks/*/outputs/*/per_question/*/plots/*.png
-
-# Amazon experiment runs keep only summary tables and plots in version control
-data_amazon/outputs/**
-!data_amazon/outputs/*/
-!data_amazon/outputs/*/aggregate.csv
-!data_amazon/outputs/*/comparison.csv
-!data_amazon/outputs/*/plots/
-!data_amazon/outputs/*/plots/*.png
-!data_amazon/outputs/*/paper_plots/
-!data_amazon/outputs/*/paper_plots/*.png
-!data_amazon/outputs/*/q_*/
-!data_amazon/outputs/*/q_*/plots/
-!data_amazon/outputs/*/q_*/plots/*.png
+imdb/benchmarks/*/outputs/**
+amazon/benchmarks/*/outputs/**
+!*/benchmarks/*/outputs/*/
+!*/benchmarks/*/outputs/*/aggregate.csv
+!*/benchmarks/*/outputs/*/comparison.csv
+!*/benchmarks/*/outputs/*/plots/
+!*/benchmarks/*/outputs/*/plots/*.png
+!*/benchmarks/*/outputs/*/paper_plots/
+!*/benchmarks/*/outputs/*/paper_plots/*.png
+!*/benchmarks/*/outputs/*/per_question/
+!*/benchmarks/*/outputs/*/per_question/*/
+!*/benchmarks/*/outputs/*/per_question/*/plots/
+!*/benchmarks/*/outputs/*/per_question/*/plots/*.png
+!*/benchmarks/*/outputs/*/q_*/
+!*/benchmarks/*/outputs/*/q_*/plots/
+!*/benchmarks/*/outputs/*/q_*/plots/*.png
 
 # Local model/server state
 .ollama/
@@ -83,7 +74,7 @@ data_amazon/outputs/**
 *.toc
 
 # Third-party reading material is kept locally
-papers/
+docs/papers/
 
 # Nested repository metadata backup, if present
 .git.nested-backup/

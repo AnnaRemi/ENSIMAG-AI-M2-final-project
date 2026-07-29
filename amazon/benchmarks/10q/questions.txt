@@ -1,0 +1,10 @@
+q_01: Which necklaces do reviewers say tarnish or discolour after a short time?
+q_02: Which bracelets are described by reviewers as adjustable enough to fit different wrist sizes?
+q_03: Which sunglasses do reviewers say arrived scratched, bent, or broken?
+q_04: Which women's sweaters do reviewers describe as itchy or scratchy against the skin?
+q_05: Which hoodies do reviewers say shrank or faded after washing?
+q_06: Which leather wallets do reviewers describe as slim enough to carry in a pocket?
+q_07: Which men's jeans do reviewers say run larger or smaller than the labelled size?
+q_08: Which scarves do reviewers say arrived in a colour different from the pictures?
+q_09: Which women's swimsuits do reviewers say provide good support or coverage?
+q_10: Which leggings do reviewers say are sheer or see-through when stretched?

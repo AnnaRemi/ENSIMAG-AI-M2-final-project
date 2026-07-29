@@ -1,0 +1,24 @@
+{
+  "suite": "3q",
+  "question_count": 3,
+  "questions": [
+    {
+      "id": "q_01",
+      "directory": "q_01",
+      "semantic_concept": "comfortable_dress",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_02",
+      "directory": "q_02",
+      "semantic_concept": "true_to_size_shoes",
+      "ground_truth_count": 15
+    },
+    {
+      "id": "q_03",
+      "directory": "q_03",
+      "semantic_concept": "soft_fabric_shirt",
+      "ground_truth_count": 15
+    }
+  ]
+}

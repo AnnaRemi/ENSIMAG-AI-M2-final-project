@@ -1,0 +1,19 @@
+{
+  "dataset_name": "amazon_reviews_mcauley",
+  "id_column": "product_id",
+  "text_column": "review_text",
+  "structured_columns": [
+    "title",
+    "brand",
+    "category",
+    "price",
+    "description",
+    "features",
+    "sales_rank"
+  ],
+  "structured_rows": 186105,
+  "text_rows": 882321,
+  "ids_with_text": 186105,
+  "dictionary_ids": 130063,
+  "evaluation_ids": 56042
+}

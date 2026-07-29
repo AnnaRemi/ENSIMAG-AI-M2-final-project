@@ -1,0 +1,10 @@
+q_01: Which dresses are described by reviewers as comfortable to wear?
+q_02: Which shoes are described by reviewers as fitting true to size?
+q_03: Which shirts are praised by reviewers for soft or pleasant fabric?
+q_04: Which jackets are described by reviewers as warm enough for cool weather?
+q_05: Which hats are described by reviewers as providing useful sun protection?
+q_06: Which watches are described by reviewers as stylish or attractive?
+q_07: Which bags are described by reviewers as roomy or able to hold a lot?
+q_08: Which socks are described by reviewers as durable after repeated use?
+q_09: Which sandals are described by reviewers as comfortable for walking?
+q_10: Which costumes are described by reviewers as well made?

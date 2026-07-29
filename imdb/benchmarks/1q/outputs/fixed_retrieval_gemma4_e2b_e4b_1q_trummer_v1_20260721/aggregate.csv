@@ -1,0 +1,2 @@
+implementation,method,precision,recall,f1,wall_seconds,llm_calls,cheap_calls,expensive_calls,cheap_seconds,expensive_seconds,cheap_cost_usd,expensive_cost_usd,total_cost_usd,cheap_cost_per_call_usd,expensive_cost_per_call_usd
+trummer_v1_structured_two_level_cascade,Trummer V1 (structured + 2-level cascade),0.3333333333333333,0.9166666666666666,0.4888888888888888,606.9927513441071,45.0,5.0,40.0,50.17175649525598,556.8167982203886,0.041809797079379984,0.46401399851699054,0.5058237955963705,0.008361959415875997,0.011600349962924764

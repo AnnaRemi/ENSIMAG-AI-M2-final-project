@@ -570,6 +570,26 @@ selectivity specifically. The repo's own smaller `1q/3q/5q` suites and the
 Amazon scaling study (§4.3) are the available levers for probing this
 further; a full selectivity sweep is still open work.
 
+**A pre-restructuring 3q result hints the 10q ranking may not hold at
+smaller scale, but needs re-running to confirm.** Six older
+[`imdb/benchmarks/3q/outputs/`](imdb/benchmarks/3q/outputs/) runs (2026-07-21,
+gemma and qwen pairs, 3-10 reps each), from before the `single_pass_join`
+Trummer fix described in [`imdb/benchmarks/README.md`](imdb/benchmarks/README.md),
+showed the *opposite* ranking from §4.1: both Trummer variants collapsed
+(`trummer_baseline` F1 = 0.000 in 4 of 6 runs; `trummer_v1` never exceeded
+0.103) while a SUQL variant won every run. The suggested mechanism —
+3q's questions are more selective (fewer structured candidates survive
+pushdown), leaving too little signal for the block-join and its cascade to
+route or join reliably, while SUQL's per-row filter is unaffected by pool
+size — is plausible and consistent with §4.3's Amazon finding that
+`trummer_v1` needs *n* ≈ 100+ candidates to be reliable. But because these
+runs predate the Trummer baseline fix that made its call cost comparable
+(§0 of `imdb/benchmarks/README.md`: pre-fix numbers "are therefore not
+comparable with runs made before this change"), this should be read as a
+hypothesis carried over from before the restructuring, not a confirmed
+current result — the 3q suite needs a re-run on the current implementation
+before this ranking reversal can be trusted.
+
 **Read repetition counts literally.** Per §4.2's reliability caveat, most
 multi-pair numbers above are effectively single draws, not 10-repetition
 means — differences smaller than the seeded-variance spread found in
